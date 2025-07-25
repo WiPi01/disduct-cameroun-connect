@@ -36,7 +36,7 @@ const FeaturesSection = () => {
             <span className="bg-gradient-hero bg-clip-text text-transparent"> disduct</span> ?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une plateforme pensée pour les Camerounais, par des Camerounais
+            Une plateforme pensée pour les Camerounais, par une team multiculturelle
           </p>
         </div>
 

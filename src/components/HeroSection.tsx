@@ -15,12 +15,11 @@ const HeroSection = () => {
           {/* Left Content */}
           <div className="text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              Connectons l'offre et la
-              <span className="bg-gradient-hero bg-clip-text text-transparent"> demande</span>
-              <br />au Cameroun
+              <span className="bg-gradient-hero bg-clip-text text-transparent">The best products</span>
+              <br />at discount prices
             </h1>
             
-            <p className="text-lg text-muted-foreground mb-8 max-w-lg">
+            <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
               La première plateforme qui simplifie l'achat et la vente entre Camerounais. 
               Trouvez ce que vous cherchez ou vendez ce que vous possédez.
             </p>
