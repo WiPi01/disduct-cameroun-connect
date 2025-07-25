@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Video, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -24,7 +24,7 @@ const Footer = () => {
                 <Instagram className="h-5 w-5 text-primary" />
               </div>
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <Twitter className="h-5 w-5 text-primary" />
+                <Video className="h-5 w-5 text-primary" />
               </div>
             </div>
           </div>
