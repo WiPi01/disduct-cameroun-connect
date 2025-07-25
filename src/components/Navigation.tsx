@@ -11,7 +11,7 @@ const Navigation = () => {
             <img 
               src="/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png" 
               alt="disduct logo" 
-              className="h-8 w-8 object-contain"
+              className="h-12 w-12 object-contain"
             />
             <h1 className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               disduct
