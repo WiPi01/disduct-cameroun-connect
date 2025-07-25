@@ -1,0 +1,93 @@
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+
+const Footer = () => {
+  return (
+    <footer className="bg-secondary/50 pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          
+          {/* Brand Section */}
+          <div className="lg:col-span-1">
+            <h3 className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent mb-4">
+              disduct
+            </h3>
+            <p className="text-muted-foreground mb-6 leading-relaxed">
+              La première plateforme de commerce en ligne qui connecte l'offre et la demande au Cameroun.
+            </p>
+            <div className="flex space-x-4">
+              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                <Facebook className="h-5 w-5 text-primary" />
+              </div>
+              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                <Instagram className="h-5 w-5 text-primary" />
+              </div>
+              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+                <Twitter className="h-5 w-5 text-primary" />
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-lg font-semibold text-foreground mb-4">Liens rapides</h4>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Accueil</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Catégories</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Comment vendre</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Comment acheter</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">À propos</a></li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 className="text-lg font-semibold text-foreground mb-4">Support</h4>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Centre d'aide</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Conditions d'utilisation</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Politique de confidentialité</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Signaler un problème</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a></li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-lg font-semibold text-foreground mb-4">Contact</h4>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <Mail className="h-5 w-5 text-primary" />
+                <span className="text-muted-foreground">contact@disduct.cm</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 text-primary" />
+                <span className="text-muted-foreground">+237 6XX XX XX XX</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <MapPin className="h-5 w-5 text-primary" />
+                <span className="text-muted-foreground">Douala, Cameroun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-border pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-muted-foreground text-sm mb-4 md:mb-0">
+              © 2024 disduct. Tous droits réservés.
+            </div>
+            <div className="text-muted-foreground text-sm">
+              Fait avec ❤️ au Cameroun
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
