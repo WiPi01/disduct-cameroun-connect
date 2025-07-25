@@ -16,7 +16,7 @@ const HeroSection = () => {
           <div className="text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
               <span className="bg-gradient-hero bg-clip-text text-transparent">The best products</span>
-              <br />at discount prices
+              <br /><span className="bg-gradient-hero bg-clip-text text-transparent">at discount prices</span>
             </h1>
             
             <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
