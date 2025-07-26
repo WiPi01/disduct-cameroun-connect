@@ -20,13 +20,13 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+            <a href="/" className="text-foreground hover:text-primary transition-colors">
               Accueil
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors">
               Catégories
             </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+            <a href="/vendre" className="text-foreground hover:text-primary transition-colors">
               Vendre
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors">
