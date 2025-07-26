@@ -24,7 +24,7 @@ const Footer = () => {
                 <Instagram className="h-5 w-5 text-primary" />
               </div>
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <img src="/lovable-uploads/61dab940-2e96-4b67-bfde-d6d42888c8ef.png" alt="TikTok" className="h-6 w-6" />
+                <img src="/lovable-uploads/61dab940-2e96-4b67-bfde-d6d42888c8ef.png" alt="TikTok" className="h-8 w-8" />
               </div>
             </div>
           </div>
