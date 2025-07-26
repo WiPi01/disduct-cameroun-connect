@@ -1,5 +1,4 @@
 import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
-import tiktokIcon from "../assets/tiktok-icon.png";
 
 const Footer = () => {
   return (
@@ -25,7 +24,7 @@ const Footer = () => {
                 <Instagram className="h-5 w-5 text-primary" />
               </div>
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <img src={tiktokIcon} alt="TikTok" className="h-5 w-5" />
+                <img src="/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png" alt="TikTok" className="h-5 w-5" />
               </div>
             </div>
           </div>
