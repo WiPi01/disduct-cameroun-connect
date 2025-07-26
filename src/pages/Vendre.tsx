@@ -37,7 +37,7 @@ const Vendre = () => {
     {
       icon: <Truck className="h-8 w-8 text-primary" />,
       title: "7. Suivez la livraison",
-      description: "Expédiez votre article et suivez sa livraison en temps réel grâce à notre système de tracking intégré."
+      description: "Confiez votre/vos article(s) à un livreur Potolo ou Gozem et suivez sa livraison en temps réel grâce à notre système de tracking intégré."
     },
     {
       icon: <Star className="h-8 w-8 text-primary" />,
