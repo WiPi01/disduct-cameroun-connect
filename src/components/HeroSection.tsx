@@ -44,7 +44,7 @@ const HeroSection = () => {
               <Button variant="default" size="lg" className="h-12 px-8">
                 Commencer à acheter
               </Button>
-              <Button variant="outline-orange" size="lg" className="h-12 px-8">
+              <Button variant="outline" size="lg" className="h-12 px-8">
                 Commencer à vendre
               </Button>
             </div>
