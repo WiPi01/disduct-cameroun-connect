@@ -37,8 +37,8 @@ const About = () => {
                 innovante où acheter et vendre des articles de qualité à prix réduits. Notre mission 
                 est de démocratiser l'accès aux meilleurs produits pour tous les Camerounais.
               </p>
-              <div className="bg-accent/50 p-6 rounded-xl border border-accent">
-                <h3 className="font-semibold text-lg mb-2 text-accent-foreground">
+              <div className="bg-orange-500/10 p-6 rounded-xl border border-orange-500/20">
+                <h3 className="font-semibold text-lg mb-2 text-orange-600">
                   Soutenu par Aboveandco
                 </h3>
                 <p className="text-muted-foreground">
@@ -82,9 +82,9 @@ const About = () => {
                     <div className="text-sm text-muted-foreground">Passion</div>
                   </CardContent>
                 </Card>
-                <Card className="p-6 text-center bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+                <Card className="p-6 text-center bg-gradient-to-br from-orange-500/10 to-orange-500/5 border-orange-500/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-accent-foreground mb-2">24</div>
+                    <div className="text-3xl font-bold text-orange-600 mb-2">24</div>
                     <div className="text-sm text-muted-foreground">Âge moyen</div>
                   </CardContent>
                 </Card>
