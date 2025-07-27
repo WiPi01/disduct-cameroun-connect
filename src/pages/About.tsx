@@ -15,7 +15,7 @@ const About = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">
               À propos de Disduct
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground font-medium">
+            <p className="text-xl md:text-2xl font-medium text-orange-500">
               The best products at discount prices
             </p>
           </div>
@@ -84,13 +84,13 @@ const About = () => {
                 </Card>
                 <Card className="p-6 text-center bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-accent-foreground mb-2">25</div>
+                    <div className="text-3xl font-bold text-accent-foreground mb-2">24</div>
                     <div className="text-sm text-muted-foreground">Âge moyen</div>
                   </CardContent>
                 </Card>
                 <Card className="p-6 text-center bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-secondary-foreground mb-2">10+</div>
+                    <div className="text-3xl font-bold text-secondary-foreground mb-2">5+</div>
                     <div className="text-sm text-muted-foreground">Nationalités</div>
                   </CardContent>
                 </Card>
@@ -137,11 +137,11 @@ const About = () => {
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Soyez parmi les premiers à découvrir la révolution du e-commerce 
-            au Cameroun. Inscrivez-vous pour être notifié de notre lancement.
+            au Cameroun. Inscrivez-vous à notre newsletter.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg px-8">
-              Être notifié du lancement
+              Insights disduct
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8">
               Découvrir nos services
@@ -150,7 +150,7 @@ const About = () => {
         </div>
       </section>
 
-      <Footer />
+      
     </div>
   );
 };
