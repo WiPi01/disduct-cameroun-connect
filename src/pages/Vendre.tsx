@@ -58,7 +58,7 @@ const Vendre = () => {
             Transformez vos articles en argent en quelques étapes simples. 
             Rejoignez des milliers de vendeurs qui font confiance à Disduct.
           </p>
-          <Button variant="outline" size="lg" className="bg-white text-primary hover:bg-white/90 hover:border-orange-500 text-lg px-8 py-3 border-white">
+          <Button variant="outline" size="lg" className="text-lg px-8 py-3">
             Commencer à vendre
           </Button>
         </div>
