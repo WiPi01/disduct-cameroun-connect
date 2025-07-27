@@ -23,8 +23,8 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=3540&auto=format"
-                alt="Disduct Platform"
+                src="/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png"
+                alt="Disduct - The Best Products at discount prices"
                 className="rounded-2xl shadow-elegant w-full"
               />
             </div>
@@ -120,8 +120,8 @@ const About = () => {
             
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=3540&auto=format"
-                alt="Équipe Disduct"
+                src="/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png"
+                alt="La Team Disduct"
                 className="rounded-2xl shadow-elegant w-full"
               />
             </div>
