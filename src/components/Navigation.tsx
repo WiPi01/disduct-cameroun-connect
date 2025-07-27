@@ -29,7 +29,7 @@ const Navigation = () => {
             <a href="/vendre" className="text-foreground hover:text-primary transition-colors">
               Vendre
             </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+            <a href="/about" className="text-foreground hover:text-primary transition-colors">
               À propos
             </a>
           </div>
