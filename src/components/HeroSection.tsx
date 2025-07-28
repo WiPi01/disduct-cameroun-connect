@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/hero-image.jpg";
+import AuthModal from "./AuthModal";
 
 const HeroSection = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Background with subtle gradient */}
@@ -31,9 +34,16 @@ const HeroSection = () => {
                 <Input 
                   placeholder="Que recherchez-vous ?" 
                   className="pl-10 h-12 border-2 focus:border-primary"
+                  onClick={() => setIsAuthModalOpen(true)}
+                  readOnly
                 />
               </div>
-              <Button variant="hero" size="lg" className="h-12 px-8">
+              <Button 
+                variant="hero" 
+                size="lg" 
+                className="h-12 px-8"
+                onClick={() => setIsAuthModalOpen(true)}
+              >
                 Rechercher
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -41,10 +51,20 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="default" size="lg" className="h-12 px-8">
+              <Button 
+                variant="default" 
+                size="lg" 
+                className="h-12 px-8"
+                onClick={() => setIsAuthModalOpen(true)}
+              >
                 Commencer à acheter
               </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="h-12 px-8"
+                onClick={() => setIsAuthModalOpen(true)}
+              >
                 Commencer à vendre
               </Button>
             </div>
@@ -66,6 +86,7 @@ const HeroSection = () => {
           
         </div>
       </div>
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </section>
   );
 };

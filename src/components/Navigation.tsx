@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Search, ShoppingBag, User, Menu } from "lucide-react";
+import AuthModal from "./AuthModal";
 
 const Navigation = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   return (
     <nav className="w-full bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,9 +26,12 @@ const Navigation = () => {
             <a href="/" className="text-foreground hover:text-primary transition-colors">
               Accueil
             </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+            <button 
+              onClick={() => setIsAuthModalOpen(true)}
+              className="text-foreground hover:text-primary transition-colors"
+            >
               Catégories
-            </a>
+            </button>
             <a href="/vendre" className="text-foreground hover:text-primary transition-colors">
               Vendre
             </a>
@@ -36,7 +42,12 @@ const Navigation = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="hidden sm:flex">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="hidden sm:flex"
+              onClick={() => setIsAuthModalOpen(true)}
+            >
               <Search className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="sm">
@@ -51,6 +62,7 @@ const Navigation = () => {
           </div>
         </div>
       </div>
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </nav>
   );
 };
