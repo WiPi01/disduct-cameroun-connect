@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Search, ShoppingBag, User, Menu } from "lucide-react";
+import { Store, ShoppingBag, User, Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AuthModal from "./AuthModal";
 
 const Navigation = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <nav className="w-full bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,11 +48,15 @@ const Navigation = () => {
               variant="ghost" 
               size="sm" 
               className="hidden sm:flex"
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={() => navigate('/comment-vendre')}
             >
-              <Search className="h-4 w-4" />
+              <Store className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => navigate('/comment-acheter')}
+            >
               <ShoppingBag className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="sm">
