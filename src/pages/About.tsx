@@ -143,8 +143,8 @@ const About = () => {
             <Button size="lg" className="text-lg px-8">
               Insights disduct
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8">
-              Découvrir nos services
+            <Button size="lg" variant="outline" className="text-lg px-8" asChild>
+              <a href="/services">Découvrir nos services</a>
             </Button>
           </div>
         </div>
