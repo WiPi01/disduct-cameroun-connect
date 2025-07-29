@@ -1,5 +1,4 @@
 import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 import { Package, Camera, MessageCircle, DollarSign, TrendingUp, Shield } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -89,8 +88,6 @@ const CommentVendre = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

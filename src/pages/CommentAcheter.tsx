@@ -1,5 +1,4 @@
 import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 import { Search, Eye, MessageCircle, CreditCard, Shield, Star } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -89,8 +88,6 @@ const CommentAcheter = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };
