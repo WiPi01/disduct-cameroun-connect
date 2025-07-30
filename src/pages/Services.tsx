@@ -12,10 +12,10 @@ const Services = () => {
       <section className="py-20 px-4 bg-gradient-hero text-white">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Disduct : Le marché Camerounais en ligne qui connecte l'Offre et la Demande de produits
+            Disduct : Le marché Camerounais en ligne qui connecte l'Offre et la Demande de produits et services
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed">
-            Découvrez une nouvelle ère pour le commerce au Cameroun. Notre plateforme réunit acheteurs et vendeurs pour toutes les catégories de produits, sans limite de prix ou de caractéristiques.
+            Découvrez une nouvelle ère pour le commerce au Cameroun. Notre plateforme réunit acheteurs et vendeurs pour toutes les catégories de produits et services sans limite de prix ou de caractéristiques.
           </p>
         </div>
       </section>
@@ -276,7 +276,7 @@ const Services = () => {
               La Flexibilité au Cœur de Nos Services
             </h2>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              Nous sommes fiers de proposer une plateforme qui s'adapte à tous les besoins. Quelle que soit la taille de votre entreprise ou le type de produit que vous vendez, notre écosystème est conçu pour une flexibilité maximale. Nous éliminons les barrières traditionnelles du commerce.
+              Nous sommes fiers de proposer une plateforme qui s'adapte à tous les besoins. Quelle que soit la taille de votre entreprise ou le type de produit ou service que vous vendez, notre écosystème est conçu pour une flexibilité maximale. Nous éliminons les barrières traditionnelles du commerce.
             </p>
           </div>
           
@@ -329,7 +329,7 @@ const Services = () => {
                 Pour les Acheteurs : Trouvez Exactement Ce Qu'il Vous Faut
               </h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Naviguez facilement à travers des milliers d'annonces. Utilisez nos filtres de recherche avancés pour trouver le produit idéal, au bon prix et près de chez vous. Chaque annonce est détaillée avec des photos et des descriptions complètes pour une décision éclairée.
+                Naviguez facilement à travers des milliers d'annonces. Utilisez nos filtres de recherche avancés pour trouver le produit ou service idéal, au bon prix et près de chez vous. Chaque annonce est détaillée avec des photos et des descriptions complètes pour une décision éclairée.
               </p>
               
               <div className="space-y-4">
@@ -424,6 +424,15 @@ const Services = () => {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Thank You Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+            Merci d'utiliser disduct
+          </h2>
         </div>
       </section>
     </div>
