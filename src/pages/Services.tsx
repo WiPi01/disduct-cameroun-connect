@@ -218,7 +218,7 @@ const Services = () => {
               Pour les Vendeurs : Développez Votre Portée
             </h2>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              Vendre n'a jamais été aussi simple. Créez votre boutique en ligne en quelques minutes et mettez en avant vos produits à une audience nationale. Que vous soyez un artisan, un commerçant ou un particulier, notre plateforme est conçue pour vous aider à réussir.
+              Vendre n'a jamais été aussi simple. Créez votre boutique en ligne en quelques minutes et mettez en avant vos produits et services à une audience nationale. Que vous soyez un artisan, un commerçant ou un particulier, notre plateforme est conçue pour vous aider à réussir.
             </p>
           </div>
           
@@ -430,7 +430,7 @@ const Services = () => {
       {/* Thank You Section */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
             Merci d'utiliser disduct
           </h2>
         </div>
