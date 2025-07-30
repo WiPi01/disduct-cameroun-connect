@@ -379,8 +379,12 @@ const Services = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <Card className="p-8 text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
               <CardHeader>
-                <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Package className="h-10 w-10 text-primary" />
+                <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                  <img 
+                    src="/lovable-uploads/cf728e29-c321-48d4-aada-078f0755489a.png" 
+                    alt="Logo Potolo" 
+                    className="w-16 h-16 object-contain"
+                  />
                 </div>
                 <CardTitle className="text-2xl text-primary mb-4">Potolo</CardTitle>
               </CardHeader>
@@ -393,8 +397,12 @@ const Services = () => {
             
             <Card className="p-8 text-center bg-gradient-to-br from-orange-500/10 to-orange-500/5 border-orange-500/20">
               <CardHeader>
-                <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <MapPin className="h-10 w-10 text-orange-600" />
+                <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                  <img 
+                    src="/lovable-uploads/b17173b9-daab-4029-88ea-5bd0b838b63c.png" 
+                    alt="Logo Gozem" 
+                    className="w-16 h-16 object-contain"
+                  />
                 </div>
                 <CardTitle className="text-2xl text-orange-600 mb-4">Gozem</CardTitle>
               </CardHeader>
@@ -418,8 +426,6 @@ const Services = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };
