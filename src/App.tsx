@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import ConditionsUtilisation from "./pages/ConditionsUtilisation";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import SignalerProbleme from "./pages/SignalerProbleme";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/conditions-utilisation" element={<ConditionsUtilisation />} />
           <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="/signaler-probleme" element={<SignalerProbleme />} />
+          <Route path="/faq" element={<FAQ />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
