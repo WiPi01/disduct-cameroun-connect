@@ -369,7 +369,7 @@ const PolitiqueConfidentialite = () => {
                   <p><strong>Email :</strong> privacy@disduct.com</p>
                   <p><strong>Délégué à la Protection des Données :</strong> dpo@disduct.com</p>
                   <p><strong>Support général :</strong> support@disduct.com</p>
-                  <p><strong>Téléphone :</strong> +237 XXX XXX XXX</p>
+                  <p><strong>Téléphone :</strong> +237 697392803</p>
                 </div>
               </div>
             </section>
