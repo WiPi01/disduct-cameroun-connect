@@ -1,46 +1,59 @@
 import { Smartphone, Shirt, Home, Wheat, Car, Briefcase } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
     icon: Smartphone,
     title: "Électronique",
     description: "Smartphones, ordinateurs, accessoires",
-    count: "2,150+ produits"
+    count: "2,150+ produits",
+    slug: "electronique"
   },
   {
     icon: Shirt,
     title: "Mode & Beauté",
     description: "Vêtements, chaussures, cosmétiques",
-    count: "3,420+ produits"
+    count: "3,420+ produits",
+    slug: "mode"
   },
   {
     icon: Home,
     title: "Maison & Jardin",
     description: "Meubles, décoration, électroménager",
-    count: "1,890+ produits"
+    count: "1,890+ produits",
+    slug: "maison"
   },
   {
     icon: Wheat,
     title: "Agriculture",
     description: "Produits frais, équipements agricoles",
-    count: "980+ produits"
+    count: "980+ produits",
+    slug: "agriculture"
   },
   {
     icon: Car,
     title: "Automobile",
     description: "Véhicules, pièces détachées",
-    count: "1,250+ produits"
+    count: "1,250+ produits",
+    slug: "automobile"
   },
   {
     icon: Briefcase,
     title: "Services",
     description: "Services professionnels, formations",
-    count: "750+ services"
+    count: "750+ services",
+    slug: "services"
   }
 ];
 
 const CategoriesSection = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (slug: string) => {
+    navigate(`/category/${slug}`);
+  };
+
   return (
     <section className="py-20 bg-secondary/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,6 +75,7 @@ const CategoriesSection = () => {
             <Card 
               key={index} 
               className="group hover:shadow-elegant transition-all duration-300 cursor-pointer border-2 hover:border-primary/20"
+              onClick={() => handleCategoryClick(category.slug)}
             >
               <CardContent className="p-6 text-center">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

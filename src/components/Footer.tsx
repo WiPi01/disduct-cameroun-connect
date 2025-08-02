@@ -1,6 +1,10 @@
 import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { useState } from "react";
+import AuthModal from "./AuthModal";
 
 const Footer = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
   return (
     <footer className="bg-secondary/50 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,7 +38,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold text-foreground mb-4">Liens rapides</h4>
             <ul className="space-y-3">
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Accueil</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Catégories</a></li>
+              <li><button onClick={() => setIsAuthModalOpen(true)} className="text-muted-foreground hover:text-primary transition-colors">Catégories</button></li>
               <li><a href="/comment-vendre" className="text-muted-foreground hover:text-primary transition-colors">Comment vendre</a></li>
               <li><a href="/comment-acheter" className="text-muted-foreground hover:text-primary transition-colors">Comment acheter</a></li>
               <li><a href="/about" className="text-muted-foreground hover:text-primary transition-colors">À propos</a></li>
@@ -85,6 +89,11 @@ const Footer = () => {
         </div>
 
       </div>
+      
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </footer>
   );
 };
