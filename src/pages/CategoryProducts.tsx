@@ -10,72 +10,15 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Heart, Eye } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
 
-// Données temporaires des produits pour démonstration
+// Données temporaires des produits pour démonstration - actuellement vide
 const mockProducts = {
-  "electronique": [
-    {
-      id: 1,
-      title: "iPhone 13 Pro Max",
-      price: "450000",
-      location: "Douala",
-      image: "/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png",
-      views: 245,
-      seller: "John Doe"
-    },
-    {
-      id: 2,
-      title: "MacBook Air M2",
-      price: "800000",
-      location: "Yaoundé",
-      image: "/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png",
-      views: 189,
-      seller: "Marie Dupont"
-    }
-  ],
-  "mode": [
-    {
-      id: 3,
-      title: "Robe élégante",
-      price: "25000",
-      location: "Douala",
-      image: "/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png",
-      views: 156,
-      seller: "Sophie Martin"
-    }
-  ],
-  "maison": [
-    {
-      id: 4,
-      title: "Canapé 3 places",
-      price: "120000",
-      location: "Yaoundé",
-      image: "/lovable-uploads/b17173b9-daab-4029-88ea-5bd0b838b63c.png",
-      views: 98,
-      seller: "Pierre Nkomo"
-    }
-  ],
-  "automobile": [
-    {
-      id: 5,
-      title: "Toyota Corolla 2018",
-      price: "8500000",
-      location: "Douala",
-      image: "/lovable-uploads/cf728e29-c321-48d4-aada-078f0755489a.png",
-      views: 432,
-      seller: "Paul Mballa"
-    }
-  ],
-  "immobilier": [
-    {
-      id: 6,
-      title: "Appartement 2 chambres",
-      price: "45000000",
-      location: "Yaoundé",
-      image: "/lovable-uploads/61dab940-2e96-4b67-bfde-d6d42888c8ef.png",
-      views: 267,
-      seller: "Henriette Fouda"
-    }
-  ]
+  "electronique": [],
+  "mode": [],
+  "maison": [],
+  "automobile": [],
+  "immobilier": [],
+  "agriculture": [],
+  "services": []
 };
 
 const CategoryProducts = () => {
@@ -98,12 +41,8 @@ const CategoryProducts = () => {
   }, []);
 
   const handleContactSeller = () => {
-    if (!user) {
-      setIsAuthModalOpen(true);
-    } else {
-      // Logique pour contacter le vendeur
-      console.log("Contacter le vendeur");
-    }
+    // Logique pour contacter le vendeur - accessible sans authentification pour les tests
+    console.log("Contacter le vendeur");
   };
 
   const products = category ? mockProducts[category as keyof typeof mockProducts] || [] : [];
