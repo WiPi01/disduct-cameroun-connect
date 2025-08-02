@@ -23,20 +23,12 @@ const Profile = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
-        if (!session) {
-          navigate('/');
-        }
       }
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
-      if (!session) {
-        navigate('/');
-      }
     });
 
     return () => subscription.unsubscribe();
@@ -59,9 +51,6 @@ const Profile = () => {
     }
   };
 
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-background">

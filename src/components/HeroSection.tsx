@@ -13,10 +13,24 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
           
-          {/* Left Content */}
-          <div className="text-center lg:text-left">
+          {/* Left Image */}
+          <div className="relative order-2 lg:order-1">
+            <div className="relative rounded-2xl overflow-hidden shadow-elegant">
+              <img 
+                src="/lovable-uploads/e04ec554-b05a-4375-8fa8-2565a0643504.png" 
+                alt="Marketplace products"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+            {/* Floating elements */}
+            <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-primary rounded-full opacity-20 blur-xl" />
+            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-accent rounded-full opacity-20 blur-xl" />
+          </div>
+          
+          {/* Right Content */}
+          <div className="text-center lg:text-left order-1 lg:order-2 lg:pl-8">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
               <span className="bg-gradient-hero bg-clip-text text-transparent">The best products</span>
               <br /><span className="bg-gradient-hero bg-clip-text text-transparent">at discount prices</span>
@@ -70,19 +84,6 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right Image */}
-          <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-elegant">
-              <img 
-                src={heroImage} 
-                alt="Marketplace au Cameroun"
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            {/* Floating elements */}
-            <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-primary rounded-full opacity-20 blur-xl" />
-            <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-accent rounded-full opacity-20 blur-xl" />
-          </div>
           
         </div>
       </div>
