@@ -24,7 +24,7 @@ const FAQ = () => {
         },
         {
           question: "disduct est-il gratuit ?",
-          answer: "Oui, l'inscription, la création d'annonces, l'achat et la vente sont totalement gratuites sur disduct. Nous ne prélevons aucune commission sur les ventes ou les achats sur notre plateforme. La seule chose que vous payez, ce sont les boosts de vos articles pour assurer qu'ils soient visibles par des milliers d'utilisateurs, afin d'augmenter vos chances de vente."
+          answer: "Oui, l'inscription, la création d'annonces, l'achat et la vente de produits ou services sont totalement gratuits sur disduct. Nous ne prélevons aucune commission sur les ventes ou les achats sur notre plateforme. La seule chose que vous payez, ce sont les boosts de vos articles pour assurer qu'ils soient visibles par des milliers d'utilisateurs, afin d'augmenter vos chances de vente."
         },
         {
           question: "Dans quelles villes disduct est-il disponible ?",
