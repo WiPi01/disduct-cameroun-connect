@@ -20,11 +20,11 @@ const FAQ = () => {
         },
         {
           question: "Comment créer un compte sur disduct ?",
-          answer: "Cliquez sur 'Se connecter' en haut de la page, puis sur 'Créer un compte'. Remplissez vos informations (nom, email, mot de passe) et validez votre email. C'est gratuit et ne prend que quelques minutes."
+          answer: "Cliquez sur 'S'inscrire' en haut de la page et remplissez vos informations (nom, email, mot de passe) et validez votre email. C'est gratuit et ne prend que quelques minutes."
         },
         {
           question: "disduct est-il gratuit ?",
-          answer: "Oui, l'inscription et la création d'annonces sont gratuites. Nous ne prélevons qu'une petite commission sur les ventes réussies pour maintenir et améliorer la plateforme."
+          answer: "Oui, l'inscription, la création d'annonces, l'achat et la vente sont totalement gratuites sur disduct. Nous ne prélevons aucune commission sur les ventes ou les achats sur notre plateforme. La seule chose que vous payez, ce sont les boosts de vos articles pour assurer qu'ils soient visibles par des milliers d'utilisateurs, afin d'augmenter vos chances de vente."
         },
         {
           question: "Dans quelles villes disduct est-il disponible ?",
@@ -43,7 +43,7 @@ const FAQ = () => {
         },
         {
           question: "Combien coûte la publication d'une annonce ?",
-          answer: "La publication d'annonces est entièrement gratuite. Vous ne payez que si votre produit se vend, sous forme d'une petite commission pour soutenir la plateforme."
+          answer: "La publication d'annonces est entièrement gratuite. Vous ne payez rien, quelque soit le nombre d'articles que vous vendez sur notre plateforme."
         },
         {
           question: "Combien de photos puis-je ajouter ?",
@@ -89,7 +89,7 @@ const FAQ = () => {
       questions: [
         {
           question: "Quels moyens de paiement sont acceptés ?",
-          answer: "disduct supporte Mobile Money (MTN Money, Orange Money), les virements bancaires, et le paiement en espèces lors de la remise en main propre. Le choix du mode de paiement se fait entre acheteur et vendeur."
+          answer: "disduct supporte Mobile Money (MTN Money, Orange Money) et le paiement en espèces lors de la remise en main propre. Le choix du mode de paiement se fait entre acheteur et vendeur."
         },
         {
           question: "Comment fonctionne la livraison ?",
