@@ -1,13 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
+    <div className="min-h-screen bg-background">      
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">

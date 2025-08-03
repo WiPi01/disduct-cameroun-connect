@@ -1,4 +1,4 @@
-import Navigation from "@/components/Navigation";
+
 import { Search, Eye, MessageCircle, CreditCard, Shield, Star } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -27,9 +27,7 @@ const CommentAcheter = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
+    <div className="min-h-screen bg-background">      
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
