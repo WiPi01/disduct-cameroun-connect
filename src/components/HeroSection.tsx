@@ -19,8 +19,8 @@ const HeroSection = () => {
           <div className="relative order-2 lg:order-1">
             <div className="relative rounded-2xl overflow-hidden shadow-elegant">
               <img 
-                src="/lovable-uploads/e04ec554-b05a-4375-8fa8-2565a0643504.png" 
-                alt="Marketplace products"
+                src="/lovable-uploads/cd70e03d-d67a-4dff-92bd-755b2c760503.png" 
+                alt="Marketplace products - Cameroon flag with various products"
                 className="w-full h-auto object-cover"
               />
             </div>
