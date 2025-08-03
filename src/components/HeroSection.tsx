@@ -27,19 +27,6 @@ const HeroSection = () => {
               Trouvez ce que vous cherchez ou vendez ce que vous possédez.
             </p>
 
-            {/* Image */}
-            <div className="relative mb-8 max-w-md mx-auto">
-              <div className="relative rounded-2xl overflow-hidden shadow-elegant">
-                <img 
-                  src="/lovable-uploads/cd70e03d-d67a-4dff-92bd-755b2c760503.png" 
-                  alt="Marketplace products - Cameroon flag with various products"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-              {/* Floating elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-primary rounded-full opacity-20 blur-xl" />
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-accent rounded-full opacity-20 blur-xl" />
-            </div>
 
             {/* Search Bar */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8 max-w-md mx-auto">
