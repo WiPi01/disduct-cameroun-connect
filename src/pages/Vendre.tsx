@@ -1,8 +1,52 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Camera, MessageCircle, Package, Star, Upload, UserPlus, DollarSign, Truck } from "lucide-react";
+import AuthModal from "@/components/AuthModal";
 
 const Vendre = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleCommencerVendre = () => {
+    if (user) {
+      // TODO: Rediriger vers la page de création d'annonce (à créer)
+      console.log("Redirection vers la page de création d'annonce");
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
+  const handleCreerCompteVendeur = () => {
+    setIsAuthModalOpen(true);
+  };
+
+  const handleEnSavoirPlus = () => {
+    navigate("/comment-vendre");
+  };
   const steps = [
     {
       icon: <UserPlus className="h-8 w-8 text-primary" />,
@@ -58,7 +102,12 @@ const Vendre = () => {
             Transformez vos articles en argent en quelques étapes simples. 
             Rejoignez des milliers de vendeurs qui font confiance à Disduct.
           </p>
-          <Button variant="outline" size="lg" className="text-lg px-8 py-3 text-purple-600 border-purple-600 hover:border-orange-500">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="text-lg px-8 py-3 text-purple-600 border-purple-600 hover:border-orange-500"
+            onClick={handleCommencerVendre}
+          >
             Commencer à vendre
           </Button>
         </div>
@@ -163,15 +212,20 @@ const Vendre = () => {
             Rejoignez la communauté Disduct et commencez à vendre dès aujourd'hui !
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-8 py-3">
+            <Button size="lg" className="px-8 py-3" onClick={handleCreerCompteVendeur}>
               Créer mon compte vendeur
             </Button>
-            <Button variant="outline" size="lg" className="px-8 py-3">
+            <Button variant="outline" size="lg" className="px-8 py-3" onClick={handleEnSavoirPlus}>
               En savoir plus
             </Button>
           </div>
         </div>
       </section>
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </div>
   );
 };
