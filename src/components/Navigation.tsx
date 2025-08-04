@@ -1,10 +1,20 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Store, ShoppingBag, User, Menu } from "lucide-react";
+import { Store, ShoppingBag, User, Menu, ChevronDown, Smartphone, Shirt, Home, Wheat, Car, Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import AuthModal from "./AuthModal";
+
+const categories = [
+  { icon: Smartphone, title: "Électronique", slug: "electronique" },
+  { icon: Shirt, title: "Mode & Beauté", slug: "mode" },
+  { icon: Home, title: "Maison & Jardin", slug: "maison" },
+  { icon: Wheat, title: "Agriculture", slug: "agriculture" },
+  { icon: Car, title: "Automobile", slug: "automobile" },
+  { icon: Briefcase, title: "Services", slug: "services" }
+];
 
 const Navigation = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -56,12 +66,26 @@ const Navigation = () => {
             <a href="/" className="text-foreground hover:text-primary transition-colors">
               Accueil
             </a>
-            <button 
-              onClick={() => setIsAuthModalOpen(true)}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Catégories
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-normal">
+                  Catégories
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56">
+                {categories.map((category) => (
+                  <DropdownMenuItem 
+                    key={category.slug}
+                    onClick={() => navigate(`/category/${category.slug}`)}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <category.icon className="h-4 w-4 text-primary" />
+                    {category.title}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <a href="/vendre" className="text-foreground hover:text-primary transition-colors">
               Vendre
             </a>
