@@ -21,15 +21,30 @@ const Footer = () => {
               La première plateforme de commerce en ligne qui connecte l'offre et la demande au Cameroun.
             </p>
             <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+              <a 
+                href="https://www.facebook.com/share/1F8SLY6pfG/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer"
+              >
                 <Facebook className="h-5 w-5 text-primary" />
-              </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+              </a>
+              <a 
+                href="https://www.instagram.com/disduct?igsh=eWhhdHJyZzVkY3lk" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer"
+              >
                 <Instagram className="h-5 w-5 text-primary" />
-              </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
+              </a>
+              <a 
+                href="https://www.tiktok.com/@disduct?_t=ZM-8yaFhKnpKJM&_r=1" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer"
+              >
                 <img src="/lovable-uploads/1ec331ef-0978-439e-9fbd-dfe2b12f5570.png" alt="TikTok" className="h-5 w-5" />
-              </div>
+              </a>
             </div>
           </div>
 
