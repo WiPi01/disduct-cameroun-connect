@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Camera, MessageCircle, Package, Star, Upload, UserPlus, DollarSign, Truck } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
+import MobileNavBar from "@/components/MobileNavBar";
 
 const Vendre = () => {
   const navigate = useNavigate();
@@ -92,6 +93,7 @@ const Vendre = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <MobileNavBar title="Vendre" />
       {/* Hero Section */}
       <section className="bg-gradient-hero text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

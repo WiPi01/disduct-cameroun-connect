@@ -2,11 +2,13 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Zap, Users, MapPin, Package, Search, MessageCircle, DollarSign, TrendingUp, Eye } from "lucide-react";
+import MobileNavBar from "@/components/MobileNavBar";
 
 const Services = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      <MobileNavBar title="Services" />
       
       {/* Hero Section */}
       <section className="py-20 px-4 bg-gradient-hero text-white">

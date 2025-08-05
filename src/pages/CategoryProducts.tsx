@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Heart, Eye } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
+import MobileNavBar from "@/components/MobileNavBar";
 
 // Données temporaires des produits pour démonstration - actuellement vide
 const mockProducts = {
@@ -56,6 +57,7 @@ const CategoryProducts = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <MobileNavBar title={categoryName} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-4">
