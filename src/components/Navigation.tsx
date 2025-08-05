@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Store, ShoppingBag, User, Menu, ChevronDown, Smartphone, Shirt, Home, Wheat, Car, Briefcase } from "lucide-react";
+import { Store, ShoppingBag, User, Menu, ChevronDown, Smartphone, Shirt, Home, Wheat, Car, Briefcase, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import AuthModal from "./AuthModal";
 
 const categories = [
@@ -18,6 +19,7 @@ const categories = [
 
 const Navigation = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
@@ -44,6 +46,11 @@ const Navigation = () => {
     } else {
       setIsAuthModalOpen(true);
     }
+  };
+
+  const handleNavClick = (path: string) => {
+    navigate(path);
+    setIsMobileMenuOpen(false);
   };
   return (
     <nav className="w-full bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
@@ -118,9 +125,109 @@ const Navigation = () => {
             >
               <User className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="md:hidden">
-              <Menu className="h-4 w-4" />
-            </Button>
+            {/* Mobile Menu */}
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="md:hidden">
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80">
+                <div className="flex flex-col space-y-6 mt-8">
+                  {/* Logo */}
+                  <div className="flex items-center space-x-3 pb-4 border-b border-border">
+                    <img 
+                      src="/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png" 
+                      alt="disduct logo" 
+                      className="h-8 w-8 object-contain"
+                    />
+                    <h2 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+                      disduct
+                    </h2>
+                  </div>
+
+                  {/* Navigation Links */}
+                  <div className="flex flex-col space-y-4">
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-left"
+                      onClick={() => handleNavClick('/')}
+                    >
+                      Accueil
+                    </Button>
+                    
+                    {/* Categories in Mobile */}
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-muted-foreground px-3">Catégories</p>
+                      {categories.map((category) => (
+                        <Button
+                          key={category.slug}
+                          variant="ghost"
+                          className="justify-start text-left w-full"
+                          onClick={() => handleNavClick(`/category/${category.slug}`)}
+                        >
+                          <category.icon className="h-4 w-4 mr-2 text-primary" />
+                          {category.title}
+                        </Button>
+                      ))}
+                    </div>
+
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-left"
+                      onClick={() => handleNavClick('/vendre')}
+                    >
+                      Vendre
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-left"
+                      onClick={() => handleNavClick('/about')}
+                    >
+                      À propos
+                    </Button>
+                  </div>
+
+                  {/* Mobile Actions */}
+                  <div className="flex flex-col space-y-3 pt-4 border-t border-border">
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => {
+                        navigate('/comment-vendre');
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <Store className="h-4 w-4 mr-2" />
+                      Comment Vendre
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start"
+                      onClick={() => {
+                        navigate('/comment-acheter');
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <ShoppingBag className="h-4 w-4 mr-2" />
+                      Comment Acheter
+                    </Button>
+                    <Button 
+                      variant="default" 
+                      className="justify-start"
+                      onClick={() => {
+                        handleProfileClick();
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      {user ? 'Mon Profil' : 'Se connecter'}
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
