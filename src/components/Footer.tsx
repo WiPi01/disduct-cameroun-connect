@@ -18,7 +18,7 @@ const Footer = () => {
               disduct
             </h3>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              La première plateforme de commerce en ligne qui connecte l'offre et la demande au Cameroun.
+              La première plateforme de commerce en ligne qui connecte l'offre et la demande de produits et services au Cameroun.
             </p>
             <div className="flex space-x-4">
               <a 
