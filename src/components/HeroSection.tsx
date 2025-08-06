@@ -1,12 +1,43 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/hero-image.jpg";
 import AuthModal from "./AuthModal";
+import { useDevMode } from "@/hooks/use-dev-mode";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+  const { isDevMode } = useDevMode();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const handleSearchClick = () => {
+    if (isDevMode) {
+      // En mode dev, simuler une recherche
+      console.log("Mode dev: Simulation d'une recherche");
+      // Optionnel: rediriger vers une page de résultats
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
+  const handleBuyClick = () => {
+    if (isDevMode) {
+      console.log("Mode dev: Redirection vers page d'achat");
+      // Optionnel: rediriger vers une page de produits
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
+  const handleSellClick = () => {
+    if (isDevMode) {
+      navigate("/vendre");
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Background with subtle gradient */}
@@ -35,15 +66,15 @@ const HeroSection = () => {
                 <Input 
                   placeholder="Que recherchez-vous ?" 
                   className="pl-10 h-12 border-2 focus:border-primary"
-                  onClick={() => setIsAuthModalOpen(true)}
-                  readOnly
+                  onClick={handleSearchClick}
+                  readOnly={!isDevMode}
                 />
               </div>
               <Button 
                 variant="hero" 
                 size="lg" 
                 className="h-12 px-8"
-                onClick={() => setIsAuthModalOpen(true)}
+                onClick={handleSearchClick}
               >
                 Rechercher
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -56,7 +87,7 @@ const HeroSection = () => {
                 variant="default" 
                 size="lg" 
                 className="h-12 px-8"
-                onClick={() => setIsAuthModalOpen(true)}
+                onClick={handleBuyClick}
               >
                 Commencer à acheter
               </Button>
@@ -64,7 +95,7 @@ const HeroSection = () => {
                 variant="outline" 
                 size="lg" 
                 className="h-12 px-8"
-                onClick={() => setIsAuthModalOpen(true)}
+                onClick={handleSellClick}
               >
                 Commencer à vendre
               </Button>
