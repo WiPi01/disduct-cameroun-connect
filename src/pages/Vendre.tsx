@@ -7,11 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Camera, MessageCircle, Package, Star, Upload, UserPlus, DollarSign, Truck } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
 import MobileNavBar from "@/components/MobileNavBar";
-import { useDevMode } from "@/hooks/use-dev-mode";
 
 const Vendre = () => {
   const navigate = useNavigate();
-  const { isDevMode } = useDevMode();
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -35,23 +33,16 @@ const Vendre = () => {
   }, []);
 
   const handleCommencerVendre = () => {
-    if (user || isDevMode) {
+    if (user) {
       // TODO: Rediriger vers la page de création d'annonce (à créer)
       console.log("Redirection vers la page de création d'annonce");
-      if (isDevMode) {
-        console.log("Mode dev: Simulation de création d'annonce");
-      }
     } else {
       setIsAuthModalOpen(true);
     }
   };
 
   const handleCreerCompteVendeur = () => {
-    if (isDevMode) {
-      console.log("Mode dev: Simulation de création de compte vendeur");
-    } else {
-      setIsAuthModalOpen(true);
-    }
+    setIsAuthModalOpen(true);
   };
 
   const handleEnSavoirPlus = () => {

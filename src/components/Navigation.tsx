@@ -70,9 +70,9 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-normal" onClick={() => navigate('/')}>
+            <a href="/" className="text-foreground hover:text-primary transition-colors">
               Accueil
-            </Button>
+            </a>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-normal">
@@ -93,12 +93,12 @@ const Navigation = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-normal" onClick={() => navigate('/vendre')}>
+            <a href="/vendre" className="text-foreground hover:text-primary transition-colors">
               Vendre
-            </Button>
-            <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-normal" onClick={() => navigate('/about')}>
+            </a>
+            <a href="/about" className="text-foreground hover:text-primary transition-colors">
               À propos
-            </Button>
+            </a>
           </div>
 
           {/* Right Side Actions */}
