@@ -6,6 +6,7 @@ import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useDevMode } from "@/hooks/use-dev-mode";
 import AuthModal from "./AuthModal";
 
 const categories = [
@@ -23,6 +24,7 @@ const Navigation = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
+  const isDevMode = useDevMode();
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -41,7 +43,7 @@ const Navigation = () => {
   }, []);
 
   const handleProfileClick = () => {
-    if (user) {
+    if (user || isDevMode) {
       navigate('/profile');
     } else {
       setIsAuthModalOpen(true);
