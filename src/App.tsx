@@ -25,8 +25,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <DevModeToggle />
       <BrowserRouter>
+        <DevModeToggle />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/vendre" element={<Vendre />} />
