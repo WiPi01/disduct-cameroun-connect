@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Camera, MessageCircle, Package, Star, Upload, UserPlus, DollarSign, Truck } from "lucide-react";
-import { useDevMode } from "@/hooks/use-dev-mode";
 import AuthModal from "@/components/AuthModal";
 import MobileNavBar from "@/components/MobileNavBar";
 
@@ -14,7 +13,6 @@ const Vendre = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const isDevMode = useDevMode();
 
   useEffect(() => {
     // Set up auth state listener
@@ -35,11 +33,9 @@ const Vendre = () => {
   }, []);
 
   const handleCommencerVendre = () => {
-    if (user || isDevMode) {
+    if (user) {
       // TODO: Rediriger vers la page de création d'annonce (à créer)
-      console.log("Mode développement: Redirection vers la page de création d'annonce");
-      // Pour le moment, on affiche juste un message en dev mode
-      alert("Mode dev activé ! Ici sera implementée la page de création d'annonce.");
+      console.log("Redirection vers la page de création d'annonce");
     } else {
       setIsAuthModalOpen(true);
     }
