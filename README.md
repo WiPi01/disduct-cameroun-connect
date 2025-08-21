@@ -35,7 +35,7 @@
 
 1.  **Clone the repository:**
     ```sh
-    git clone https://github.com/NkwaTambe/disduct-cameroun-connect.git
+    git clone git@github.com:WiPi01/disduct-cameroun-connect.git
     ```
 2.  **Navigate to the project directory:**
     ```sh
@@ -59,7 +59,7 @@
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to open an issue or submit a pull request. For more details, please see the `IMPROVEMENTS.md` file in the `docs` folder.
+Contributions are welcome! Please feel free to open an issue or submit a pull request. For more details, please see the `improvements.md` file in the `docs` folder.
 
 ## 📝 License
 
