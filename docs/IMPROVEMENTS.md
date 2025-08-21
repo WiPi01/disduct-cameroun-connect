@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a web application that functions as an online marketplace, likely based in Cameroon, under the name "disduct-cameroun-connect". The application enables users to buy and sell products across various categories.
+This project is a web application that functions as an online marketplace . The application enables users to buy and sell products across various categories.
 
 ### Key Features:
 
