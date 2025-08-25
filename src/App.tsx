@@ -16,6 +16,10 @@ import SignalerProbleme from "./pages/SignalerProbleme";
 import FAQ from "./pages/FAQ";
 import CategoryProducts from "./pages/CategoryProducts";
 import NotFound from "./pages/NotFound";
+import CreateProduct from "./pages/CreateProduct";
+import SearchResults from "./pages/SearchResults";
+import ProductDetail from "./pages/ProductDetail";
+import PublicProfile from "./pages/PublicProfile";
 
 const queryClient = new QueryClient();
 
@@ -33,11 +37,15 @@ const App = () => (
           <Route path="/comment-vendre" element={<CommentVendre />} />
           <Route path="/comment-acheter" element={<CommentAcheter />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<PublicProfile />} />
           <Route path="/conditions-utilisation" element={<ConditionsUtilisation />} />
           <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="/signaler-probleme" element={<SignalerProbleme />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/category/:category" element={<CategoryProducts />} />
+          <Route path="/create-product" element={<CreateProduct />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
