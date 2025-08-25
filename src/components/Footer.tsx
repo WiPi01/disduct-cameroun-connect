@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
 import AuthModal from "./AuthModal";
+import TikTokIcon from "./ui/tiktok-icon";
 
 const Footer = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -43,7 +44,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer"
               >
-                <img src="/lovable-uploads/1ec331ef-0978-439e-9fbd-dfe2b12f5570.png" alt="TikTok" className="h-5 w-5" />
+                <TikTokIcon className="h-5 w-5 text-primary" />
               </a>
             </div>
           </div>

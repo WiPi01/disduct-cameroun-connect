@@ -14,13 +14,8 @@ const HeroSection = () => {
   const isDevMode = useDevMode();
 
   const handleSearch = () => {
-    if (isDevMode) {
-      // En mode dev, permettre la recherche directement
-      console.log("Recherche en mode dev:", searchQuery);
-      // Ici vous pouvez ajouter la logique de recherche
-      navigate('/category/electronique'); // Exemple de navigation
-    } else {
-      setIsAuthModalOpen(true);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -70,8 +65,6 @@ const HeroSection = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                  readOnly={!isDevMode}
-                  onClick={() => !isDevMode && setIsAuthModalOpen(true)}
                 />
               </div>
               <Button 

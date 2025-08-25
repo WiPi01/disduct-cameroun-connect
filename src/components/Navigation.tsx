@@ -1,13 +1,17 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Store, ShoppingBag, User, Menu, ChevronDown, Smartphone, Shirt, Home, Wheat, Car, Briefcase, X } from "lucide-react";
+import { Store, ShoppingBag, Menu, ChevronDown, Smartphone, Shirt, Home, Wheat, Car, Briefcase, LogOut, User as UserIcon, LifeBuoy, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useDevMode } from "@/hooks/use-dev-mode";
 import AuthModal from "./AuthModal";
+import { Database } from "@/integrations/supabase/types";
+import logo from "@/assets/logo.png";
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 const categories = [
   { icon: Smartphone, title: "Électronique", slug: "electronique" },
@@ -20,48 +24,97 @@ const categories = [
 
 const Navigation = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authView, setAuthView] = useState<'login' | 'signup'>('login');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const navigate = useNavigate();
-  const isDevMode = useDevMode();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+    const fetchUserAndProfile = async (sessionUser: SupabaseUser | null) => {
+      setUser(sessionUser);
+      if (sessionUser) {
+        const { data } = await supabase.from('profiles').select('*').eq('id', sessionUser.id).single();
+        setProfile(data);
+      } else {
+        setProfile(null);
       }
-    );
+    };
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+      fetchUserAndProfile(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      fetchUserAndProfile(session?.user ?? null);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleProfileClick = () => {
-    if (user || isDevMode) {
-      navigate('/profile');
-    } else {
-      setIsAuthModalOpen(true);
-    }
+  const openAuthModal = (view: 'login' | 'signup') => {
+    setAuthView(view);
+    setIsAuthModalOpen(true);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
   };
 
   const handleNavClick = (path: string) => {
     navigate(path);
     setIsMobileMenuOpen(false);
   };
+
+  const UserActions = () => {
+    if (user) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary" className="rounded-full">
+              {profile?.full_name || 'Mon Compte'}
+              <ChevronDown className="h-4 w-4 ml-2" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem onClick={() => navigate('/profile')} className="cursor-pointer">
+              <UserIcon className="mr-2 h-4 w-4" />
+              <span>Mon Profil</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate('/profile?tab=settings')} className="cursor-pointer">
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Paramètres</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate('/faq')} className="cursor-pointer">
+              <LifeBuoy className="mr-2 h-4 w-4" />
+              <span>Support</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-500 focus:text-red-500">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Déconnexion</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+    return (
+      <div className="hidden md:flex items-center space-x-2">
+        <Button variant="ghost" onClick={() => openAuthModal('login')}>Se connecter</Button>
+        <Button onClick={() => openAuthModal('signup')}>S'inscrire</Button>
+      </div>
+    );
+  };
+
   return (
     <nav className="w-full bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
             <img 
-              src="/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png" 
+              src={logo} 
               alt="disduct logo" 
               className="h-12 w-12 object-contain"
             />
@@ -71,13 +124,13 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-foreground hover:text-primary transition-colors">
+          <div className="hidden md:flex items-center space-x-6">
+            <a href="/" className="text-foreground hover:text-primary transition-colors font-medium">
               Accueil
             </a>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-normal">
+                <Button variant="ghost" className="text-foreground hover:text-primary transition-colors p-0 h-auto font-medium">
                   Catégories
                   <ChevronDown className="h-4 w-4 ml-1" />
                 </Button>
@@ -95,137 +148,52 @@ const Navigation = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <a href="/vendre" className="text-foreground hover:text-primary transition-colors">
+            <a href="/vendre" className="text-foreground hover:text-primary transition-colors font-medium">
               Vendre
-            </a>
-            <a href="/about" className="text-foreground hover:text-primary transition-colors">
-              À propos
             </a>
           </div>
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="hidden sm:flex"
-              onClick={() => navigate('/comment-vendre')}
-            >
-              <Store className="h-4 w-4" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => navigate('/comment-acheter')}
-            >
-              <ShoppingBag className="h-4 w-4" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={handleProfileClick}
-            >
-              <User className="h-4 w-4" />
-            </Button>
+            <UserActions />
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="md:hidden">
-                  <Menu className="h-4 w-4" />
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80">
-                <div className="flex flex-col space-y-6 mt-8">
+              <SheetContent side="right" className="w-full max-w-xs p-6">
+                <div className="flex flex-col h-full">
                   {/* Logo */}
                   <div className="flex items-center space-x-3 pb-4 border-b border-border">
-                    <img 
-                      src="/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png" 
-                      alt="disduct logo" 
-                      className="h-8 w-8 object-contain"
-                    />
-                    <h2 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                      disduct
-                    </h2>
+                    <img src={logo} alt="disduct logo" className="h-8 w-8 object-contain"/>
+                    <h2 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">disduct</h2>
                   </div>
 
                   {/* Navigation Links */}
-                  <div className="flex flex-col space-y-4">
-                    <Button 
-                      variant="ghost" 
-                      className="justify-start text-left"
-                      onClick={() => handleNavClick('/')}
-                    >
-                      Accueil
-                    </Button>
-                    
-                    {/* Categories in Mobile */}
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-muted-foreground px-3">Catégories</p>
-                      {categories.map((category) => (
-                        <Button
-                          key={category.slug}
-                          variant="ghost"
-                          className="justify-start text-left w-full"
-                          onClick={() => handleNavClick(`/category/${category.slug}`)}
-                        >
-                          <category.icon className="h-4 w-4 mr-2 text-primary" />
-                          {category.title}
-                        </Button>
-                      ))}
-                    </div>
-
-                    <Button 
-                      variant="ghost" 
-                      className="justify-start text-left"
-                      onClick={() => handleNavClick('/vendre')}
-                    >
-                      Vendre
-                    </Button>
-                    
-                    <Button 
-                      variant="ghost" 
-                      className="justify-start text-left"
-                      onClick={() => handleNavClick('/about')}
-                    >
-                      À propos
-                    </Button>
+                  <div className="flex flex-col space-y-2 mt-6 flex-grow">
+                    <Button variant="ghost" className="justify-start text-lg" onClick={() => handleNavClick('/')}>Accueil</Button>
+                    <p className="text-sm font-medium text-muted-foreground px-3 pt-4">Catégories</p>
+                    {categories.map((category) => (
+                      <Button key={category.slug} variant="ghost" className="justify-start" onClick={() => handleNavClick(`/category/${category.slug}`)}>
+                        <category.icon className="h-4 w-4 mr-2 text-primary" />
+                        {category.title}
+                      </Button>
+                    ))}
+                    <Button variant="ghost" className="justify-start text-lg pt-4" onClick={() => handleNavClick('/vendre')}>Vendre</Button>
                   </div>
 
                   {/* Mobile Actions */}
-                  <div className="flex flex-col space-y-3 pt-4 border-t border-border">
-                    <Button 
-                      variant="outline" 
-                      className="justify-start"
-                      onClick={() => {
-                        navigate('/comment-vendre');
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      <Store className="h-4 w-4 mr-2" />
-                      Comment Vendre
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="justify-start"
-                      onClick={() => {
-                        navigate('/comment-acheter');
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      <ShoppingBag className="h-4 w-4 mr-2" />
-                      Comment Acheter
-                    </Button>
-                    <Button 
-                      variant="default" 
-                      className="justify-start"
-                      onClick={() => {
-                        handleProfileClick();
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      <User className="h-4 w-4 mr-2" />
-                      {user ? 'Mon Profil' : 'Se connecter'}
-                    </Button>
+                  <div className="flex flex-col space-y-3 pt-6 border-t border-border">
+                    {user ? (
+                      <Button variant="secondary" onClick={() => handleNavClick('/profile')}>Mon Profil</Button>
+                    ) : (
+                      <div className="space-y-3">
+                        <Button className="w-full" onClick={() => { openAuthModal('signup'); setIsMobileMenuOpen(false); }}>S'inscrire</Button>
+                        <Button variant="outline" className="w-full" onClick={() => { openAuthModal('login'); setIsMobileMenuOpen(false); }}>Se connecter</Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </SheetContent>
@@ -233,7 +201,7 @@ const Navigation = () => {
           </div>
         </div>
       </div>
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} initialView={authView} />
     </nav>
   );
 };
