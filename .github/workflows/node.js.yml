@@ -1,0 +1,91 @@
+# This workflow performs a clean installation of dependencies, caches them,
+# runs linting, type checking, builds the project, and executes tests
+# across multiple supported Node.js versions.
+#
+# Designed for a modern TypeScript + React + Vite application.
+# Optimized for performance and reliability.
+#
+# See:
+# - https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# - https://nodejs.org/en/about/releases (LTS recommendations)
+
+name: Node.js CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # Job 1: Lint, format, and type check (runs once)
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (v20 - Active LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check Prettier formatting
+        run: npm run prettier:check
+
+      - name: Run TypeScript type check
+        run: tsc --noEmit
+
+  # Job 2: Build and test across multiple Node.js versions
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+      fail-fast: false # Continue testing other versions even if one fails
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project (Vite)
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+    # Optional: Set environment variables if needed
+    # env:
+    #   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+    #   SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    #   NODE_ENV: test
+
+  # Optional: Deploy preview on PR (example for Vercel/Netlify)
+  # deploy-preview:
+  #   if: github.event_name == 'pull_request'
+  #   needs: [lint, test]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: echo "Deploy preview to Vercel/Netlify"
+
+# Show summary in GitHub Checks
+permissions:
+  contents: read

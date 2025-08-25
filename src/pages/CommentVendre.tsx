@@ -1,6 +1,18 @@
-
-import { Package, Camera, MessageCircle, DollarSign, TrendingUp, Shield } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Package,
+  Camera,
+  MessageCircle,
+  DollarSign,
+  TrendingUp,
+  Shield,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import MobileNavBar from "@/components/MobileNavBar";
 
 const CommentVendre = () => {
@@ -8,23 +20,26 @@ const CommentVendre = () => {
     {
       icon: Package,
       title: "Créez votre annonce",
-      description: "Décrivez votre produit avec des détails précis et attractifs"
+      description:
+        "Décrivez votre produit avec des détails précis et attractifs",
     },
     {
       icon: Camera,
       title: "Ajoutez des photos",
-      description: "Téléchargez des images de qualité pour attirer les acheteurs"
+      description:
+        "Téléchargez des images de qualité pour attirer les acheteurs",
     },
     {
       icon: DollarSign,
       title: "Fixez votre prix",
-      description: "Définissez un prix compétitif basé sur le marché"
+      description: "Définissez un prix compétitif basé sur le marché",
     },
     {
       icon: TrendingUp,
       title: "Publiez et vendez",
-      description: "Votre annonce est en ligne et visible par tous les acheteurs"
-    }
+      description:
+        "Votre annonce est en ligne et visible par tous les acheteurs",
+    },
   ];
 
   return (
@@ -34,10 +49,14 @@ const CommentVendre = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            Comment vendre sur <span className="bg-gradient-hero bg-clip-text text-transparent">disduct</span>
+            Comment vendre sur{" "}
+            <span className="bg-gradient-hero bg-clip-text text-transparent">
+              disduct
+            </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Découvrez comment vendre facilement vos produits sur notre plateforme et toucher des milliers d'acheteurs potentiels.
+            Découvrez comment vendre facilement vos produits sur notre
+            plateforme et toucher des milliers d'acheteurs potentiels.
           </p>
         </div>
 
@@ -52,7 +71,9 @@ const CommentVendre = () => {
                 <CardTitle className="text-xl">{step.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base">{step.description}</CardDescription>
+                <CardDescription className="text-base">
+                  {step.description}
+                </CardDescription>
               </CardContent>
             </Card>
           ))}
@@ -68,7 +89,8 @@ const CommentVendre = () => {
               <Camera className="h-8 w-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Photos de qualité</h3>
               <p className="text-muted-foreground text-sm">
-                Utilisez un bon éclairage et montrez votre produit sous tous les angles
+                Utilisez un bon éclairage et montrez votre produit sous tous les
+                angles
               </p>
             </div>
             <div className="text-center">
@@ -82,7 +104,8 @@ const CommentVendre = () => {
               <Shield className="h-8 w-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Soyez honnête</h3>
               <p className="text-muted-foreground text-sm">
-                Décrivez fidèlement l'état de vos produits pour éviter les déceptions
+                Décrivez fidèlement l'état de vos produits pour éviter les
+                déceptions
               </p>
             </div>
           </div>
