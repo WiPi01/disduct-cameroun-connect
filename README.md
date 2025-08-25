@@ -4,32 +4,32 @@
 
 ## ✨ Features
 
-*   **User Authentication:** Secure user registration and login.
-*   **Product Management:** Sellers can create, update, and manage their product listings.
-*   **Categorized Browsing:** Users can easily browse and search for products by category.
-*   **User Profiles:** Comprehensive user profiles displaying listings, reviews, and other relevant information.
-*   **Mobile-First Design:** A responsive and intuitive interface that works great on all devices.
+- **User Authentication:** Secure user registration and login.
+- **Product Management:** Sellers can create, update, and manage their product listings.
+- **Categorized Browsing:** Users can easily browse and search for products by category.
+- **User Profiles:** Comprehensive user profiles displaying listings, reviews, and other relevant information.
+- **Mobile-First Design:** A responsive and intuitive interface that works great on all devices.
 
 ## 🚀 Tech Stack
 
-*   **Frontend:**
-    *   **Framework:** React (with Vite).
-    *   **Language:** TypeScript.
-    *   **UI:** shadcn-ui, Radix UI, and Tailwind CSS.
-    *   **Routing:** React Router.
-    *   **State Management:** React Query.
-*   **Backend (BaaS):**
-    *   **Provider:** Supabase.
-    *   **Database:** PostgreSQL.
-    *   **Authentication:** Supabase Auth.
-    *   **Storage:** Supabase Storage.
+- **Frontend:**
+  - **Framework:** React (with Vite).
+  - **Language:** TypeScript.
+  - **UI:** shadcn-ui, Radix UI, and Tailwind CSS.
+  - **Routing:** React Router.
+  - **State Management:** React Query.
+- **Backend (BaaS):**
+  - **Provider:** Supabase.
+  - **Database:** PostgreSQL.
+  - **Authentication:** Supabase Auth.
+  - **Storage:** Supabase Storage.
 
 ## 📦 Getting Started
 
 ### Prerequisites
 
-*   Node.js and npm.
-*   A Supabase account and project.
+- Node.js and npm.
+- A Supabase account and project.
 
 ### Installation
 
@@ -46,12 +46,12 @@
     npm install
     ```
 4.  **Configure environment variables:**
-    *   Create a `.env` file in the root of the project.
-    *   Add your Supabase project URL and anon key:
-        ```
-        VITE_SUPABASE_URL=your-supabase-url
-        VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-        ```
+    - Create a `.env` file in the root of the project.
+    - Add your Supabase project URL and anon key:
+      ```
+      VITE_SUPABASE_URL=your-supabase-url
+      VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+      ```
 5.  **Start the development server:**
     ```sh
     npm run dev
