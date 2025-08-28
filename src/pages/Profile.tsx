@@ -1,25 +1,12 @@
 import { useState, useEffect } from "react";
-import { User, Session } from "@supabase/supabase-js";
+import { User, Session } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Heart,
-  ShoppingBag,
-  Store,
-  Star,
-  Settings,
-  LogOut,
-} from "lucide-react";
+import { Heart, ShoppingBag, Store, Star, Settings, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,12 +17,12 @@ const Profile = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
+    );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -58,16 +45,17 @@ const Profile = () => {
         title: "Déconnexion réussie",
         description: "Vous avez été déconnecté avec succès",
       });
-      navigate("/");
+      navigate('/');
     }
   };
 
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">      
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-foreground">Mon Profil</h1>
-          <Button
+          <Button 
             onClick={handleSignOut}
             variant="outline"
             className="flex items-center gap-2"
@@ -100,7 +88,7 @@ const Profile = () => {
                   </p>
                 </CardContent>
               </Card>
-
+              
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Ventes</CardTitle>
@@ -113,7 +101,7 @@ const Profile = () => {
                   </p>
                 </CardContent>
               </Card>
-
+              
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Achats</CardTitle>
@@ -134,7 +122,9 @@ const Profile = () => {
                   <Star className="h-5 w-5" />
                   Avis et Évaluations
                 </CardTitle>
-                <CardDescription>Vos avis reçus et donnés</CardDescription>
+                <CardDescription>
+                  Vos avis reçus et donnés
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-center py-8 text-muted-foreground">
@@ -214,27 +204,27 @@ const Profile = () => {
                     <Input id="lastName" placeholder="Votre nom" />
                   </div>
                 </div>
-
+                
                 <div className="space-y-2">
                   <Label htmlFor="email">Adresse e-mail</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={user?.email || ""}
-                    disabled
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    value={user?.email || ''} 
+                    disabled 
                   />
                 </div>
-
+                
                 <div className="space-y-2">
                   <Label htmlFor="phone">Numéro de téléphone</Label>
                   <Input id="phone" placeholder="**** ** ** **" />
                 </div>
-
+                
                 <div className="space-y-2">
                   <Label htmlFor="address">Adresse</Label>
                   <Input id="address" placeholder="Votre adresse complète" />
                 </div>
-
+                
                 <Button>Sauvegarder les modifications</Button>
               </CardContent>
             </Card>

@@ -11,13 +11,13 @@ import MobileNavBar from "@/components/MobileNavBar";
 
 // Données temporaires des produits pour démonstration - actuellement vide
 const mockProducts = {
-  electronique: [],
-  mode: [],
-  maison: [],
-  automobile: [],
-  immobilier: [],
-  agriculture: [],
-  services: [],
+  "electronique": [],
+  "mode": [],
+  "maison": [],
+  "automobile": [],
+  "immobilier": [],
+  "agriculture": [],
+  "services": []
 };
 
 const CategoryProducts = () => {
@@ -26,11 +26,11 @@ const CategoryProducts = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -44,20 +44,16 @@ const CategoryProducts = () => {
     console.log("Contacter le vendeur");
   };
 
-  const products = category
-    ? mockProducts[category as keyof typeof mockProducts] || []
-    : [];
+  const products = category ? mockProducts[category as keyof typeof mockProducts] || [] : [];
   const categoryNames = {
-    electronique: "Électronique",
-    mode: "Mode & Beauté",
-    maison: "Maison & Jardin",
-    automobile: "Automobile",
-    immobilier: "Immobilier",
+    "electronique": "Électronique",
+    "mode": "Mode & Beauté",
+    "maison": "Maison & Jardin",
+    "automobile": "Automobile",
+    "immobilier": "Immobilier"
   };
 
-  const categoryName = category
-    ? categoryNames[category as keyof typeof categoryNames]
-    : "Catégorie";
+  const categoryName = category ? categoryNames[category as keyof typeof categoryNames] : "Catégorie";
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,8 +64,7 @@ const CategoryProducts = () => {
             {categoryName}
           </h1>
           <p className="text-muted-foreground">
-            {products.length} produit{products.length !== 1 ? "s" : ""} trouvé
-            {products.length !== 1 ? "s" : ""}
+            {products.length} produit{products.length !== 1 ? 's' : ''} trouvé{products.length !== 1 ? 's' : ''}
           </p>
         </div>
 
@@ -82,14 +77,11 @@ const CategoryProducts = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
-              <Card
-                key={product.id}
-                className="group hover:shadow-lg transition-all duration-300 border-border/50"
-              >
+              <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 border-border/50">
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden rounded-t-lg">
-                    <img
-                      src={product.image}
+                    <img 
+                      src={product.image} 
                       alt={product.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -109,30 +101,30 @@ const CategoryProducts = () => {
                       </Badge>
                     </div>
                   </div>
-
+                  
                   <div className="p-4">
                     <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
                       {product.title}
                     </h3>
-
+                    
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-xl font-bold text-primary">
                         {parseInt(product.price).toLocaleString()} FCFA
                       </span>
                     </div>
-
+                    
                     <div className="flex items-center text-muted-foreground mb-3">
                       <MapPin className="h-4 w-4 mr-1" />
                       <span className="text-sm">{product.location}</span>
                     </div>
-
+                    
                     <div className="mb-4">
                       <p className="text-sm text-muted-foreground">
                         Vendeur: {product.seller}
                       </p>
                     </div>
-
-                    <Button
+                    
+                    <Button 
                       onClick={handleContactSeller}
                       className="w-full"
                       variant="default"
@@ -147,9 +139,9 @@ const CategoryProducts = () => {
         )}
       </div>
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
       />
     </div>
   );

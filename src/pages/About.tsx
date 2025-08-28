@@ -17,10 +17,10 @@ const About = () => {
               The best products at discount prices
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <img
+              <img 
                 src="/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png"
                 alt="Disduct - The Best Products at discount prices"
                 className="rounded-2xl shadow-elegant w-full"
@@ -31,19 +31,17 @@ const About = () => {
                 La meilleure plateforme e-commerce du Cameroun
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Disduct révolutionne le commerce en ligne au Cameroun en offrant
-                une plateforme innovante où acheter et vendre des articles de
-                qualité à prix réduits. Notre mission est de démocratiser
-                l'accès aux meilleurs produits pour tous les Camerounais.
+                Disduct révolutionne le commerce en ligne au Cameroun en offrant une plateforme 
+                innovante où acheter et vendre des articles de qualité à prix réduits. Notre mission 
+                est de démocratiser l'accès aux meilleurs produits pour tous les Camerounais.
               </p>
               <div className="bg-orange-500/10 p-6 rounded-xl border border-orange-500/20">
                 <h3 className="font-semibold text-lg mb-2 text-orange-600">
                   Soutenu par Aboveandco
                 </h3>
                 <p className="text-muted-foreground">
-                  Disduct est fièrement soutenu par le groupe français
-                  Aboveandco, garantissant innovation, sécurité et excellence
-                  dans nos services.
+                  Disduct est fièrement soutenu par le groupe français Aboveandco, 
+                  garantissant innovation, sécurité et excellence dans nos services.
                 </p>
               </div>
               <div className="bg-primary/10 p-6 rounded-xl border border-primary/20">
@@ -51,9 +49,8 @@ const About = () => {
                   Lancement Septembre 2025
                 </h3>
                 <p className="text-muted-foreground">
-                  Nous arrivons au Cameroun en septembre 2025 avec une
-                  plateforme adaptée aux besoins locaux et aux standards
-                  internationaux.
+                  Nous arrivons au Cameroun en septembre 2025 avec une plateforme 
+                  adaptée aux besoins locaux et aux standards internationaux.
                 </p>
               </div>
             </div>
@@ -69,74 +66,58 @@ const About = () => {
               Notre Équipe
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Une équipe dynamique, jeune, passionnée et multiculturelle qui
-              travaille sans relâche pour révolutionner l'e-commerce au Cameroun
+              Une équipe dynamique, jeune, passionnée et multiculturelle qui travaille 
+              sans relâche pour révolutionner l'e-commerce au Cameroun
             </p>
           </div>
-
+          
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="grid grid-cols-2 gap-6">
                 <Card className="p-6 text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-primary mb-2">
-                      100%
-                    </div>
+                    <div className="text-3xl font-bold text-primary mb-2">100%</div>
                     <div className="text-sm text-muted-foreground">Passion</div>
                   </CardContent>
                 </Card>
                 <Card className="p-6 text-center bg-gradient-to-br from-orange-500/10 to-orange-500/5 border-orange-500/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-orange-600 mb-2">
-                      24
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Âge moyen
-                    </div>
+                    <div className="text-3xl font-bold text-orange-600 mb-2">24</div>
+                    <div className="text-sm text-muted-foreground">Âge moyen</div>
                   </CardContent>
                 </Card>
                 <Card className="p-6 text-center bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-secondary-foreground mb-2">
-                      5+
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Nationalités
-                    </div>
+                    <div className="text-3xl font-bold text-secondary-foreground mb-2">5+</div>
+                    <div className="text-sm text-muted-foreground">Nationalités</div>
                   </CardContent>
                 </Card>
                 <Card className="p-6 text-center bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
                   <CardContent className="pt-0">
-                    <div className="text-3xl font-bold text-primary mb-2">
-                      24/7
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Engagement
-                    </div>
+                    <div className="text-3xl font-bold text-primary mb-2">24/7</div>
+                    <div className="text-sm text-muted-foreground">Engagement</div>
                   </CardContent>
                 </Card>
               </div>
-
+              
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold text-foreground">
                   Diversité et Innovation
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Notre équipe multiculturelle apporte une richesse de
-                  perspectives uniques, alimentant notre innovation constante.
-                  Chaque membre contribue avec sa passion et son expertise pour
-                  créer une expérience utilisateur exceptionnelle.
+                  Notre équipe multiculturelle apporte une richesse de perspectives uniques, 
+                  alimentant notre innovation constante. Chaque membre contribue avec sa 
+                  passion et son expertise pour créer une expérience utilisateur exceptionnelle.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Cette diversité nous permet de mieux comprendre et servir nos
-                  utilisateurs camerounais tout en maintenant les standards
-                  internationaux d'excellence.
+                  Cette diversité nous permet de mieux comprendre et servir nos utilisateurs 
+                  camerounais tout en maintenant les standards internationaux d'excellence.
                 </p>
               </div>
             </div>
-
+            
             <div>
-              <img
+              <img 
                 src="/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png"
                 alt="La Team Disduct"
                 className="rounded-2xl shadow-elegant w-full"
@@ -153,24 +134,21 @@ const About = () => {
             Rejoignez l'aventure Disduct
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Soyez parmi les premiers à découvrir la révolution du e-commerce au
-            Cameroun. Inscrivez-vous à notre newsletter.
+            Soyez parmi les premiers à découvrir la révolution du e-commerce 
+            au Cameroun. Inscrivez-vous à notre newsletter.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg px-8">
               Insights disduct
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-8"
-              asChild
-            >
+            <Button size="lg" variant="outline" className="text-lg px-8" asChild>
               <a href="/services">Découvrir nos services</a>
             </Button>
           </div>
         </div>
       </section>
+
+      
     </div>
   );
 };

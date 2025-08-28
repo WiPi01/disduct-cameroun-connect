@@ -8,10 +8,10 @@ interface MobileNavBarProps {
   showHomeButton?: boolean;
 }
 
-const MobileNavBar = ({
-  title,
-  showBackButton = true,
-  showHomeButton = true,
+const MobileNavBar = ({ 
+  title, 
+  showBackButton = true, 
+  showHomeButton = true 
 }: MobileNavBarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,16 +20,16 @@ const MobileNavBar = ({
     if (window.history.length > 1) {
       navigate(-1);
     } else {
-      navigate("/");
+      navigate('/');
     }
   };
 
   const handleHome = () => {
-    navigate("/");
+    navigate('/');
   };
 
   // Ne pas afficher sur la page d'accueil
-  if (location.pathname === "/") return null;
+  if (location.pathname === '/') return null;
 
   return (
     <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border md:hidden">
@@ -56,11 +56,13 @@ const MobileNavBar = ({
             </Button>
           )}
         </div>
+        
         {title && (
           <h1 className="text-lg font-semibold text-foreground truncate flex-1 text-center">
             {title}
           </h1>
         )}
+        
         <div className="w-[76px]" /> {/* Spacer pour centrer le titre */}
       </div>
     </div>

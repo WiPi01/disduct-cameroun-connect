@@ -33,14 +33,8 @@ const App = () => (
           <Route path="/comment-vendre" element={<CommentVendre />} />
           <Route path="/comment-acheter" element={<CommentAcheter />} />
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/conditions-utilisation"
-            element={<ConditionsUtilisation />}
-          />
-          <Route
-            path="/politique-confidentialite"
-            element={<PolitiqueConfidentialite />}
-          />
+          <Route path="/conditions-utilisation" element={<ConditionsUtilisation />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="/signaler-probleme" element={<SignalerProbleme />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/category/:category" element={<CategoryProducts />} />

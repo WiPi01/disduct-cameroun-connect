@@ -1,18 +1,6 @@
-import {
-  Search,
-  Eye,
-  MessageCircle,
-  CreditCard,
-  Shield,
-  Star,
-} from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
+import { Search, Eye, MessageCircle, CreditCard, Shield, Star } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import MobileNavBar from "@/components/MobileNavBar";
 
 const CommentAcheter = () => {
@@ -20,24 +8,23 @@ const CommentAcheter = () => {
     {
       icon: Search,
       title: "Recherchez",
-      description:
-        "Utilisez notre moteur de recherche pour trouver le produit idéal",
+      description: "Utilisez notre moteur de recherche pour trouver le produit idéal"
     },
     {
       icon: Eye,
       title: "Consultez",
-      description: "Examinez les détails, photos et avis des autres acheteurs",
+      description: "Examinez les détails, photos et avis des autres acheteurs"
     },
     {
       icon: MessageCircle,
       title: "Contactez",
-      description: "Posez vos questions au vendeur avant d'acheter",
+      description: "Posez vos questions au vendeur avant d'acheter"
     },
     {
       icon: CreditCard,
       title: "Achetez",
-      description: "Finalisez votre achat en toute sécurité",
-    },
+      description: "Finalisez votre achat en toute sécurité"
+    }
   ];
 
   return (
@@ -47,14 +34,10 @@ const CommentAcheter = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            Comment acheter sur{" "}
-            <span className="bg-gradient-hero bg-clip-text text-transparent">
-              disduct
-            </span>
+            Comment acheter sur <span className="bg-gradient-hero bg-clip-text text-transparent">disduct</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Découvrez comment acheter en toute sécurité sur notre plateforme et
-            trouver les meilleurs produits au Cameroun.
+            Découvrez comment acheter en toute sécurité sur notre plateforme et trouver les meilleurs produits au Cameroun.
           </p>
         </div>
 
@@ -69,9 +52,7 @@ const CommentAcheter = () => {
                 <CardTitle className="text-xl">{step.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base">
-                  {step.description}
-                </CardDescription>
+                <CardDescription className="text-base">{step.description}</CardDescription>
               </CardContent>
             </Card>
           ))}

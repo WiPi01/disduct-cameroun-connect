@@ -5,46 +5,38 @@ const features = [
   {
     icon: Shield,
     title: "Transactions sécurisées",
-    description:
-      "Vos achats et ventes sont protégés par notre système de paiement sécurisé",
+    description: "Vos achats et ventes sont protégés par notre système de paiement sécurisé"
   },
   {
     icon: Zap,
     title: "Livraison rapide",
-    description:
-      "Recevez vos commandes rapidement partout au Cameroun grâce à notre réseau de partenaires",
+    description: "Recevez vos commandes rapidement partout au Cameroun grâce à notre réseau de partenaires"
   },
   {
     icon: Users,
     title: "Communauté locale",
-    description:
-      "Connectez-vous directement avec les vendeurs et acheteurs de votre région",
+    description: "Connectez-vous directement avec les vendeurs et acheteurs de votre région"
   },
   {
     icon: MapPin,
     title: "Couverture nationale",
-    description:
-      "Présent dans toutes les régions du Cameroun pour vous servir au mieux",
-  },
+    description: "Présent dans toutes les régions du Cameroun pour vous servir au mieux"
+  }
 ];
 
 const FeaturesSection = () => {
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Pourquoi choisir
-            <span className="bg-gradient-hero bg-clip-text text-transparent">
-              {" "}
-              disduct
-            </span>{" "}
-            ?
+            <span className="bg-gradient-hero bg-clip-text text-transparent"> disduct</span> ?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une plateforme pensée pour les Camerounais, par une team
-            multiculturelle
+            Une plateforme pensée pour les Camerounais, par une team multiculturelle
           </p>
         </div>
 
@@ -94,6 +86,7 @@ const FeaturesSection = () => {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
