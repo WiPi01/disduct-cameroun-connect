@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import AuthModal from "./AuthModal";
 
@@ -152,6 +152,10 @@ const Footer = () => {
                 <span className="text-muted-foreground">
                   contact@disduct.com
                 </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <MessageCircle className="h-5 w-5 text-green-500" />
+                <span className="text-muted-foreground">+237 675777712</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-primary" />
