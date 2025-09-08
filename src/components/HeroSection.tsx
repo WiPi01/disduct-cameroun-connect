@@ -59,8 +59,8 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              La première plateforme qui simplifie l'achat et la vente entre
-              Camerounais. Trouvez ce que vous cherchez ou vendez ce que vous
+              La première plateforme qui facilite l'achat et la vente de produits et services entre
+              Camerounais. Achetez ce que vous voulez et vendez ce que vous
               possédez.
             </p>
 

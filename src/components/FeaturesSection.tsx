@@ -70,7 +70,7 @@ const FeaturesSection = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2">
-                10,000+
+                50,000+
               </div>
               <div className="text-primary-foreground/80">
                 Utilisateurs actifs
@@ -78,7 +78,7 @@ const FeaturesSection = () => {
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2">
-                50,000+
+                30,000+
               </div>
               <div className="text-primary-foreground/80">
                 Produits disponibles
