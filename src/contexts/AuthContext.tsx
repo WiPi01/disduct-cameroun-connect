@@ -20,31 +20,47 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  console.log("AuthProvider initializing...");
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+    console.log("AuthProvider useEffect running...");
+    try {
+      // Set up auth state listener FIRST
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          console.log("Auth state changed:", event, session?.user?.email || "no user");
+          setSession(session);
+          setUser(session?.user ?? null);
+          setLoading(false);
+        }
+      );
+
+      // THEN check for existing session
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        console.log("Initial session check:", session?.user?.email || "no user");
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
-      }
-    );
+      }).catch((error) => {
+        console.error("Error getting session:", error);
+        setLoading(false);
+      });
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+      return () => {
+        console.log("AuthProvider cleanup");
+        subscription.unsubscribe();
+      };
+    } catch (error) {
+      console.error("Error in AuthProvider setup:", error);
       setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    }
   }, []);
 
   const signOut = async () => {
+    console.log("Signing out...");
     await supabase.auth.signOut();
   };
 
@@ -55,5 +71,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signOut,
   };
 
+  console.log("AuthProvider rendering with user:", user?.email || "no user");
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

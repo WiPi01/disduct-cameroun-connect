@@ -16,7 +16,9 @@ import FAQ from "./pages/FAQ";
 import CategoryProducts from "./pages/CategoryProducts";
 import NotFound from "./pages/NotFound";
 
-const App = () => (
+const App = () => {
+  console.log("App component rendering...");
+  return (
   <TooltipProvider>
     <Toaster />
     <Sonner />
@@ -43,6 +45,7 @@ const App = () => (
       <Route path="*" element={<NotFound />} />
     </Routes>
   </TooltipProvider>
-);
+  );
+};
 
 export default App;
