@@ -36,7 +36,7 @@ const CommentAcheter = () => {
     {
       icon: CreditCard,
       title: "Achetez",
-      description: "Finalisez votre achat en toute sécurité",
+      description: "Achetez des articles et payer des services seulement après leur livraison. Privilégiez le paiement mobile (OM/MOMO).",
     },
   ];
 
@@ -53,8 +53,7 @@ const CommentAcheter = () => {
             </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Découvrez comment acheter en toute sécurité sur notre plateforme et
-            trouver les meilleurs produits au Cameroun.
+            Découvrez comment trouver et bénéficier des meilleurs produits et services disponibles au Cameroun en toute sécurité sur notre plateforme.
           </p>
         </div>
 
@@ -101,7 +100,7 @@ const CommentAcheter = () => {
               <Shield className="h-8 w-8 text-primary mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Paiement sécurisé</h3>
               <p className="text-muted-foreground text-sm">
-                Utilisez nos méthodes de paiement sécurisées pour vos achats
+                Privilégiez les méthodes de paiement sécurisées tels que OM ou MOMO pour plus de traçabilité
               </p>
             </div>
           </div>
