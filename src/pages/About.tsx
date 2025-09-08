@@ -32,9 +32,9 @@ const About = () => {
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Disduct révolutionne le commerce en ligne au Cameroun en offrant
-                une plateforme innovante où acheter et vendre des articles de
-                qualité à prix réduits. Notre mission est de démocratiser
-                l'accès aux meilleurs produits pour tous les Camerounais.
+                une plateforme innovante où acheter et vendre des produits et services de
+                qualité à prix discount. Notre mission est de démocratiser
+                l'accès aux meilleurs produits et services pour tous les Camerounais.
               </p>
               <div className="bg-orange-500/10 p-6 rounded-xl border border-orange-500/20">
                 <h3 className="font-semibold text-lg mb-2 text-orange-600">
