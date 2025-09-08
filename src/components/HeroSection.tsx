@@ -4,6 +4,7 @@ import { ArrowRight, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useDevMode } from "@/hooks/use-dev-mode";
+import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-image.jpg";
 import AuthModal from "./AuthModal";
 
@@ -12,11 +13,12 @@ const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const isDevMode = useDevMode();
+  const { user } = useAuth();
 
   const handleSearch = () => {
-    if (isDevMode) {
-      // En mode dev, permettre la recherche directement
-      console.log("Recherche en mode dev:", searchQuery);
+    if (user || isDevMode) {
+      // Utilisateur connecté ou en mode dev, permettre la recherche directement
+      console.log("Recherche:", searchQuery);
       // Ici vous pouvez ajouter la logique de recherche
       navigate("/category/electronique"); // Exemple de navigation
     } else {
@@ -25,7 +27,7 @@ const HeroSection = () => {
   };
 
   const handleBuyClick = () => {
-    if (isDevMode) {
+    if (user || isDevMode) {
       navigate("/comment-acheter");
     } else {
       setIsAuthModalOpen(true);
@@ -33,7 +35,7 @@ const HeroSection = () => {
   };
 
   const handleSellClick = () => {
-    if (isDevMode) {
+    if (user || isDevMode) {
       navigate("/vendre");
     } else {
       setIsAuthModalOpen(true);
@@ -74,8 +76,8 @@ const HeroSection = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  readOnly={!isDevMode}
-                  onClick={() => !isDevMode && setIsAuthModalOpen(true)}
+                  readOnly={!user && !isDevMode}
+                  onClick={() => !user && !isDevMode && setIsAuthModalOpen(true)}
                 />
               </div>
               <Button

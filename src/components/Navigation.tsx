@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Store,
@@ -12,11 +12,9 @@ import {
   Wheat,
   Car,
   Briefcase,
-  X,
+  LogOut,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { User as SupabaseUser, Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useDevMode } from "@/hooks/use-dev-mode";
+import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "./AuthModal";
 
 const categories = [
@@ -39,26 +38,9 @@ const categories = [
 const Navigation = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
   const isDevMode = useDevMode();
-
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const { user, signOut } = useAuth();
 
   const handleProfileClick = () => {
     if (user || isDevMode) {
@@ -150,9 +132,28 @@ const Navigation = () => {
             >
               <ShoppingBag className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" onClick={handleProfileClick}>
-              <User className="h-4 w-4" />
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    Mon Profil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Déconnexion
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button variant="ghost" size="sm" onClick={handleProfileClick}>
+                <User className="h-4 w-4" />
+              </Button>
+            )}
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
