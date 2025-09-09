@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import MobileNavBar from "@/components/MobileNavBar";
 
 const CommentAcheter = () => {
@@ -104,6 +105,23 @@ const CommentAcheter = () => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-foreground mb-4">
+            Prêt à découvrir nos produits ?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-6">
+            Explorez notre large sélection de produits et trouvez ce qui vous convient !
+          </p>
+          <Button
+            size="lg"
+            className="px-8 py-3"
+            onClick={() => window.location.href = '/produits'}
+          >
+            Commencer à acheter
+          </Button>
         </div>
       </div>
     </div>

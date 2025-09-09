@@ -59,6 +59,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             description: "Vérifiez votre email pour confirmer votre compte",
           });
           onClose();
+          // Rediriger vers la page des produits après création de compte
+          window.location.href = '/produits';
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -78,6 +80,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             description: "Bienvenue sur Disduct !",
           });
           onClose();
+          // Rediriger vers la page des produits après connexion
+          window.location.href = '/produits';
         }
       }
     } catch (error) {

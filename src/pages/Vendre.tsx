@@ -49,8 +49,8 @@ const Vendre = () => {
 
   const handleCommencerVendre = () => {
     if (user) {
-      // TODO: Rediriger vers la page de création d'annonce (à créer)
-      console.log("Redirection vers la page de création d'annonce");
+      // Rediriger vers la page des produits pour l'instant
+      navigate("/produits");
     } else {
       setIsAuthModalOpen(true);
     }
