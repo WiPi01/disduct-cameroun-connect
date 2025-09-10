@@ -15,8 +15,24 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import MobileNavBar from "@/components/MobileNavBar";
+import { useAuth } from "@/contexts/AuthContext";
+import AuthModal from "@/components/AuthModal";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const CommentAcheter = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const handleCommencerAcheter = () => {
+    if (user) {
+      navigate('/produits');
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
   const steps = [
     {
       icon: Search,
@@ -118,12 +134,17 @@ const CommentAcheter = () => {
           <Button
             size="lg"
             className="px-8 py-3"
-            onClick={() => window.location.href = '/produits'}
+            onClick={handleCommencerAcheter}
           >
             Commencer à acheter
           </Button>
         </div>
       </div>
+
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </div>
   );
 };
