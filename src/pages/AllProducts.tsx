@@ -14,7 +14,9 @@ const mockProducts = [
     location: "Douala",
     seller: "Marie K.",
     image: "/public/lovable-uploads/1ec331ef-0978-439e-9fbd-dfe2b12f5570.png",
-    category: "Téléphones"
+    category: "Téléphones",
+    description: "iPhone 13 Pro Max en excellent état, utilisé avec soin, toutes les fonctionnalités marchent parfaitement",
+    tags: ["iphone", "apple", "smartphone", "téléphone", "mobile", "ios", "pro max", "13"]
   },
   {
     id: "2", 
@@ -23,7 +25,9 @@ const mockProducts = [
     location: "Yaoundé",
     seller: "Jean P.",
     image: "/public/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png",
-    category: "Ordinateurs"
+    category: "Ordinateurs",
+    description: "MacBook Air M2 8GB RAM 256GB SSD, parfait pour travail et études, très bon état",
+    tags: ["macbook", "apple", "ordinateur", "laptop", "m2", "air", "portable", "mac"]
   },
   {
     id: "3",
@@ -32,7 +36,9 @@ const mockProducts = [
     location: "Bamenda",
     seller: "Paul M.",
     image: "/public/lovable-uploads/61dab940-2e96-4b67-bfde-d6d42888c8ef.png",
-    category: "Téléphones"
+    category: "Téléphones",
+    description: "Samsung Galaxy S23 neuf, encore sous garantie, livré avec tous les accessoires",
+    tags: ["samsung", "galaxy", "s23", "android", "smartphone", "téléphone", "mobile"]
   },
   {
     id: "4",
@@ -41,7 +47,9 @@ const mockProducts = [
     location: "Douala",
     seller: "Sophie L.",
     image: "/public/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png",
-    category: "Chaussures"
+    category: "Chaussures",
+    description: "Chaussures Nike Air Jordan authentiques, taille 42, neuves jamais portées",
+    tags: ["nike", "air jordan", "chaussures", "sneakers", "sport", "basket", "jordan"]
   },
   {
     id: "5",
@@ -50,7 +58,9 @@ const mockProducts = [
     location: "Yaoundé",
     seller: "David N.",
     image: "/public/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png",
-    category: "Photo"
+    category: "Photo",
+    description: "Appareil photo professionnel Canon EOS R5, parfait pour photographes professionnels",
+    tags: ["canon", "eos", "r5", "appareil photo", "camera", "professionnel", "photo", "reflex"]
   },
   {
     id: "6",
@@ -59,7 +69,9 @@ const mockProducts = [
     location: "Garoua",
     seller: "Michel T.",
     image: "/public/lovable-uploads/b17173b9-daab-4029-88ea-5bd0b838b63c.png",
-    category: "Jeux vidéo"
+    category: "Jeux vidéo",
+    description: "Console PlayStation 5 en parfait état, avec 2 manettes et plusieurs jeux inclus",
+    tags: ["playstation", "ps5", "sony", "console", "jeux vidéo", "gaming", "jeu"]
   }
 ];
 
@@ -76,11 +88,57 @@ const AllProducts = () => {
     );
   };
 
-  const filteredProducts = products.filter(product =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Recherche améliorée avec scoring pour pertinence
+  const filteredProducts = products.filter(product => {
+    const searchLower = searchTerm.toLowerCase().trim();
+    if (!searchLower) return true;
+    
+    const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+    
+    return searchWords.some(word => 
+      product.title.toLowerCase().includes(word) ||
+      product.category.toLowerCase().includes(word) ||
+      product.location.toLowerCase().includes(word) ||
+      product.description?.toLowerCase().includes(word) ||
+      product.tags?.some(tag => tag.toLowerCase().includes(word)) ||
+      product.seller.toLowerCase().includes(word)
+    );
+  }).sort((a, b) => {
+    if (!searchTerm.trim()) return 0;
+    
+    const searchLower = searchTerm.toLowerCase();
+    const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+    
+    // Calcul du score de pertinence
+    const getRelevanceScore = (product: any) => {
+      let score = 0;
+      const titleLower = product.title.toLowerCase();
+      const categoryLower = product.category.toLowerCase();
+      const descriptionLower = product.description?.toLowerCase() || '';
+      
+      searchWords.forEach(word => {
+        // Score élevé pour correspondance exacte dans le titre
+        if (titleLower.includes(word)) {
+          score += titleLower === word ? 100 : titleLower.startsWith(word) ? 50 : 20;
+        }
+        // Score moyen pour catégorie
+        if (categoryLower.includes(word)) {
+          score += 15;
+        }
+        // Score faible pour description et tags
+        if (descriptionLower.includes(word)) {
+          score += 10;
+        }
+        if (product.tags?.some((tag: string) => tag.toLowerCase().includes(word))) {
+          score += 8;
+        }
+      });
+      
+      return score;
+    };
+    
+    return getRelevanceScore(b) - getRelevanceScore(a);
+  });
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR').format(price) + ' FCFA';
@@ -159,8 +217,8 @@ const AllProducts = () => {
                     <User className="h-4 w-4 mr-1" />
                     <span>{product.seller}</span>
                   </div>
-                  <Button className="w-full" size="sm">
-                    Voir les détails
+                  <Button className="w-full" size="sm" variant="default">
+                    Contacter le vendeur
                   </Button>
                 </CardContent>
               </Card>

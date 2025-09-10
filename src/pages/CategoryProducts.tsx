@@ -9,10 +9,45 @@ import { MapPin, Heart, Eye } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
 import MobileNavBar from "@/components/MobileNavBar";
 
-// Données temporaires des produits pour démonstration - actuellement vide
+// Données temporaires des produits pour démonstration
 const mockProducts = {
-  electronique: [],
-  mode: [],
+  electronique: [
+    {
+      id: "e1",
+      title: "iPhone 13 Pro Max",
+      price: "850000",
+      location: "Douala",
+      seller: "Marie K.",
+      image: "/public/lovable-uploads/1ec331ef-0978-439e-9fbd-dfe2b12f5570.png",
+      views: 45,
+      description: "iPhone en excellent état",
+      tags: ["iphone", "apple", "smartphone"]
+    },
+    {
+      id: "e2",
+      title: "MacBook Air M2",
+      price: "1200000",
+      location: "Yaoundé",
+      seller: "Jean P.",
+      image: "/public/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png",
+      views: 62,
+      description: "MacBook Air M2 parfait état",
+      tags: ["macbook", "apple", "ordinateur"]
+    }
+  ],
+  mode: [
+    {
+      id: "m1",
+      title: "Nike Air Jordan",
+      price: "120000",
+      location: "Douala",
+      seller: "Sophie L.",
+      image: "/public/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png",
+      views: 23,
+      description: "Chaussures Nike authentiques",
+      tags: ["nike", "jordan", "chaussures"]
+    }
+  ],
   maison: [],
   automobile: [],
   immobilier: [],
