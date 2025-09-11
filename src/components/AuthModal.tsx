@@ -7,11 +7,13 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { sanitizeInput, isValidEmail, logSecurityEvent, type PasswordStrength } from "@/lib/security";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -22,14 +24,37 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength | null>(null);
   const { toast } = useToast();
 
 
   const handleEmailAuth = async (isSignUp: boolean) => {
-    if (!email || !password) {
+    // Input validation and sanitization
+    const sanitizedEmail = sanitizeInput(email).toLowerCase();
+    
+    if (!sanitizedEmail || !password) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!isValidEmail(sanitizedEmail)) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer une adresse email valide",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Password strength validation for signup
+    if (isSignUp && passwordStrength && !passwordStrength.isStrong) {
+      toast({
+        title: "Mot de passe trop faible",
+        description: "Veuillez choisir un mot de passe plus fort",
         variant: "destructive",
       });
       return;
@@ -40,7 +65,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
-          email,
+          email: sanitizedEmail,
           password,
           options: {
             emailRedirectTo: `${window.location.origin}/`,
@@ -48,12 +73,19 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         });
 
         if (error) {
+          logSecurityEvent('signup_failed', { 
+            email: sanitizedEmail, 
+            error: error.message 
+          });
           toast({
             title: "Erreur",
             description: error.message,
             variant: "destructive",
           });
         } else {
+          logSecurityEvent('signup_successful', { 
+            email: sanitizedEmail 
+          });
           toast({
             title: "Compte créé",
             description: "Vérifiez votre email pour confirmer votre compte",
@@ -64,17 +96,24 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
-          email,
+          email: sanitizedEmail,
           password,
         });
 
         if (error) {
+          logSecurityEvent('signin_failed', { 
+            email: sanitizedEmail, 
+            error: error.message 
+          });
           toast({
             title: "Erreur",
             description: error.message,
             variant: "destructive",
           });
         } else {
+          logSecurityEvent('signin_successful', { 
+            email: sanitizedEmail 
+          });
           toast({
             title: "Connexion réussie",
             description: "Bienvenue sur Disduct !",
@@ -125,13 +164,14 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="signup-password">Mot de passe</Label>
-              <Input
+              <PasswordInput
                 id="signup-password"
-                type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
+                showStrengthIndicator={true}
+                onStrengthChange={setPasswordStrength}
               />
             </div>
             <Button
@@ -162,9 +202,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="login-password">Mot de passe</Label>
-              <Input
+              <PasswordInput
                 id="login-password"
-                type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

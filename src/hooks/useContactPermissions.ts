@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { rateLimiter, logSecurityEvent } from '@/lib/security';
 
 export interface ContactPermission {
   id: string;
@@ -19,6 +20,19 @@ export const useContactPermissions = () => {
   const requestContactPermission = async (ownerId: string): Promise<boolean> => {
     if (!user) return false;
     
+    // Rate limiting: max 5 requests per 15 minutes per user
+    const rateLimitKey = `contact_request_${user.id}`;
+    if (!rateLimiter.isAllowed(rateLimitKey, 5, 15 * 60 * 1000)) {
+      const remainingTime = Math.ceil(rateLimiter.getRemainingTime(rateLimitKey, 15 * 60 * 1000) / 60000);
+      toast.error(`Trop de demandes. Réessayez dans ${remainingTime} minutes.`);
+      logSecurityEvent('contact_permission_rate_limited', { 
+        userId: user.id, 
+        targetUserId: ownerId,
+        remainingTime 
+      });
+      return false;
+    }
+    
     setLoading(true);
     try {
       const { error } = await supabase
@@ -31,11 +45,19 @@ export const useContactPermissions = () => {
       if (error) {
         if (error.code === '23505') { // Unique constraint violation
           toast.info('Demande déjà envoyée');
+          logSecurityEvent('contact_permission_duplicate_request', { 
+            userId: user.id, 
+            targetUserId: ownerId 
+          });
           return true;
         }
         throw error;
       }
 
+      logSecurityEvent('contact_permission_requested', { 
+        userId: user.id, 
+        targetUserId: ownerId 
+      });
       toast.success('Demande de contact envoyée');
       return true;
     } catch (error) {
