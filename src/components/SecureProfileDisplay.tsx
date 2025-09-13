@@ -6,53 +6,54 @@ import { Badge } from '@/components/ui/badge';
 import { useContactPermissions } from '@/hooks/useContactPermissions';
 import { ContactPermissionDialog } from './ContactPermissionDialog';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSecureProfile } from '@/hooks/useSecureProfile';
 
-interface Profile {
-  user_id: string;
-  display_name?: string;
-  phone?: string;
-  address?: string;
-  rating?: number;
-  total_reviews?: number;
-  avatar_url?: string;
-}
 
 interface SecureProfileDisplayProps {
-  profile: Profile;
+  userId: string; // Change to just take user ID and fetch secure data
   showContactButton?: boolean;
   compact?: boolean;
 }
 
 export const SecureProfileDisplay = ({ 
-  profile, 
+  userId, 
   showContactButton = true, 
   compact = false 
 }: SecureProfileDisplayProps) => {
   const { user } = useAuth();
   const { checkContactPermission } = useContactPermissions();
+  const { profile, loading, error } = useSecureProfile(userId);
   const [hasContactPermission, setHasContactPermission] = useState(false);
   const [showPermissionDialog, setShowPermissionDialog] = useState(false);
   const [showSensitiveInfo, setShowSensitiveInfo] = useState(false);
 
-  const isOwnProfile = user?.id === profile.user_id;
+  const isOwnProfile = user?.id === userId;
 
   useEffect(() => {
+    if (!profile) return;
+
     if (isOwnProfile) {
       setHasContactPermission(true);
       setShowSensitiveInfo(true); // Always show own info
       return;
     }
 
+    // Check if we already have contact permission info from the secure profile
+    if (profile.can_view_contact !== undefined) {
+      setHasContactPermission(profile.can_view_contact);
+      return;
+    }
+
+    // Fallback to manual permission check
     const checkPermission = async () => {
-      const hasPermission = await checkContactPermission(profile.user_id);
+      const hasPermission = await checkContactPermission(userId);
       setHasContactPermission(hasPermission);
-      // Don't auto-show sensitive info even with permission - user must explicitly reveal it
     };
 
     if (user) {
       checkPermission();
     }
-  }, [profile.user_id, user, isOwnProfile, checkContactPermission]);
+  }, [profile, user, isOwnProfile, userId, checkContactPermission]);
 
   const handleRequestContact = () => {
     setShowPermissionDialog(true);
@@ -66,6 +67,14 @@ export const SecureProfileDisplay = ({
   const toggleSensitiveInfo = () => {
     setShowSensitiveInfo(!showSensitiveInfo);
   };
+
+  if (loading) {
+    return <div className="text-sm text-muted-foreground">Chargement du profil...</div>;
+  }
+
+  if (error || !profile) {
+    return <div className="text-sm text-destructive">Erreur lors du chargement du profil</div>;
+  }
 
   if (compact) {
     return (
@@ -96,7 +105,7 @@ export const SecureProfileDisplay = ({
         <ContactPermissionDialog
           isOpen={showPermissionDialog}
           onClose={() => setShowPermissionDialog(false)}
-          sellerId={profile.user_id}
+          sellerId={userId}
           sellerName={profile.display_name || 'Utilisateur'}
           onPermissionGranted={handlePermissionGranted}
         />
@@ -209,7 +218,7 @@ export const SecureProfileDisplay = ({
         <ContactPermissionDialog
           isOpen={showPermissionDialog}
           onClose={() => setShowPermissionDialog(false)}
-          sellerId={profile.user_id}
+          sellerId={userId}
           sellerName={profile.display_name || 'Utilisateur'}
           onPermissionGranted={handlePermissionGranted}
         />

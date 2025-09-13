@@ -345,44 +345,16 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          address: string | null
-          avatar_url: string | null
-          created_at: string | null
-          display_name: string | null
-          phone: string | null
-          rating: number | null
-          total_reviews: number | null
-          user_id: string | null
-        }
-        Insert: {
-          address?: never
-          avatar_url?: string | null
-          created_at?: string | null
-          display_name?: string | null
-          phone?: never
-          rating?: number | null
-          total_reviews?: number | null
-          user_id?: string | null
-        }
-        Update: {
-          address?: never
-          avatar_url?: string | null
-          created_at?: string | null
-          display_name?: string | null
-          phone?: never
-          rating?: number | null
-          total_reviews?: number | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       can_view_contact_details: {
         Args: { profile_user_id: string }
         Returns: boolean
+      }
+      get_secure_profile: {
+        Args: { profile_user_id: string }
+        Returns: Json
       }
       has_contact_permission: {
         Args: { profile_user_id: string }
