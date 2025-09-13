@@ -118,7 +118,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
           if (error.message === "Invalid login credentials") {
             toast({
               title: "Identifiants incorrects",
-              description: "Vérifiez votre email et mot de passe. Si vous venez de créer un compte, votre email doit peut-être être confirmé.",
+              description: "Vérifiez votre email et mot de passe. Assurez-vous que vos identifiants sont corrects.",
               variant: "destructive",
             });
           } else if (error.message === "Email not confirmed") {
