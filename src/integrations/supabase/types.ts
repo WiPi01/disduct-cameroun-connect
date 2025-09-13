@@ -345,7 +345,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          created_at: string | null
+          display_name: string | null
+          phone: string | null
+          rating: number | null
+          total_reviews: number | null
+          user_id: string | null
+        }
+        Insert: {
+          address?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          phone?: never
+          rating?: number | null
+          total_reviews?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          address?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          phone?: never
+          rating?: number | null
+          total_reviews?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       can_view_contact_details: {
