@@ -25,6 +25,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength | null>(null);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const { toast } = useToast();
 
 
@@ -158,6 +159,57 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
     }
   };
 
+  const handlePasswordReset = async () => {
+    const sanitizedEmail = sanitizeInput(email).toLowerCase();
+    
+    if (!sanitizedEmail) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer votre adresse email",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!isValidEmail(sanitizedEmail)) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez entrer une adresse email valide",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.resetPasswordForEmail(sanitizedEmail, {
+        redirectTo: `${window.location.origin}/`,
+      });
+
+      if (error) {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Email envoyé",
+          description: "Vérifiez votre boîte email pour réinitialiser votre mot de passe.",
+        });
+        setShowResetPassword(false);
+      }
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur inattendue s'est produite",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -243,12 +295,50 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
               {isLoading ? "Connexion..." : "Se connecter"}
             </Button>
             <p className="text-sm text-muted-foreground text-center">
-              <a href="#" className="text-primary hover:underline">
+              <button 
+                type="button"
+                onClick={() => setShowResetPassword(true)}
+                className="text-primary hover:underline"
+              >
                 Mot de passe oublié ?
-              </a>
+              </button>
             </p>
           </TabsContent>
         </Tabs>
+
+        {showResetPassword && (
+          <div className="mt-4 space-y-4 border-t pt-4">
+            <h3 className="text-lg font-semibold text-center">Réinitialiser le mot de passe</h3>
+            <div className="space-y-2">
+              <Label htmlFor="reset-email">Email</Label>
+              <Input
+                id="reset-email"
+                type="email"
+                placeholder="votre@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setShowResetPassword(false)}
+                disabled={isLoading}
+              >
+                Annuler
+              </Button>
+              <Button
+                className="w-full"
+                onClick={handlePasswordReset}
+                disabled={isLoading}
+              >
+                {isLoading ? "Envoi..." : "Envoyer le lien"}
+              </Button>
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
