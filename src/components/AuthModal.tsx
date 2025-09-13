@@ -182,10 +182,8 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
 
     try {
       setIsLoading(true);
-      // Utiliser l'URL Lovable au lieu de localhost pour la redirection
-      const redirectUrl = window.location.hostname.includes('lovable.dev') 
-        ? window.location.origin 
-        : 'https://d4b23701-0cdd-44c5-9a20-463817d2a46e.sandbox.lovable.dev';
+      // Utiliser votre domaine personnalisé quand il sera configuré
+      const redirectUrl = window.location.origin; // Ceci utilisera automatiquement votre domaine personnalisé
       
       const { error } = await supabase.auth.resetPasswordForEmail(sanitizedEmail, {
         redirectTo: `${redirectUrl}/`,
