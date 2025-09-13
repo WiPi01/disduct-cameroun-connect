@@ -348,6 +348,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_contact_details: {
+        Args: { profile_user_id: string }
+        Returns: boolean
+      }
       has_contact_permission: {
         Args: { profile_user_id: string }
         Returns: boolean

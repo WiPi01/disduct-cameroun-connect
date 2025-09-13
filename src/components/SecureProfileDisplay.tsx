@@ -39,12 +39,14 @@ export const SecureProfileDisplay = ({
   useEffect(() => {
     if (isOwnProfile) {
       setHasContactPermission(true);
+      setShowSensitiveInfo(true); // Always show own info
       return;
     }
 
     const checkPermission = async () => {
       const hasPermission = await checkContactPermission(profile.user_id);
       setHasContactPermission(hasPermission);
+      // Don't auto-show sensitive info even with permission - user must explicitly reveal it
     };
 
     if (user) {
@@ -160,6 +162,18 @@ export const SecureProfileDisplay = ({
                     <span>{profile.address}</span>
                   </div>
                 )}
+                {!profile.phone && !profile.address && !isOwnProfile && (
+                  <div className="text-sm text-muted-foreground">
+                    Aucune information de contact disponible
+                  </div>
+                )}
+              </div>
+            ) : hasContactPermission ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Shield className="h-4 w-4" />
+                  <span>Informations disponibles - cliquez pour afficher</span>
+                </div>
               </div>
             ) : (
               <div className="space-y-2">
@@ -172,6 +186,9 @@ export const SecureProfileDisplay = ({
                   <MapPin className="h-4 w-4" />
                   <span>Adresse masquée</span>
                   <Shield className="h-3 w-3" />
+                </div>
+                <div className="text-xs text-muted-foreground mt-2">
+                  Demandez l'accès pour voir les coordonnées
                 </div>
               </div>
             )}
