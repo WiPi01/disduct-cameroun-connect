@@ -77,22 +77,30 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             email: sanitizedEmail, 
             error: error.message 
           });
-          toast({
-            title: "Erreur",
-            description: error.message,
-            variant: "destructive",
-          });
+          
+          // Handle specific error cases with user-friendly messages
+          if (error.message === "User already registered") {
+            toast({
+              title: "Compte existant",
+              description: "Un compte existe déjà avec cette adresse email. Essayez de vous connecter ou réinitialisez votre mot de passe.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Erreur",
+              description: error.message,
+              variant: "destructive",
+            });
+          }
         } else {
           logSecurityEvent('signup_successful', { 
             email: sanitizedEmail 
           });
           toast({
-            title: "Compte créé",
-            description: "Vérifiez votre email pour confirmer votre compte",
+            title: "Compte créé avec succès !",
+            description: "Vous pouvez maintenant vous connecter avec vos identifiants.",
           });
           onClose();
-          // Rediriger vers la page des produits après création de compte
-          window.location.href = '/produits';
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -105,11 +113,27 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
             email: sanitizedEmail, 
             error: error.message 
           });
-          toast({
-            title: "Erreur",
-            description: error.message,
-            variant: "destructive",
-          });
+          
+          // Handle specific error cases with user-friendly messages
+          if (error.message === "Invalid login credentials") {
+            toast({
+              title: "Identifiants incorrects",
+              description: "Vérifiez votre email et mot de passe. Si vous venez de créer un compte, votre email doit peut-être être confirmé.",
+              variant: "destructive",
+            });
+          } else if (error.message === "Email not confirmed") {
+            toast({
+              title: "Email non confirmé",
+              description: "Veuillez vérifier votre boîte email et cliquer sur le lien de confirmation.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Erreur de connexion",
+              description: error.message,
+              variant: "destructive",
+            });
+          }
         } else {
           logSecurityEvent('signin_successful', { 
             email: sanitizedEmail 
