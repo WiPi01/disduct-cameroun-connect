@@ -378,12 +378,75 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          created_at: string | null
+          display_name: string | null
+          first_product_bought_congratulated: boolean | null
+          first_product_posted_congratulated: boolean | null
+          first_product_sold_congratulated: boolean | null
+          id: string | null
+          phone: string | null
+          rating: number | null
+          total_reviews: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          address?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          first_product_bought_congratulated?: boolean | null
+          first_product_posted_congratulated?: boolean | null
+          first_product_sold_congratulated?: boolean | null
+          id?: string | null
+          phone?: never
+          rating?: number | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          address?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          first_product_bought_congratulated?: boolean | null
+          first_product_posted_congratulated?: boolean | null
+          first_product_sold_congratulated?: boolean | null
+          id?: string | null
+          phone?: never
+          rating?: number | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       can_view_contact_details: {
         Args: { profile_user_id: string }
         Returns: boolean
+      }
+      get_public_profile_fields: {
+        Args: { profile_row: Database["public"]["Tables"]["profiles"]["Row"] }
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          first_product_bought_congratulated: boolean
+          first_product_posted_congratulated: boolean
+          first_product_sold_congratulated: boolean
+          id: string
+          rating: number
+          total_reviews: number
+          updated_at: string
+          user_id: string
+        }[]
       }
       get_secure_profile: {
         Args: { profile_user_id: string }
