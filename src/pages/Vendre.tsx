@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
 import MobileNavBar from "@/components/MobileNavBar";
+import { toast } from "@/components/ui/use-toast";
 
 const Vendre = () => {
   const navigate = useNavigate();
@@ -57,7 +58,14 @@ const Vendre = () => {
   };
 
   const handleCreerCompteVendeur = () => {
-    setIsAuthModalOpen(true);
+    if (user) {
+      toast({
+        title: "Compte déjà créé",
+        description: "Vous avez déjà créé un compte et vous êtes déjà connecté.",
+      });
+    } else {
+      setIsAuthModalOpen(true);
+    }
   };
 
   const handleEnSavoirPlus = () => {
