@@ -112,7 +112,7 @@ const Profile = () => {
           address: profile.address,
           shop_name: profile.shopName,
           updated_at: new Date().toISOString(),
-        });
+        } as any);
 
       if (error) {
         toast({
