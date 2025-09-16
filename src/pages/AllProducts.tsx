@@ -165,9 +165,71 @@ const AllProducts = () => {
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-lg text-muted-foreground">
-              {searchTerm ? "Aucun produit trouvé pour votre recherche." : "Aucun produit disponible pour le moment."}
-            </p>
+            {searchTerm ? (
+              <div className="max-w-2xl mx-auto">
+                <h2 className="text-2xl font-bold text-foreground mb-4">
+                  Article non disponible
+                </h2>
+                <p className="text-lg text-muted-foreground mb-6">
+                  Désolé, nous n'avons trouvé aucun produit correspondant à "{searchTerm}".
+                </p>
+                
+                <div className="bg-card border rounded-lg p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">
+                    Suggestions pour vous aider :
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-foreground">Affinez votre recherche :</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Vérifiez l'orthographe</li>
+                        <li>• Utilisez des mots-clés plus généraux</li>
+                        <li>• Essayez des synonymes</li>
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-foreground">Catégories populaires :</h4>
+                      <div className="flex flex-wrap gap-2">
+                        <Button variant="outline" size="sm" onClick={() => setSearchTerm("électronique")}>
+                          Électronique
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => setSearchTerm("mode")}>
+                          Mode
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => setSearchTerm("maison")}>
+                          Maison
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
+                    💡 Astuce : Trouvez votre vendeur
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    Vous cherchez un produit spécifique ? Contactez directement les vendeurs de votre région 
+                    qui pourraient avoir ce que vous recherchez.
+                  </p>
+                  <Button variant="default" size="sm">
+                    Voir les vendeurs près de chez vous
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="max-w-lg mx-auto">
+                <h2 className="text-2xl font-bold text-foreground mb-4">
+                  Aucun produit disponible
+                </h2>
+                <p className="text-lg text-muted-foreground mb-6">
+                  Soyez le premier à publier un article sur notre plateforme !
+                </p>
+                <Button variant="default" size="lg">
+                  Publier mon premier article
+                </Button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
