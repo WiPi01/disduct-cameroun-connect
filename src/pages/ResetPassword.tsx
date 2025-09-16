@@ -24,21 +24,67 @@ const ResetPassword = () => {
     const refreshToken = searchParams.get('refresh_token');
     const type = searchParams.get('type');
 
-    if (!accessToken || !refreshToken || type !== 'recovery') {
-      toast({
-        title: "Lien invalide",
-        description: "Ce lien de réinitialisation est invalide ou a expiré.",
-        variant: "destructive",
-      });
-      navigate('/');
-      return;
-    }
+    console.log('Reset password params:', { accessToken, refreshToken, type });
 
-    // Définir la session avec les tokens de récupération
-    supabase.auth.setSession({
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    });
+    if (type === 'recovery' && accessToken && refreshToken) {
+      // Définir la session avec les tokens de récupération
+      supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      }).then(({ error }) => {
+        if (error) {
+          console.error('Error setting session:', error);
+          toast({
+            title: "Lien invalide",
+            description: "Ce lien de réinitialisation est invalide ou a expiré.",
+            variant: "destructive",
+          });
+          navigate('/');
+        }
+      });
+    } else {
+      // Pas de tokens valides, vérifier si on a un hash avec les tokens
+      const hash = window.location.hash;
+      if (hash) {
+        const params = new URLSearchParams(hash.substring(1));
+        const hashAccessToken = params.get('access_token');
+        const hashRefreshToken = params.get('refresh_token');
+        const hashType = params.get('type');
+        
+        console.log('Hash params:', { hashAccessToken, hashRefreshToken, hashType });
+        
+        if (hashType === 'recovery' && hashAccessToken && hashRefreshToken) {
+          supabase.auth.setSession({
+            access_token: hashAccessToken,
+            refresh_token: hashRefreshToken,
+          }).then(({ error }) => {
+            if (error) {
+              console.error('Error setting session from hash:', error);
+              toast({
+                title: "Lien invalide",
+                description: "Ce lien de réinitialisation est invalide ou a expiré.",
+                variant: "destructive",
+              });
+              navigate('/');
+            }
+          });
+        } else {
+          toast({
+            title: "Lien invalide",
+            description: "Ce lien de réinitialisation est invalide ou a expiré.",
+            variant: "destructive",
+          });
+          navigate('/');
+        }
+      } else {
+        toast({
+          title: "Lien invalide",
+          description: "Ce lien de réinitialisation est invalide ou a expiré.",
+          variant: "destructive",
+        });
+        navigate('/');
+      }
+    }
   }, [searchParams, navigate, toast]);
 
   const handlePasswordReset = async () => {
