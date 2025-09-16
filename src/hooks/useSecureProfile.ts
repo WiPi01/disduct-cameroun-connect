@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { logSecurityEvent } from '@/lib/security';
 
 interface SecureProfile {
   user_id: string;
@@ -32,23 +33,46 @@ export const useSecureProfile = (userId: string) => {
         setLoading(true);
         setError(null);
 
+        // Log profile access attempt for security monitoring
+        logSecurityEvent('secure_profile_access_attempt', { 
+          targetUserId: userId,
+          accessType: 'useSecureProfile_hook'
+        });
+
         // Use the secure function to get profile data with proper permission checks
         const { data, error } = await supabase
           .rpc('get_secure_profile', { profile_user_id: userId });
 
         if (error) {
           console.error('Error fetching secure profile:', error);
+          logSecurityEvent('secure_profile_access_error', { 
+            targetUserId: userId,
+            error: error.message 
+          });
           setError(error.message);
           return;
         }
 
         if (data && typeof data === 'object' && !Array.isArray(data)) {
           setProfile(data as unknown as SecureProfile);
+          logSecurityEvent('secure_profile_access_success', { 
+            targetUserId: userId,
+            hasContactPermission: (data as any).can_view_contact,
+            dataFields: Object.keys(data)
+          });
         } else {
+          logSecurityEvent('secure_profile_invalid_data', { 
+            targetUserId: userId,
+            receivedData: typeof data
+          });
           setError('Invalid profile data received');
         }
       } catch (err) {
         console.error('Unexpected error:', err);
+        logSecurityEvent('secure_profile_unexpected_error', { 
+          targetUserId: userId,
+          error: err instanceof Error ? err.message : 'Unknown error'
+        });
         setError('An unexpected error occurred');
       } finally {
         setLoading(false);

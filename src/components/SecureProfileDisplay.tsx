@@ -7,6 +7,7 @@ import { useContactPermissions } from '@/hooks/useContactPermissions';
 import { ContactPermissionDialog } from './ContactPermissionDialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSecureProfile } from '@/hooks/useSecureProfile';
+import { logSecurityEvent } from '@/lib/security';
 
 
 interface SecureProfileDisplayProps {
@@ -57,15 +58,35 @@ export const SecureProfileDisplay = ({
 
   const handleRequestContact = () => {
     setShowPermissionDialog(true);
+    
+    // Log contact permission request attempt
+    logSecurityEvent('contact_permission_request_initiated', {
+      targetUserId: userId,
+      profileDisplayContext: 'SecureProfileDisplay'
+    });
   };
 
   const handlePermissionGranted = () => {
     setHasContactPermission(true);
     setShowPermissionDialog(false);
+    
+    // Log successful contact permission grant
+    logSecurityEvent('contact_permission_granted', {
+      targetUserId: userId,
+      source: 'SecureProfileDisplay'
+    });
   };
 
   const toggleSensitiveInfo = () => {
-    setShowSensitiveInfo(!showSensitiveInfo);
+    const newState = !showSensitiveInfo;
+    setShowSensitiveInfo(newState);
+    
+    // Log sensitive info access for security monitoring
+    logSecurityEvent('sensitive_info_toggle', {
+      targetUserId: userId,
+      action: newState ? 'show' : 'hide',
+      hasPermission: hasContactPermission
+    });
   };
 
   if (loading) {
