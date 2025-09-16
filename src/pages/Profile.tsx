@@ -34,6 +34,15 @@ const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
+  const [profile, setProfile] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
+    shopName: "",
+    displayName: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -43,15 +52,93 @@ const Profile = () => {
     } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      if (session?.user) {
+        loadProfile(session.user.id);
+      }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      if (session?.user) {
+        loadProfile(session.user.id);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const loadProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error loading profile:', error);
+        return;
+      }
+
+      if (data) {
+        setProfile({
+          firstName: data.display_name?.split(' ')[0] || "",
+          lastName: data.display_name?.split(' ').slice(1).join(' ') || "",
+          phone: data.phone || "",
+          address: data.address || "",
+          shopName: data.shop_name || "",
+          displayName: data.display_name || "",
+        });
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (!user) return;
+
+    setIsLoading(true);
+    try {
+      const displayName = `${profile.firstName} ${profile.lastName}`.trim();
+      
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          user_id: user.id,
+          display_name: displayName,
+          phone: profile.phone,
+          address: profile.address,
+          shop_name: profile.shopName,
+          updated_at: new Date().toISOString(),
+        });
+
+      if (error) {
+        toast({
+          title: "Erreur",
+          description: "Erreur lors de la sauvegarde du profil",
+          variant: "destructive",
+        });
+        console.error('Error saving profile:', error);
+      } else {
+        toast({
+          title: "Profil sauvegardé",
+          description: "Vos informations ont été mises à jour avec succès",
+        });
+        setProfile(prev => ({ ...prev, displayName }));
+      }
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la sauvegarde du profil",
+        variant: "destructive",
+      });
+      console.error('Error saving profile:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
