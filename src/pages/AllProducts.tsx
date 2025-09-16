@@ -1,84 +1,74 @@
 import { useState, useEffect } from "react";
-import { Search, Filter, MapPin, User, Heart } from "lucide-react";
+import { Search, MapPin, User, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import MobileNavBar from "@/components/MobileNavBar";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-// Mock products data - à remplacer par des données réelles plus tard
-const mockProducts = [
-  {
-    id: "1",
-    title: "iPhone 13 Pro Max",
-    price: 850000,
-    location: "Douala",
-    seller: "Marie K.",
-    image: "/public/lovable-uploads/1ec331ef-0978-439e-9fbd-dfe2b12f5570.png",
-    category: "Téléphones",
-    description: "iPhone 13 Pro Max en excellent état, utilisé avec soin, toutes les fonctionnalités marchent parfaitement",
-    tags: ["iphone", "apple", "smartphone", "téléphone", "mobile", "ios", "pro max", "13"]
-  },
-  {
-    id: "2", 
-    title: "MacBook Air M2",
-    price: 1200000,
-    location: "Yaoundé",
-    seller: "Jean P.",
-    image: "/public/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png",
-    category: "Ordinateurs",
-    description: "MacBook Air M2 8GB RAM 256GB SSD, parfait pour travail et études, très bon état",
-    tags: ["macbook", "apple", "ordinateur", "laptop", "m2", "air", "portable", "mac"]
-  },
-  {
-    id: "3",
-    title: "Samsung Galaxy S23",
-    price: 650000,
-    location: "Bamenda",
-    seller: "Paul M.",
-    image: "/public/lovable-uploads/61dab940-2e96-4b67-bfde-d6d42888c8ef.png",
-    category: "Téléphones",
-    description: "Samsung Galaxy S23 neuf, encore sous garantie, livré avec tous les accessoires",
-    tags: ["samsung", "galaxy", "s23", "android", "smartphone", "téléphone", "mobile"]
-  },
-  {
-    id: "4",
-    title: "Nike Air Jordan",
-    price: 120000,
-    location: "Douala",
-    seller: "Sophie L.",
-    image: "/public/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png",
-    category: "Chaussures",
-    description: "Chaussures Nike Air Jordan authentiques, taille 42, neuves jamais portées",
-    tags: ["nike", "air jordan", "chaussures", "sneakers", "sport", "basket", "jordan"]
-  },
-  {
-    id: "5",
-    title: "Canon EOS R5",
-    price: 2500000,
-    location: "Yaoundé",
-    seller: "David N.",
-    image: "/public/lovable-uploads/7df49345-46a1-4127-86e5-7c23b0258e38.png",
-    category: "Photo",
-    description: "Appareil photo professionnel Canon EOS R5, parfait pour photographes professionnels",
-    tags: ["canon", "eos", "r5", "appareil photo", "camera", "professionnel", "photo", "reflex"]
-  },
-  {
-    id: "6",
-    title: "PlayStation 5",
-    price: 450000,
-    location: "Garoua",
-    seller: "Michel T.",
-    image: "/public/lovable-uploads/b17173b9-daab-4029-88ea-5bd0b838b63c.png",
-    category: "Jeux vidéo",
-    description: "Console PlayStation 5 en parfait état, avec 2 manettes et plusieurs jeux inclus",
-    tags: ["playstation", "ps5", "sony", "console", "jeux vidéo", "gaming", "jeu"]
-  }
-];
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  location: string | null;
+  images: string[] | null;
+  category: string;
+  description: string | null;
+  status: string;
+  seller_id: string;
+  created_at: string;
+  profiles?: {
+    display_name: string | null;
+  } | null;
+}
 
 const AllProducts = () => {
-  const [products, setProducts] = useState(mockProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select(`
+          *,
+          profiles (
+            display_name
+          )
+        `)
+        .eq('status', 'available')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching products:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger les produits.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setProducts((data as any) || []);
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite lors du chargement.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLike = (productId: string) => {
     setLikedProducts(prev => 
@@ -98,10 +88,9 @@ const AllProducts = () => {
     return searchWords.some(word => 
       product.title.toLowerCase().includes(word) ||
       product.category.toLowerCase().includes(word) ||
-      product.location.toLowerCase().includes(word) ||
-      product.description?.toLowerCase().includes(word) ||
-      product.tags?.some(tag => tag.toLowerCase().includes(word)) ||
-      product.seller.toLowerCase().includes(word)
+      (product.location && product.location.toLowerCase().includes(word)) ||
+      (product.description && product.description.toLowerCase().includes(word)) ||
+      (product.profiles?.display_name && product.profiles.display_name.toLowerCase().includes(word))
     );
   }).sort((a, b) => {
     if (!searchTerm.trim()) return 0;
@@ -110,7 +99,7 @@ const AllProducts = () => {
     const searchWords = searchLower.split(' ').filter(word => word.length > 0);
     
     // Calcul du score de pertinence
-    const getRelevanceScore = (product: any) => {
+    const getRelevanceScore = (product: Product) => {
       let score = 0;
       const titleLower = product.title.toLowerCase();
       const categoryLower = product.category.toLowerCase();
@@ -125,12 +114,9 @@ const AllProducts = () => {
         if (categoryLower.includes(word)) {
           score += 15;
         }
-        // Score faible pour description et tags
+        // Score faible pour description
         if (descriptionLower.includes(word)) {
           score += 10;
-        }
-        if (product.tags?.some((tag: string) => tag.toLowerCase().includes(word))) {
-          score += 8;
         }
       });
       
@@ -171,10 +157,16 @@ const AllProducts = () => {
         </div>
 
         {/* Products grid */}
-        {filteredProducts.length === 0 ? (
+        {loading ? (
           <div className="text-center py-12">
             <p className="text-lg text-muted-foreground">
-              Aucun produit trouvé pour votre recherche.
+              Chargement des produits...
+            </p>
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-lg text-muted-foreground">
+              {searchTerm ? "Aucun produit trouvé pour votre recherche." : "Aucun produit disponible pour le moment."}
             </p>
           </div>
         ) : (
@@ -183,7 +175,7 @@ const AllProducts = () => {
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
                   <img
-                    src={product.image}
+                    src={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'}
                     alt={product.title}
                     className="w-full h-48 object-cover"
                   />
@@ -211,11 +203,11 @@ const AllProducts = () => {
                   </p>
                   <div className="flex items-center text-muted-foreground text-sm mb-2">
                     <MapPin className="h-4 w-4 mr-1" />
-                    <span>{product.location}</span>
+                    <span>{product.location || 'Non spécifié'}</span>
                   </div>
                   <div className="flex items-center text-muted-foreground text-sm mb-4">
                     <User className="h-4 w-4 mr-1" />
-                    <span>{product.seller}</span>
+                    <span>{product.profiles?.display_name || 'Utilisateur'}</span>
                   </div>
                   <Button className="w-full" size="sm" variant="default">
                     Contacter le vendeur
