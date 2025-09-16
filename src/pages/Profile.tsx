@@ -41,6 +41,7 @@ const Profile = () => {
     address: "",
     shopName: "",
     displayName: "",
+    paymentMethod: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -89,7 +90,9 @@ const Profile = () => {
           address: data.address || "",
           shopName: (data as any).shop_name || "",
           displayName: data.display_name || "",
+          paymentMethod: (data as any).payment_method || "",
         });
+        setSelectedPaymentMethod((data as any).payment_method || "");
       } else {
         // No profile exists, set empty values
         setProfile({
@@ -99,6 +102,7 @@ const Profile = () => {
           address: "",
           shopName: "",
           displayName: "",
+          paymentMethod: "",
         });
       }
     } catch (error) {
@@ -142,6 +146,7 @@ const Profile = () => {
             phone: profile.phone,
             address: profile.address,
             shop_name: profile.shopName,
+            payment_method: selectedPaymentMethod,
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', user.id);
@@ -156,6 +161,7 @@ const Profile = () => {
             phone: profile.phone,
             address: profile.address,
             shop_name: profile.shopName,
+            payment_method: selectedPaymentMethod,
           });
       }
 
@@ -173,7 +179,7 @@ const Profile = () => {
           title: "Profil sauvegardé",
           description: "Vos informations ont été mises à jour avec succès",
         });
-        setProfile(prev => ({ ...prev, displayName }));
+        setProfile(prev => ({ ...prev, displayName, paymentMethod: selectedPaymentMethod }));
       }
     } catch (error) {
       toast({

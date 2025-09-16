@@ -220,6 +220,7 @@ export type Database = {
           first_product_posted_congratulated: boolean | null
           first_product_sold_congratulated: boolean | null
           id: string
+          payment_method: string | null
           phone: string | null
           rating: number | null
           shop_name: string | null
@@ -236,6 +237,7 @@ export type Database = {
           first_product_posted_congratulated?: boolean | null
           first_product_sold_congratulated?: boolean | null
           id?: string
+          payment_method?: string | null
           phone?: string | null
           rating?: number | null
           shop_name?: string | null
@@ -252,6 +254,7 @@ export type Database = {
           first_product_posted_congratulated?: boolean | null
           first_product_sold_congratulated?: boolean | null
           id?: string
+          payment_method?: string | null
           phone?: string | null
           rating?: number | null
           shop_name?: string | null
