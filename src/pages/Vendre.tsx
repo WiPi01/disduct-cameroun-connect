@@ -50,8 +50,8 @@ const Vendre = () => {
 
   const handleCommencerVendre = () => {
     if (user) {
-      // Rediriger vers la page des produits pour l'instant
-      navigate("/produits");
+      // Rediriger vers la page de publication d'article
+      navigate("/publier-article");
     } else {
       setIsAuthModalOpen(true);
     }
@@ -59,10 +59,8 @@ const Vendre = () => {
 
   const handleCreerCompteVendeur = () => {
     if (user) {
-      toast({
-        title: "Compte déjà créé",
-        description: "Vous avez déjà créé un compte et vous êtes déjà connecté.",
-      });
+      // Si l'utilisateur est déjà connecté, le rediriger vers la page de publication
+      navigate("/publier-article");
     } else {
       setIsAuthModalOpen(true);
     }
