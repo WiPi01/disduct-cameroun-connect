@@ -186,7 +186,7 @@ const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
       const redirectUrl = window.location.origin; // Ceci utilisera automatiquement votre domaine personnalisé
       
       const { error } = await supabase.auth.resetPasswordForEmail(sanitizedEmail, {
-        redirectTo: `${redirectUrl}/`,
+        redirectTo: `${redirectUrl}/reset-password`,
       });
 
       if (error) {

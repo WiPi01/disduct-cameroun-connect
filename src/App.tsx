@@ -15,6 +15,7 @@ import SignalerProbleme from "./pages/SignalerProbleme";
 import FAQ from "./pages/FAQ";
 import CategoryProducts from "./pages/CategoryProducts";
 import AllProducts from "./pages/AllProducts";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
@@ -44,7 +45,8 @@ const App = () => {
       <Route path="/produits" element={<AllProducts />} />
       <Route path="/category/:category" element={<CategoryProducts />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-      <Route path="*" element={<NotFound />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="*" element={<NotFound />} />
     </Routes>
   </TooltipProvider>
   );
