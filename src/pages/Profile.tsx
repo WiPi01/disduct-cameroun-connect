@@ -113,24 +113,61 @@ const Profile = () => {
     try {
       const displayName = `${profile.firstName} ${profile.lastName}`.trim();
       
-      const { error } = await supabase
-        .from('profiles')
-        .upsert({
-          user_id: user.id,
-          display_name: displayName,
-          phone: profile.phone,
-          address: profile.address,
-          shop_name: profile.shopName,
-          updated_at: new Date().toISOString(),
-        } as any);
+      console.log('DEBUG: Attempting to save profile for user:', user.id);
+      console.log('DEBUG: Profile data:', {
+        user_id: user.id,
+        display_name: displayName,
+        phone: profile.phone,
+        address: profile.address,
+        shop_name: profile.shopName,
+      });
 
-      if (error) {
+      // First, check if profile exists
+      const { data: existingProfile, error: checkError } = await supabase
+        .from('profiles')
+        .select('user_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      console.log('DEBUG: Existing profile check:', { existingProfile, checkError });
+
+      let result;
+      if (existingProfile) {
+        // Profile exists, update it
+        console.log('DEBUG: Updating existing profile');
+        result = await supabase
+          .from('profiles')
+          .update({
+            display_name: displayName,
+            phone: profile.phone,
+            address: profile.address,
+            shop_name: profile.shopName,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', user.id);
+      } else {
+        // Profile doesn't exist, create it
+        console.log('DEBUG: Creating new profile');
+        result = await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            display_name: displayName,
+            phone: profile.phone,
+            address: profile.address,
+            shop_name: profile.shopName,
+          });
+      }
+
+      console.log('DEBUG: Save result:', result);
+
+      if (result.error) {
         toast({
           title: "Erreur",
           description: "Erreur lors de la sauvegarde du profil",
           variant: "destructive",
         });
-        console.error('Error saving profile:', error);
+        console.error('Error saving profile:', result.error);
       } else {
         toast({
           title: "Profil sauvegardé",
