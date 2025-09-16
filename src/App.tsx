@@ -15,6 +15,7 @@ import SignalerProbleme from "./pages/SignalerProbleme";
 import FAQ from "./pages/FAQ";
 import CategoryProducts from "./pages/CategoryProducts";
 import AllProducts from "./pages/AllProducts";
+import PublierArticle from "./pages/PublierArticle";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
@@ -43,6 +44,7 @@ const App = () => {
       <Route path="/signaler-probleme" element={<SignalerProbleme />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/produits" element={<AllProducts />} />
+      <Route path="/publier-article" element={<PublierArticle />} />
       <Route path="/category/:category" element={<CategoryProducts />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/reset-password" element={<ResetPassword />} />

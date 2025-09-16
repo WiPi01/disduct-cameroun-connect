@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, MapPin, User, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ const AllProducts = () => {
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -225,7 +227,11 @@ const AllProducts = () => {
                 <p className="text-lg text-muted-foreground mb-6">
                   Soyez le premier à publier un article sur notre plateforme !
                 </p>
-                <Button variant="default" size="lg">
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  onClick={() => navigate("/publier-article")}
+                >
                   Publier mon premier article
                 </Button>
               </div>
