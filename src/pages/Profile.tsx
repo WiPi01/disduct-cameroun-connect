@@ -13,12 +13,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Heart,
   ShoppingBag,
   Store,
   Star,
   Settings,
   LogOut,
+  ChevronDown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +33,7 @@ import { useToast } from "@/hooks/use-toast";
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -235,6 +243,11 @@ const Profile = () => {
                   <Input id="address" placeholder="Votre adresse complète" />
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="shopName">Nom de la boutique (entreprise)</Label>
+                  <Input id="shopName" placeholder="Nom de votre boutique ou entreprise" />
+                </div>
+
                 <Button>Sauvegarder les modifications</Button>
               </CardContent>
             </Card>
@@ -247,12 +260,58 @@ const Profile = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  Aucun moyen de paiement configuré
-                </div>
-                <Button variant="outline" className="w-full">
-                  Ajouter un moyen de paiement
-                </Button>
+                {selectedPaymentMethod ? (
+                  <div className="space-y-4">
+                    <div className="p-4 border rounded-lg bg-muted/50">
+                      <p className="font-medium">Moyen de paiement privilégié :</p>
+                      <p className="text-sm text-muted-foreground">{selectedPaymentMethod}</p>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="w-full">
+                          Changer le moyen de paiement privilégié
+                          <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-full">
+                        <DropdownMenuItem onClick={() => setSelectedPaymentMethod("Orange Money")}>
+                          Orange Money
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSelectedPaymentMethod("Momo")}>
+                          Momo
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSelectedPaymentMethod("Espèce")}>
+                          Espèce
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="text-center py-8 text-muted-foreground">
+                      Aucun moyen de paiement privilégié configuré
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="w-full">
+                          Moyen de paiement privilégié
+                          <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-full">
+                        <DropdownMenuItem onClick={() => setSelectedPaymentMethod("Orange Money")}>
+                          Orange Money
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSelectedPaymentMethod("Momo")}>
+                          Momo
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSelectedPaymentMethod("Espèce")}>
+                          Espèce
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
