@@ -7,7 +7,8 @@ import { useContactPermissions } from '@/hooks/useContactPermissions';
 import { ContactPermissionDialog } from './ContactPermissionDialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSecureProfile } from '@/hooks/useSecureProfile';
-import { logSecurityEvent } from '@/lib/security';
+import { logSecurityEvent, rateLimiter } from '@/lib/security';
+import { toast } from "sonner";
 
 
 interface SecureProfileDisplayProps {
@@ -27,10 +28,25 @@ export const SecureProfileDisplay = ({
   const [hasContactPermission, setHasContactPermission] = useState(false);
   const [showPermissionDialog, setShowPermissionDialog] = useState(false);
   const [showSensitiveInfo, setShowSensitiveInfo] = useState(false);
+  const [accessBlocked, setAccessBlocked] = useState(false);
 
   const isOwnProfile = user?.id === userId;
 
   useEffect(() => {
+    // Rate limiting for profile access - only for other users' profiles
+    if (!isOwnProfile) {
+      const rateLimitKey = `profile_access_${userId}`;
+      if (!rateLimiter.isAllowed(rateLimitKey, 10, 60000)) { // 10 requests per minute
+        setAccessBlocked(true);
+        logSecurityEvent('profile_access_rate_limited', { 
+          targetUserId: userId,
+          remainingTime: rateLimiter.getRemainingTime(rateLimitKey, 60000)
+        });
+        toast.error("Trop de tentatives d'accès. Veuillez patienter.");
+        return;
+      }
+    }
+
     if (!profile) return;
 
     if (isOwnProfile) {
@@ -38,6 +54,12 @@ export const SecureProfileDisplay = ({
       setShowSensitiveInfo(true); // Always show own info
       return;
     }
+
+    // Log legitimate profile access
+    logSecurityEvent('profile_viewed', { 
+      targetUserId: userId,
+      hasContactPermission: profile.can_view_contact || false 
+    });
 
     // Check if we already have contact permission info from the secure profile
     if (profile.can_view_contact !== undefined) {
@@ -88,6 +110,19 @@ export const SecureProfileDisplay = ({
       hasPermission: hasContactPermission
     });
   };
+
+  if (accessBlocked) {
+    return (
+      <Card className="border-destructive">
+        <CardContent className="p-6">
+          <div className="flex items-center space-x-2 text-destructive">
+            <Shield className="h-5 w-5" />
+            <p>Accès temporairement bloqué pour des raisons de sécurité.</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (loading) {
     return <div className="text-sm text-muted-foreground">Chargement du profil...</div>;
