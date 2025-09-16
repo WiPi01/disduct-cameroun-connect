@@ -18,7 +18,13 @@ const PublierArticle = () => {
     price: "",
     category: "",
     location: "",
-    condition: "neuf"
+    condition: "neuf",
+    brand: "",
+    color: "",
+    material: "",
+    size_info: "",
+    weight: "",
+    dimensions: ""
   });
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -155,6 +161,12 @@ const PublierArticle = () => {
           category: formData.category,
           location: formData.location,
           condition: formData.condition,
+          brand: formData.brand,
+          color: formData.color,
+          material: formData.material,
+          size_info: formData.size_info,
+          weight: formData.weight,
+          dimensions: formData.dimensions,
           images: imageUrls,
           seller_id: user.id,
           status: 'available'
@@ -279,6 +291,75 @@ const PublierArticle = () => {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Spécificités produit */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Marque */}
+                <div className="space-y-2">
+                  <Label htmlFor="brand">Marque</Label>
+                  <Input
+                    id="brand"
+                    placeholder="Ex: Nike, Samsung, Apple..."
+                    value={formData.brand}
+                    onChange={(e) => handleInputChange("brand", e.target.value)}
+                  />
+                </div>
+
+                {/* Couleur */}
+                <div className="space-y-2">
+                  <Label htmlFor="color">Couleur</Label>
+                  <Input
+                    id="color"
+                    placeholder="Ex: Noir, Rouge, Bleu..."
+                    value={formData.color}
+                    onChange={(e) => handleInputChange("color", e.target.value)}
+                  />
+                </div>
+
+                {/* Matière */}
+                <div className="space-y-2">
+                  <Label htmlFor="material">Matière</Label>
+                  <Input
+                    id="material"
+                    placeholder="Ex: Coton, Cuir, Plastique..."
+                    value={formData.material}
+                    onChange={(e) => handleInputChange("material", e.target.value)}
+                  />
+                </div>
+
+                {/* Taille */}
+                <div className="space-y-2">
+                  <Label htmlFor="size_info">Taille</Label>
+                  <Input
+                    id="size_info"
+                    placeholder="Ex: S, M, L, XL, 42, 38..."
+                    value={formData.size_info}
+                    onChange={(e) => handleInputChange("size_info", e.target.value)}
+                  />
+                </div>
+
+                {/* Poids */}
+                <div className="space-y-2">
+                  <Label htmlFor="weight">Poids</Label>
+                  <Input
+                    id="weight"
+                    placeholder="Ex: 500g, 1.2kg, 150g..."
+                    value={formData.weight}
+                    onChange={(e) => handleInputChange("weight", e.target.value)}
+                  />
+                </div>
+
+                {/* Dimensions */}
+                <div className="space-y-2">
+                  <Label htmlFor="dimensions">Dimensions</Label>
+                  <Input
+                    id="dimensions"
+                    placeholder="Ex: 30x20x10cm, L50cm..."
+                    value={formData.dimensions}
+                    onChange={(e) => handleInputChange("dimensions", e.target.value)}
+                  />
+                </div>
               </div>
 
               {/* Images */}
