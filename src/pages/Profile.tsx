@@ -74,9 +74,9 @@ const Profile = () => {
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error('Error loading profile:', error);
         return;
       }
@@ -89,6 +89,16 @@ const Profile = () => {
           address: data.address || "",
           shopName: (data as any).shop_name || "",
           displayName: data.display_name || "",
+        });
+      } else {
+        // No profile exists, set empty values
+        setProfile({
+          firstName: "",
+          lastName: "",
+          phone: "",
+          address: "",
+          shopName: "",
+          displayName: "",
         });
       }
     } catch (error) {
