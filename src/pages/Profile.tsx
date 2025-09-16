@@ -87,7 +87,7 @@ const Profile = () => {
           lastName: data.display_name?.split(' ').slice(1).join(' ') || "",
           phone: data.phone || "",
           address: data.address || "",
-          shopName: data.shop_name || "",
+          shopName: (data as any).shop_name || "",
           displayName: data.display_name || "",
         });
       }
@@ -302,11 +302,21 @@ const Profile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">Prénom</Label>
-                    <Input id="firstName" placeholder="Votre prénom" />
+                    <Input 
+                      id="firstName" 
+                      placeholder="Votre prénom" 
+                      value={profile.firstName}
+                      onChange={(e) => setProfile(prev => ({ ...prev, firstName: e.target.value }))}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">Nom</Label>
-                    <Input id="lastName" placeholder="Votre nom" />
+                    <Input 
+                      id="lastName" 
+                      placeholder="Votre nom" 
+                      value={profile.lastName}
+                      onChange={(e) => setProfile(prev => ({ ...prev, lastName: e.target.value }))}
+                    />
                   </div>
                 </div>
 
@@ -322,20 +332,40 @@ const Profile = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="phone">Numéro de téléphone</Label>
-                  <Input id="phone" placeholder="**** ** ** **" />
+                  <Input 
+                    id="phone" 
+                    placeholder="**** ** ** **" 
+                    value={profile.phone}
+                    onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="address">Adresse</Label>
-                  <Input id="address" placeholder="Votre adresse complète" />
+                  <Input 
+                    id="address" 
+                    placeholder="Votre adresse complète" 
+                    value={profile.address}
+                    onChange={(e) => setProfile(prev => ({ ...prev, address: e.target.value }))}
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="shopName">Nom de la boutique (entreprise)</Label>
-                  <Input id="shopName" placeholder="Nom de votre boutique ou entreprise" />
+                  <Input 
+                    id="shopName" 
+                    placeholder="Nom de votre boutique ou entreprise" 
+                    value={profile.shopName}
+                    onChange={(e) => setProfile(prev => ({ ...prev, shopName: e.target.value }))}
+                  />
                 </div>
 
-                <Button>Sauvegarder les modifications</Button>
+                <Button 
+                  onClick={handleSaveProfile} 
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Sauvegarde..." : "Sauvegarder les modifications"}
+                </Button>
               </CardContent>
             </Card>
 
