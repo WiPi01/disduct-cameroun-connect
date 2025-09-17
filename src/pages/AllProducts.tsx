@@ -42,7 +42,7 @@ const AllProducts = () => {
         .from('products')
         .select(`
           *,
-          profiles!products_seller_id_fkey (
+          profiles!seller_id (
             display_name
           )
         `)
