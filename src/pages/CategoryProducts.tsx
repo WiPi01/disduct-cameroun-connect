@@ -23,6 +23,7 @@ interface Product {
   status: string;
   seller_id: string;
   created_at: string;
+  brand?: string;
   seller?: {
     display_name: string;
   } | null;
@@ -113,6 +114,7 @@ const CategoryProducts = () => {
     return searchWords.some(word => 
       product.title.toLowerCase().includes(word) ||
       product.description?.toLowerCase().includes(word) ||
+      product.brand?.toLowerCase().includes(word) ||
       product.category.toLowerCase().includes(word) ||
       product.location?.toLowerCase().includes(word)
     );
