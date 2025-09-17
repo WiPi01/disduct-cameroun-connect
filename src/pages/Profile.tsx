@@ -56,7 +56,23 @@ const Profile = () => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        loadProfile(session.user.id);
+        // Délai pour s'assurer que la session est complètement établie
+        setTimeout(() => {
+          loadProfile(session.user.id);
+        }, 100);
+      } else {
+        // Réinitialiser le profil si pas d'utilisateur
+        setProfile({
+          firstName: "",
+          lastName: "",
+          phone: "",
+          address: "",
+          shopName: "",
+          displayName: "",
+          paymentMethod: "",
+          avatarUrl: "",
+        });
+        setSelectedPaymentMethod("");
       }
     });
 
@@ -69,9 +85,10 @@ const Profile = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, []);
 
   const loadProfile = async (userId: string) => {
+    console.log('DEBUG: Loading profile for user:', userId);
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -79,24 +96,31 @@ const Profile = () => {
         .eq('user_id', userId)
         .maybeSingle();
 
+      console.log('DEBUG: Profile data received:', data);
+      console.log('DEBUG: Profile error:', error);
+
       if (error) {
         console.error('Error loading profile:', error);
         return;
       }
 
       if (data) {
-        setProfile({
+        const profileData = {
           firstName: data.display_name?.split(' ')[0] || "",
           lastName: data.display_name?.split(' ').slice(1).join(' ') || "",
           phone: data.phone || "",
           address: data.address || "",
-          shopName: (data as any).shop_name || "",
+          shopName: data.shop_name || "",
           displayName: data.display_name || "",
-          paymentMethod: (data as any).payment_method || "",
+          paymentMethod: data.payment_method || "",
           avatarUrl: data.avatar_url || "",
-        });
-        setSelectedPaymentMethod((data as any).payment_method || "");
+        };
+        
+        console.log('DEBUG: Setting profile state with:', profileData);
+        setProfile(profileData);
+        setSelectedPaymentMethod(data.payment_method || "");
       } else {
+        console.log('DEBUG: No profile found, setting empty values');
         // No profile exists, set empty values
         setProfile({
           firstName: "",
@@ -108,6 +132,7 @@ const Profile = () => {
           paymentMethod: "",
           avatarUrl: "",
         });
+        setSelectedPaymentMethod("");
       }
     } catch (error) {
       console.error('Error loading profile:', error);
