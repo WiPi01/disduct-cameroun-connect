@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import MobileNavBar from "@/components/MobileNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -402,9 +403,23 @@ const AllProducts = () => {
                     <User className="h-4 w-4 mr-1" />
                     <span>{product.profiles?.display_name || 'Utilisateur'}</span>
                   </div>
-                  <Button className="w-full" size="sm" variant="default">
-                    Contacter le vendeur
-                  </Button>
+                  {user && user.id !== product.seller_id ? (
+                    <ContactSellerDialog
+                      productId={product.id}
+                      sellerId={product.seller_id}
+                      sellerName={product.profiles?.display_name || 'Vendeur'}
+                      productTitle={product.title}
+                      triggerClassName="w-full"
+                    />
+                  ) : user && user.id === product.seller_id ? (
+                    <Button className="w-full" size="sm" variant="outline" disabled>
+                      Votre article
+                    </Button>
+                  ) : (
+                    <Button className="w-full" size="sm" variant="default" onClick={() => navigate('/')}>
+                      Se connecter pour contacter
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}

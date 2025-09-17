@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { Star, ArrowLeft, Store, Edit, Trash2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -354,6 +355,18 @@ export default function ShopView() {
                       <p className="text-xs text-muted-foreground">Taille: {product.size_info}</p>
                     )}
                   </div>
+                  
+                  {/* Contact seller button for non-owners */}
+                  {!isOwnShop && user && (
+                    <div className="mt-3">
+                      <ContactSellerDialog
+                        productId={product.id}
+                        sellerId={userId!}
+                        sellerName={profile.display_name}
+                        productTitle={product.title}
+                      />
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}

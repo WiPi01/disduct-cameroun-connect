@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ContactSellerDialog } from "@/components/ContactSellerDialog";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Product {
   id: string;
@@ -14,6 +16,10 @@ interface Product {
   size_info?: string;
   status: string;
   created_at: string;
+  seller_id: string;
+  profiles?: {
+    display_name: string | null;
+  } | null;
 }
 
 interface ProductGridProps {
@@ -21,11 +27,13 @@ interface ProductGridProps {
   showAvailableOnly?: boolean;
   showSoldOnly?: boolean;
   maxItems?: number;
+  showContactButton?: boolean;
 }
 
-export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems }: ProductGridProps) => {
+export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems, showContactButton = false }: ProductGridProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,7 +63,23 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems 
           return;
         }
 
-        setProducts(data || []);
+        // Fetch seller profiles separately if needed
+        if (data && data.length > 0 && showContactButton) {
+          const sellerIds = [...new Set(data.map(p => p.seller_id))];
+          const { data: profilesData } = await supabase
+            .from('profiles')
+            .select('user_id, display_name')
+            .in('user_id', sellerIds);
+
+          const productsWithProfiles = data.map(product => ({
+            ...product,
+            profiles: profilesData?.find(p => p.user_id === product.seller_id) || null
+          }));
+          
+          setProducts(productsWithProfiles as Product[]);
+        } else {
+          setProducts((data || []) as Product[]);
+        }
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
@@ -64,7 +88,7 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems 
     };
 
     fetchProducts();
-  }, [userId, showAvailableOnly, showSoldOnly, maxItems]);
+  }, [userId, showAvailableOnly, showSoldOnly, maxItems, showContactButton]);
 
   const getConditionText = (condition: string) => {
     const conditionMap: { [key: string]: string } = {
@@ -158,6 +182,16 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems 
                 <p className="text-xs text-muted-foreground">Taille: {product.size_info}</p>
               )}
             </div>
+            {showContactButton && user && user.id !== product.seller_id && (
+              <div className="mt-3">
+                <ContactSellerDialog
+                  productId={product.id}
+                  sellerId={product.seller_id}
+                  sellerName={product.profiles?.display_name || 'Vendeur'}
+                  productTitle={product.title}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
       ))}
