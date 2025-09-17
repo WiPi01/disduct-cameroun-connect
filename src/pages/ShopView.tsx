@@ -4,7 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, ArrowLeft, Store } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Star, ArrowLeft, Store, Edit, Trash2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface Product {
   id: string;
@@ -29,9 +33,13 @@ interface Profile {
 export default function ShopView() {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const isOwnShop = user?.id === userId;
 
   useEffect(() => {
     const fetchShopData = async () => {
@@ -96,6 +104,43 @@ export default function ShopView() {
       'a-reparer': 'bg-red-100 text-red-800'
     };
     return colorMap[condition] || 'bg-gray-100 text-gray-800';
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', productId);
+
+      if (error) {
+        console.error('Error deleting product:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de supprimer l'article.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Refresh products list
+      setProducts(products.filter(p => p.id !== productId));
+      toast({
+        title: "Article supprimé",
+        description: "Votre article a été supprimé avec succès.",
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditProduct = (productId: string) => {
+    navigate(`/modifier-article/${productId}`);
   };
 
   if (loading) {
@@ -203,21 +248,88 @@ export default function ShopView() {
             {products.map((product) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group">
                 <div className="relative aspect-square overflow-hidden">
-                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
-                     <img
-                       src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
-                       alt={product.title}
-                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                       onError={(e) => {
-                         e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
-                       }}
-                     />
-                   ) : (
-                     <div className="w-full h-full bg-muted flex items-center justify-center">
-                       <span className="text-muted-foreground text-sm">Pas d'image</span>
-                     </div>
-                   )}
-                 </div>
+                  {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
+                    product.images.length === 1 ? (
+                      <img
+                        src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
+                        alt={product.title}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                        }}
+                      />
+                    ) : (
+                      <Carousel className="w-full h-full">
+                        <CarouselContent>
+                          {product.images.map((image, index) => (
+                            <CarouselItem key={index}>
+                              <img
+                                src={image.startsWith('http') ? image : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${image}`}
+                                alt={`${product.title} - Image ${index + 1}`}
+                                className="w-full h-full object-contain"
+                                onError={(e) => {
+                                  e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                                }}
+                              />
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="absolute left-2 top-1/2 transform -translate-y-1/2" />
+                        <CarouselNext className="absolute right-2 top-1/2 transform -translate-y-1/2" />
+                        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                          {product.images.length} photos
+                        </div>
+                      </Carousel>
+                    )
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center">
+                      <span className="text-muted-foreground text-sm">Pas d'image</span>
+                    </div>
+                  )}
+                  
+                  {/* Boutons d'édition/suppression pour le propriétaire */}
+                  {isOwnShop && (
+                    <div className="absolute top-2 right-2 flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-2 bg-white/80 hover:bg-white"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditProduct(product.id);
+                        }}
+                      >
+                        <Edit className="h-4 w-4 text-blue-600" />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-2 bg-white/80 hover:bg-white"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Supprimer l'article</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Annuler</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteProduct(product.id)}>
+                              Supprimer
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  )}
+                </div>
                 
                 <CardContent className="p-3 space-y-2">
                   <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
