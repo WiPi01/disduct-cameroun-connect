@@ -185,8 +185,8 @@ const PublierArticle = () => {
         }
       }
 
-      // Upload des images
-      const imageUrls = await uploadImages();
+      // Upload des images (seulement si des images sont sélectionnées)
+      const imageUrls = images.length > 0 ? await uploadImages() : [];
 
       // Insertion du produit
       const { data, error } = await supabase

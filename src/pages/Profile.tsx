@@ -271,6 +271,33 @@ const Profile = () => {
 
       setProfile(prev => ({ ...prev, avatarUrl: data.publicUrl }));
       
+      // Sauvegarder automatiquement le profil avec le nouvel avatar
+      const displayName = `${profile.firstName} ${profile.lastName}`.trim() || profile.displayName || user.email || 'Utilisateur';
+      
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('user_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (existingProfile) {
+        await supabase
+          .from('profiles')
+          .update({
+            avatar_url: data.publicUrl,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', user.id);
+      } else {
+        await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            display_name: displayName,
+            avatar_url: data.publicUrl,
+          });
+      }
+      
       toast({
         title: "Photo mise à jour",
         description: "Votre photo de profil a été mise à jour avec succès.",

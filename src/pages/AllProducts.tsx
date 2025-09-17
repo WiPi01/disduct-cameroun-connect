@@ -242,11 +242,17 @@ const AllProducts = () => {
             {filteredProducts.map((product) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
-                  <img
-                    src={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'}
-                    alt={product.title}
-                    className="w-full h-48 object-cover"
-                  />
+                  {product.images && product.images.length > 0 ? (
+                    <img
+                      src={product.images[0]}
+                      alt={product.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-muted flex items-center justify-center">
+                      <span className="text-muted-foreground text-sm">Pas d'image</span>
+                    </div>
+                  )}
                   <Button
                     variant="ghost"
                     size="sm"
