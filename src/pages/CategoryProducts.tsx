@@ -52,32 +52,20 @@ const CategoryProducts = () => {
   }, []);
 
   useEffect(() => {
-    fetchProducts();
-  }, [category, searchTerm]);
+    loadProducts();
+  }, [category]); // Seulement quand la catégorie change
 
-  const fetchProducts = async () => {
-    console.log("Recherche actuelle:", searchTerm);
-    console.log("Catégorie actuelle:", category);
+  // Nouvelle fonction pour charger les produits
+  const loadProducts = async () => {
     try {
       setLoading(true);
       
-      // Récupérer les produits d'abord
-      let query = supabase
+      // Charger TOUS les produits disponibles
+      const { data: products, error: productsError } = await supabase
         .from("products")
         .select("*")
-        .eq("status", "available");
-
-      // NOUVELLE LOGIQUE: Si on a un terme de recherche, on ignore la catégorie
-      if (searchTerm && searchTerm.trim().length > 0) {
-        // Recherche globale - ne pas filtrer par catégorie
-        console.log("Recherche globale activée pour:", searchTerm);
-        // On charge TOUS les produits et on laisse le filtrage côté client
-      } else if (category) {
-        query = query.eq("category", category);
-        console.log("Filtrage par catégorie:", category);
-      }
-
-      const { data: products, error: productsError } = await query.order("created_at", { ascending: false });
+        .eq("status", "available")
+        .order("created_at", { ascending: false });
 
       if (productsError) {
         console.error("Erreur lors du chargement des produits:", productsError);
@@ -110,20 +98,30 @@ const CategoryProducts = () => {
     }
   };
 
-  // Filtrage par recherche
+  // Filtrage par recherche ET par catégorie
   const filteredProducts = products.filter(product => {
+    // Filtrage par recherche
     const searchLower = searchTerm.toLowerCase().trim();
-    if (!searchLower) return true;
-
-    const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+    let matchesSearch = true;
     
-    return searchWords.some(word => 
-      product.title.toLowerCase().includes(word) ||
-      product.description?.toLowerCase().includes(word) ||
-      product.brand?.toLowerCase().includes(word) ||
-      product.category.toLowerCase().includes(word) ||
-      product.location?.toLowerCase().includes(word)
-    );
+    if (searchLower) {
+      const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+      matchesSearch = searchWords.some(word => 
+        product.title.toLowerCase().includes(word) ||
+        product.description?.toLowerCase().includes(word) ||
+        product.brand?.toLowerCase().includes(word) ||
+        product.category.toLowerCase().includes(word) ||
+        product.location?.toLowerCase().includes(word)
+      );
+    }
+    
+    // Filtrage par catégorie SEULEMENT si pas de recherche
+    let matchesCategory = true;
+    if (!searchTerm.trim() && category) {
+      matchesCategory = product.category === category;
+    }
+    
+    return matchesSearch && matchesCategory;
   });
   const categoryNames = {
     electronique: "Électronique",
