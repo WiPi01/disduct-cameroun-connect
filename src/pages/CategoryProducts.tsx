@@ -56,6 +56,7 @@ const CategoryProducts = () => {
   }, [category, searchTerm]);
 
   const fetchProducts = async () => {
+    console.log("Recherche:", searchTerm);
     try {
       setLoading(true);
       
@@ -65,10 +66,14 @@ const CategoryProducts = () => {
         .select("*")
         .eq("status", "available");
 
-      // Si on a un terme de recherche, on cherche dans tous les produits
+      // Si on a un terme de recherche, on cherche dans TOUS les produits
       // Sinon, on filtre par catégorie
-      if (!searchTerm.trim() && category) {
+      if (searchTerm && searchTerm.trim().length > 0) {
+        // Recherche globale - ne pas filtrer par catégorie
+        console.log("Recherche globale activée pour:", searchTerm);
+      } else if (category) {
         query = query.eq("category", category);
+        console.log("Filtrage par catégorie:", category);
       }
 
       const { data: products, error: productsError } = await query.order("created_at", { ascending: false });
