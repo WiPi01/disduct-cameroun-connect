@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Heart, Eye } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
+import { ImageViewModal } from "@/components/ImageViewModal";
 import MobileNavBar from "@/components/MobileNavBar";
 
 // Données temporaires des produits pour démonstration
@@ -123,10 +124,15 @@ const CategoryProducts = () => {
               >
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden rounded-t-lg">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    <ImageViewModal
+                      images={[product.image]}
+                      trigger={
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                        />
+                      }
                     />
                     <div className="absolute top-3 right-3">
                       <Button
