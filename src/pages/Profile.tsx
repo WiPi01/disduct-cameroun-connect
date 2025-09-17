@@ -26,6 +26,7 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  MessageCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -378,11 +379,12 @@ const Profile = () => {
         )}
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Aperçu</TabsTrigger>
             <TabsTrigger value="favorites">Favoris</TabsTrigger>
             <TabsTrigger value="sales">Ventes</TabsTrigger>
             <TabsTrigger value="purchases">Achats</TabsTrigger>
+            <TabsTrigger value="conversations">Conversations</TabsTrigger>
             <TabsTrigger value="settings">Paramètres</TabsTrigger>
           </TabsList>
 
@@ -485,6 +487,31 @@ const Profile = () => {
               <CardContent>
                 <div className="text-center py-8 text-muted-foreground">
                   Aucun achat pour le moment
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="conversations">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5" />
+                  Mes Conversations
+                </CardTitle>
+                <CardDescription>
+                  Vos discussions avec les vendeurs et acheteurs
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-center">
+                  <Button 
+                    onClick={() => navigate('/conversations')}
+                    className="flex items-center gap-2"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Voir toutes mes conversations
+                  </Button>
                 </div>
               </CardContent>
             </Card>
