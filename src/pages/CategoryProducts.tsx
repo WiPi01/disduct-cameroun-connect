@@ -52,11 +52,11 @@ const CategoryProducts = () => {
   }, []);
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(searchTerm);
   }, [category, searchTerm]);
 
-  const fetchProducts = async () => {
-    console.log("Recherche:", searchTerm);
+  const fetchProducts = async (currentSearchTerm = "") => {
+    console.log("Recherche:", currentSearchTerm);
     try {
       setLoading(true);
       
@@ -68,9 +68,9 @@ const CategoryProducts = () => {
 
       // Si on a un terme de recherche, on cherche dans TOUS les produits
       // Sinon, on filtre par catégorie
-      if (searchTerm && searchTerm.trim().length > 0) {
+      if (currentSearchTerm && currentSearchTerm.trim().length > 0) {
         // Recherche globale - ne pas filtrer par catégorie
-        console.log("Recherche globale activée pour:", searchTerm);
+        console.log("Recherche globale activée pour:", currentSearchTerm);
       } else if (category) {
         query = query.eq("category", category);
         console.log("Filtrage par catégorie:", category);
