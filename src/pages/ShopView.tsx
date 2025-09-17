@@ -200,13 +200,13 @@ export default function ShopView() {
             {products.map((product) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group">
                 <div className="relative aspect-square overflow-hidden">
-                  {product.images && product.images.length > 0 ? (
-                    <img
-                      src={product.images[0]}
-                      alt={product.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
+                   {product.images && product.images.length > 0 ? (
+                     <img
+                       src={product.images[0]}
+                       alt={product.title}
+                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                     />
+                   ) : (
                     <div className="w-full h-full bg-muted flex items-center justify-center">
                       <span className="text-muted-foreground text-sm">Pas d'image</span>
                     </div>

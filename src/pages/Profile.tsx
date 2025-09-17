@@ -43,6 +43,7 @@ const Profile = () => {
     shopName: "",
     displayName: "",
     paymentMethod: "",
+    avatarUrl: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -92,6 +93,7 @@ const Profile = () => {
           shopName: (data as any).shop_name || "",
           displayName: data.display_name || "",
           paymentMethod: (data as any).payment_method || "",
+          avatarUrl: data.avatar_url || "",
         });
         setSelectedPaymentMethod((data as any).payment_method || "");
       } else {
@@ -104,6 +106,7 @@ const Profile = () => {
           shopName: "",
           displayName: "",
           paymentMethod: "",
+          avatarUrl: "",
         });
       }
     } catch (error) {
@@ -148,6 +151,7 @@ const Profile = () => {
             address: profile.address,
             shop_name: profile.shopName,
             payment_method: selectedPaymentMethod,
+            avatar_url: profile.avatarUrl,
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', user.id);
@@ -163,6 +167,7 @@ const Profile = () => {
             address: profile.address,
             shop_name: profile.shopName,
             payment_method: selectedPaymentMethod,
+            avatar_url: profile.avatarUrl,
           });
       }
 
@@ -208,6 +213,79 @@ const Profile = () => {
         description: "Vous avez été déconnecté avec succès",
       });
       navigate("/");
+    }
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Fichier trop volumineux",
+        description: "La taille de l'image ne doit pas dépasser 5 MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/avatar.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      setProfile(prev => ({ ...prev, avatarUrl: data.publicUrl }));
+      
+      toast({
+        title: "Photo mise à jour",
+        description: "Votre photo de profil a été mise à jour avec succès.",
+      });
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast({
+        title: "Erreur",
+        description: "Erreur lors du téléchargement de la photo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    if (!user) return;
+    
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.storage
+        .from('avatars')
+        .remove([`${user.id}/avatar.jpg`, `${user.id}/avatar.jpeg`, `${user.id}/avatar.png`]);
+
+      setProfile(prev => ({ ...prev, avatarUrl: "" }));
+      
+      toast({
+        title: "Photo supprimée",
+        description: "Votre photo de profil a été supprimée.",
+      });
+    } catch (error) {
+      console.error('Error removing avatar:', error);
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la suppression de la photo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -431,6 +509,51 @@ const Profile = () => {
                     value={profile.shopName}
                     onChange={(e) => setProfile(prev => ({ ...prev, shopName: e.target.value }))}
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Photo de profil</Label>
+                  <div className="flex items-center gap-4">
+                    <div className="w-20 h-20 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+                      {profile.avatarUrl ? (
+                        <img 
+                          src={profile.avatarUrl} 
+                          alt="Avatar" 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-muted-foreground text-sm">Pas d'avatar</span>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleAvatarUpload}
+                        className="hidden"
+                        id="avatar-upload"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById('avatar-upload')?.click()}
+                      >
+                        Changer la photo
+                      </Button>
+                      {profile.avatarUrl && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleRemoveAvatar}
+                          className="ml-2 text-red-600 hover:text-red-700"
+                        >
+                          Supprimer
+                        </Button>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <Button 

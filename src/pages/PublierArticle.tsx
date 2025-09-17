@@ -123,11 +123,27 @@ const PublierArticle = () => {
     
     for (const image of images) {
       const fileExt = image.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       
-      // Pour cette demo, on va simuler l'upload et utiliser des URLs placeholder
-      // Dans un vrai projet, vous implémenteriez l'upload vers Supabase Storage
-      uploadedUrls.push(`/placeholder.svg`);
+      try {
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, image);
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
+
+        const { data } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(fileName);
+
+        uploadedUrls.push(data.publicUrl);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        throw new Error(`Erreur lors du téléchargement de l'image: ${image.name}`);
+      }
     }
     
     return uploadedUrls;
