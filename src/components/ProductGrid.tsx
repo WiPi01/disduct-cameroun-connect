@@ -122,7 +122,7 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems 
               <img
                 src={product.images[0]}
                 alt={product.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
               />
             ) : (
               <div className="w-full h-full bg-muted flex items-center justify-center">
@@ -140,9 +140,9 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems 
               {product.title}
             </h3>
             <div className="space-y-1">
-              <p className="font-bold text-lg text-primary">
-                {product.price}€
-              </p>
+                <p className="font-bold text-lg text-primary">
+                  {product.price.toLocaleString()} FCFA
+                </p>
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant="secondary" className={`text-xs ${getConditionColor(product.condition)}`}>
                   {getConditionText(product.condition)}

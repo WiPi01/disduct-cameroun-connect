@@ -228,18 +228,21 @@ const Profile = () => {
 
         {/* Section Ma boutique */}
         {profile.shopName && (
-          <Card className="mb-6">
+          <Card className="mb-6 cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate(`/boutique/${user?.id}`)}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Store className="h-5 w-5" />
                 Ma boutique : {profile.shopName}
               </CardTitle>
               <CardDescription>
-                Mes articles en vente
+                Cliquez pour voir votre boutique complète
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ProductGrid userId={user?.id || ""} showAvailableOnly={true} maxItems={8} />
+              <ProductGrid userId={user?.id || ""} showAvailableOnly={true} maxItems={4} />
+              <div className="text-center mt-4">
+                <p className="text-sm text-muted-foreground">Cliquez pour voir tous vos articles</p>
+              </div>
             </CardContent>
           </Card>
         )}
