@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, User, Heart } from "lucide-react";
+import { Search, MapPin, User, Heart, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import MobileNavBar from "@/components/MobileNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Product {
   id: string;
@@ -30,6 +33,7 @@ const AllProducts = () => {
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -144,6 +148,43 @@ const AllProducts = () => {
     return new Intl.NumberFormat('fr-FR').format(price) + ' FCFA';
   };
 
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', productId);
+
+      if (error) {
+        console.error('Error deleting product:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de supprimer l'article.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Refresh products list
+      setProducts(products.filter(p => p.id !== productId));
+      toast({
+        title: "Article supprimé",
+        description: "Votre article a été supprimé avec succès.",
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditProduct = (productId: string) => {
+    navigate(`/modifier-article/${productId}`);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <MobileNavBar title="Tous les produits" />
@@ -255,33 +296,96 @@ const AllProducts = () => {
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder.svg') ? (
-                    <img
-                      src={product.images[0]}
-                      alt={product.title}
-                      className="w-full h-48 object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
-                      }}
-                    />
+                    product.images.length === 1 ? (
+                      <img
+                        src={product.images[0]}
+                        alt={product.title}
+                        className="w-full h-48 object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                        }}
+                      />
+                    ) : (
+                      <Carousel className="w-full">
+                        <CarouselContent>
+                          {product.images.map((image, index) => (
+                            <CarouselItem key={index}>
+                              <img
+                                src={image}
+                                alt={`${product.title} - Image ${index + 1}`}
+                                className="w-full h-48 object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                                }}
+                              />
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="absolute left-2 top-1/2 transform -translate-y-1/2" />
+                        <CarouselNext className="absolute right-2 top-1/2 transform -translate-y-1/2" />
+                        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                          {product.images.length} photos
+                        </div>
+                      </Carousel>
+                    )
                   ) : (
                     <div className="w-full h-48 bg-muted flex items-center justify-center">
                       <span className="text-muted-foreground text-sm">Pas d'image</span>
                     </div>
                   )}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-2 right-2 p-2"
-                    onClick={() => handleLike(product.id)}
-                  >
-                    <Heart 
-                      className={`h-4 w-4 ${
-                        likedProducts.includes(product.id) 
-                          ? 'fill-red-500 text-red-500' 
-                          : 'text-muted-foreground'
-                      }`} 
-                    />
-                  </Button>
+                  <div className="absolute top-2 right-2 flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="p-2 bg-white/80 hover:bg-white"
+                      onClick={() => handleLike(product.id)}
+                    >
+                      <Heart 
+                        className={`h-4 w-4 ${
+                          likedProducts.includes(product.id) 
+                            ? 'fill-red-500 text-red-500' 
+                            : 'text-muted-foreground'
+                        }`} 
+                      />
+                    </Button>
+                    {user && user.id === product.seller_id && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-2 bg-white/80 hover:bg-white"
+                          onClick={() => handleEditProduct(product.id)}
+                        >
+                          <Edit className="h-4 w-4 text-blue-600" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="p-2 bg-white/80 hover:bg-white"
+                            >
+                              <Trash2 className="h-4 w-4 text-red-600" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Supprimer l'article</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Annuler</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDeleteProduct(product.id)}>
+                                Supprimer
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </>
+                    )}
+                  </div>
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-semibold text-lg mb-2 line-clamp-1">

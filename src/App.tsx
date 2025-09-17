@@ -16,6 +16,7 @@ import FAQ from "./pages/FAQ";
 import CategoryProducts from "./pages/CategoryProducts";
 import AllProducts from "./pages/AllProducts";
 import PublierArticle from "./pages/PublierArticle";
+import ModifierArticle from "./pages/ModifierArticle";
 import ResetPassword from "./pages/ResetPassword";
 import ShopView from "./pages/ShopView";
 import NotFound from "./pages/NotFound";
@@ -46,6 +47,7 @@ const App = () => {
       <Route path="/faq" element={<FAQ />} />
       <Route path="/produits" element={<AllProducts />} />
       <Route path="/publier-article" element={<PublierArticle />} />
+      <Route path="/modifier-article/:id" element={<ModifierArticle />} />
       <Route path="/category/:category" element={<CategoryProducts />} />
       <Route path="/boutique/:userId" element={<ShopView />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
