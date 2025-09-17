@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { ProductGrid } from "@/components/ProductGrid";
 
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -225,6 +226,24 @@ const Profile = () => {
           </Button>
         </div>
 
+        {/* Section Ma boutique */}
+        {profile.shopName && (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Store className="h-5 w-5" />
+                Ma boutique : {profile.shopName}
+              </CardTitle>
+              <CardDescription>
+                Mes articles en vente
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ProductGrid userId={user?.id || ""} showAvailableOnly={true} maxItems={8} />
+            </CardContent>
+          </Card>
+        )}
+
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Aperçu</TabsTrigger>
@@ -313,13 +332,11 @@ const Profile = () => {
               <CardHeader>
                 <CardTitle>Mes Ventes</CardTitle>
                 <CardDescription>
-                  Articles que vous avez mis en vente
+                  Articles que vous avez vendus
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  Aucune vente pour le moment
-                </div>
+                <ProductGrid userId={user?.id || ""} showSoldOnly={true} />
               </CardContent>
             </Card>
           </TabsContent>
