@@ -38,19 +38,15 @@ const AllProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data, error } = await supabase
+      // D'abord récupérer les produits
+      const { data: productsData, error: productsError } = await supabase
         .from('products')
-        .select(`
-          *,
-          profiles!seller_id (
-            display_name
-          )
-        `)
+        .select('*')
         .eq('status', 'available')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching products:', error);
+      if (productsError) {
+        console.error('Error fetching products:', productsError);
         toast({
           title: "Erreur",
           description: "Impossible de charger les produits.",
@@ -59,7 +55,23 @@ const AllProducts = () => {
         return;
       }
 
-      setProducts((data as any) || []);
+      // Ensuite récupérer les profils des vendeurs
+      const sellerIds = productsData?.map(p => p.seller_id) || [];
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('user_id, display_name')
+        .in('user_id', sellerIds);
+
+      // Combiner les données
+      const productsWithProfiles = productsData?.map(product => {
+        const profile = profilesData?.find(p => p.user_id === product.seller_id);
+        return {
+          ...product,
+          profiles: profile ? { display_name: profile.display_name } : null
+        };
+      }) || [];
+
+      setProducts(productsWithProfiles);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -242,9 +254,9 @@ const AllProducts = () => {
             {filteredProducts.map((product) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
-                  {product.images && product.images.length > 0 ? (
+                  {product.images && product.images.length > 0 && !product.images[0].includes('placeholder.svg') ? (
                     <img
-                      src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
+                      src={product.images[0]}
                       alt={product.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
