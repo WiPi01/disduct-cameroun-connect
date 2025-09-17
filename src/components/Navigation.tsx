@@ -144,7 +144,12 @@ const Navigation = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    <User className="h-4 w-4 mr-2" />
                     Mon Profil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/boutique/${user?.id}`)}>
+                    <Store className="h-4 w-4 mr-2" />
+                    Ma Boutique
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => {
                     if (!user) {
@@ -255,17 +260,30 @@ const Navigation = () => {
                       <ShoppingBag className="h-4 w-4 mr-2" />
                       Comment Acheter
                     </Button>
-                    <Button
-                      variant="default"
-                      className="justify-start"
-                      onClick={() => {
-                        handleProfileClick();
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      <User className="h-4 w-4 mr-2" />
-                      {user ? "Mon Profil" : "Se connecter"}
-                    </Button>
+                     <Button
+                       variant="default"
+                       className="justify-start"
+                       onClick={() => {
+                         handleProfileClick();
+                         setIsMobileMenuOpen(false);
+                       }}
+                     >
+                       <User className="h-4 w-4 mr-2" />
+                       {user ? "Mon Profil" : "Se connecter"}
+                     </Button>
+                     {user && (
+                       <Button
+                         variant="outline"
+                         className="justify-start"
+                         onClick={() => {
+                           navigate(`/boutique/${user.id}`);
+                           setIsMobileMenuOpen(false);
+                         }}
+                       >
+                         <Store className="h-4 w-4 mr-2" />
+                         Ma Boutique
+                       </Button>
+                     )}
                   </div>
                 </div>
               </SheetContent>
