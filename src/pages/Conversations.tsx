@@ -11,7 +11,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, MessageCircle, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import Navigation from '@/components/Navigation';
 
 const Conversations = () => {
   const { user } = useAuth();
@@ -67,7 +66,6 @@ const Conversations = () => {
   if (!user) {
     return (
       <div className="min-h-screen bg-background">
-        <Navigation />
         <div className="container mx-auto px-4 py-8">
           <Card>
             <CardContent className="p-6 text-center">
@@ -83,7 +81,6 @@ const Conversations = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-200px)]">
           {/* Liste des conversations */}
