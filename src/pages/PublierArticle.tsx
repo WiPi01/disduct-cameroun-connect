@@ -169,7 +169,7 @@ const PublierArticle = () => {
         .from('profiles')
         .select('user_id')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (!existingProfile) {
         const { error: profileError } = await supabase

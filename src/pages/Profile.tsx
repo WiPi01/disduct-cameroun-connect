@@ -532,14 +532,16 @@ const Profile = () => {
                         onChange={handleAvatarUpload}
                         className="hidden"
                         id="avatar-upload"
+                        disabled={isLoading}
                       />
                       <Button
                         type="button"
                         variant="outline"
                         size="sm"
                         onClick={() => document.getElementById('avatar-upload')?.click()}
+                        disabled={isLoading}
                       >
-                        Changer la photo
+                        {isLoading ? "Téléchargement..." : "Changer la photo"}
                       </Button>
                       {profile.avatarUrl && (
                         <Button
@@ -548,6 +550,7 @@ const Profile = () => {
                           size="sm"
                           onClick={handleRemoveAvatar}
                           className="ml-2 text-red-600 hover:text-red-700"
+                          disabled={isLoading}
                         >
                           Supprimer
                         </Button>
