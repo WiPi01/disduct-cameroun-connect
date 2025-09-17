@@ -152,7 +152,7 @@ export default function ShopView() {
           <CardContent className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               <div className="flex-shrink-0">
-                {profile.avatar_url && !profile.avatar_url.includes('placeholder') ? (
+                {profile.avatar_url && !profile.avatar_url.includes('placeholder') && !profile.avatar_url.includes('/placeholder') ? (
                   <img
                     src={profile.avatar_url.startsWith('http') ? profile.avatar_url : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/avatars/${profile.avatar_url}`}
                     alt={profile.display_name}
@@ -203,7 +203,7 @@ export default function ShopView() {
             {products.map((product) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group">
                 <div className="relative aspect-square overflow-hidden">
-                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') ? (
+                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
                      <img
                        src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
                        alt={product.title}

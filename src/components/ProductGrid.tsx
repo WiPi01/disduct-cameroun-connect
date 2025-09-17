@@ -118,7 +118,7 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems 
       {products.map((product) => (
         <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
           <div className="relative aspect-square overflow-hidden">
-            {product.images && product.images.length > 0 ? (
+            {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
               <img
                 src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
                 alt={product.title}

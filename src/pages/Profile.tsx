@@ -567,11 +567,15 @@ const Profile = () => {
                   <Label>Photo de profil</Label>
                   <div className="flex items-center gap-4">
                     <div className="w-20 h-20 rounded-full overflow-hidden bg-muted flex items-center justify-center">
-                      {profile.avatarUrl ? (
+                      {profile.avatarUrl && !profile.avatarUrl.includes('placeholder') ? (
                         <img 
-                          src={profile.avatarUrl} 
+                          src={profile.avatarUrl.startsWith('http') ? profile.avatarUrl : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/avatars/${profile.avatarUrl}`} 
                           alt="Avatar" 
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.parentElement!.innerHTML = '<span class="text-muted-foreground text-sm">Pas d\'avatar</span>';
+                          }}
                         />
                       ) : (
                         <span className="text-muted-foreground text-sm">Pas d'avatar</span>
