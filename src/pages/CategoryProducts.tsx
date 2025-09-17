@@ -5,61 +5,36 @@ import { User } from "@supabase/supabase-js";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Heart, Eye } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { MapPin, Heart, Search } from "lucide-react";
 import AuthModal from "@/components/AuthModal";
 import { ImageViewModal } from "@/components/ImageViewModal";
+import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import MobileNavBar from "@/components/MobileNavBar";
 
-// Données temporaires des produits pour démonstration
-const mockProducts = {
-  electronique: [
-    {
-      id: "e1",
-      title: "iPhone 13 Pro Max",
-      price: "850000",
-      location: "Douala",
-      seller: "Marie K.",
-      image: "/public/lovable-uploads/1ec331ef-0978-439e-9fbd-dfe2b12f5570.png",
-      views: 45,
-      description: "iPhone en excellent état",
-      tags: ["iphone", "apple", "smartphone"]
-    },
-    {
-      id: "e2",
-      title: "MacBook Air M2",
-      price: "1200000",
-      location: "Yaoundé",
-      seller: "Jean P.",
-      image: "/public/lovable-uploads/3d903caa-94e2-4b37-9961-b5b0e7dc0580.png",
-      views: 62,
-      description: "MacBook Air M2 parfait état",
-      tags: ["macbook", "apple", "ordinateur"]
-    }
-  ],
-  mode: [
-    {
-      id: "m1",
-      title: "Nike Air Jordan",
-      price: "120000",
-      location: "Douala",
-      seller: "Sophie L.",
-      image: "/public/lovable-uploads/621865e0-fd7f-4853-90dd-ff230323d076.png",
-      views: 23,
-      description: "Chaussures Nike authentiques",
-      tags: ["nike", "jordan", "chaussures"]
-    }
-  ],
-  maison: [],
-  automobile: [],
-  immobilier: [],
-  agriculture: [],
-  services: [],
-};
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  location: string;
+  images: string[];
+  category: string;
+  description: string;
+  status: string;
+  seller_id: string;
+  created_at: string;
+  seller?: {
+    display_name: string;
+  } | null;
+}
 
 const CategoryProducts = () => {
   const { category } = useParams<{ category: string }>();
   const [user, setUser] = useState<User | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const {
@@ -75,14 +50,60 @@ const CategoryProducts = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleContactSeller = () => {
-    // Logique pour contacter le vendeur - accessible sans authentification pour les tests
-    console.log("Contacter le vendeur");
+  useEffect(() => {
+    fetchProducts();
+  }, [category]);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      let query = supabase
+        .from("products")
+        .select(`
+          *,
+          seller:profiles!products_seller_id_fkey(display_name)
+        `)
+        .eq("status", "available");
+
+      if (category) {
+        query = query.eq("category", category);
+      }
+
+      const { data, error } = await query.order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Erreur lors du chargement des produits:", error);
+        return;
+      }
+
+      const productsWithSeller = (data || []).map(product => ({
+        ...product,
+        seller: Array.isArray(product.seller) && product.seller.length > 0 
+          ? product.seller[0] 
+          : null
+      }));
+      setProducts(productsWithSeller as Product[]);
+    } catch (error) {
+      console.error("Erreur lors du chargement des produits:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const products = category
-    ? mockProducts[category as keyof typeof mockProducts] || []
-    : [];
+  // Filtrage par recherche
+  const filteredProducts = products.filter(product => {
+    const searchLower = searchTerm.toLowerCase().trim();
+    if (!searchLower) return true;
+
+    const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+    
+    return searchWords.some(word => 
+      product.title.toLowerCase().includes(word) ||
+      product.description?.toLowerCase().includes(word) ||
+      product.category.toLowerCase().includes(word) ||
+      product.location?.toLowerCase().includes(word)
+    );
+  });
   const categoryNames = {
     electronique: "Électronique",
     mode: "Mode & Beauté",
@@ -104,20 +125,46 @@ const CategoryProducts = () => {
             {categoryName}
           </h1>
           <p className="text-muted-foreground">
-            {products.length} produit{products.length !== 1 ? "s" : ""} trouvé
-            {products.length !== 1 ? "s" : ""}
+            {filteredProducts.length} produit{filteredProducts.length !== 1 ? "s" : ""} trouvé
+            {filteredProducts.length !== 1 ? "s" : ""}
           </p>
         </div>
 
-        {products.length === 0 ? (
+        {/* Barre de recherche */}
+        <div className="mb-8">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Rechercher un produit..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="bg-muted rounded-lg h-48 mb-4"></div>
+                <div className="bg-muted rounded h-4 mb-2"></div>
+                <div className="bg-muted rounded h-4 w-3/4"></div>
+              </div>
+            ))}
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground text-lg">
-              Aucun produit trouvé dans cette catégorie pour le moment.
+              {searchTerm 
+                ? `Aucun produit trouvé pour "${searchTerm}"`
+                : "Aucun produit trouvé dans cette catégorie pour le moment."
+              }
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <Card
                 key={product.id}
                 className="group hover:shadow-lg transition-all duration-300 border-border/50"
@@ -125,10 +172,10 @@ const CategoryProducts = () => {
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <ImageViewModal
-                      images={[product.image]}
+                      images={product.images || []}
                       trigger={
                         <img
-                          src={product.image}
+                          src={product.images?.[0] || "/placeholder.svg"}
                           alt={product.title}
                           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
                         />
@@ -143,12 +190,6 @@ const CategoryProducts = () => {
                         <Heart className="h-4 w-4" />
                       </Button>
                     </div>
-                    <div className="absolute bottom-3 left-3">
-                      <Badge variant="secondary" className="bg-background/80">
-                        <Eye className="h-3 w-3 mr-1" />
-                        {product.views}
-                      </Badge>
-                    </div>
                   </div>
 
                   <div className="p-4">
@@ -158,28 +199,42 @@ const CategoryProducts = () => {
 
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-xl font-bold text-primary">
-                        {parseInt(product.price).toLocaleString()} FCFA
+                        {product.price.toLocaleString()} FCFA
                       </span>
                     </div>
 
                     <div className="flex items-center text-muted-foreground mb-3">
                       <MapPin className="h-4 w-4 mr-1" />
-                      <span className="text-sm">{product.location}</span>
+                      <span className="text-sm">{product.location || "Non spécifié"}</span>
                     </div>
 
                     <div className="mb-4">
                       <p className="text-sm text-muted-foreground">
-                        Vendeur: {product.seller}
+                        Vendeur: {product.seller?.display_name || "Utilisateur"}
                       </p>
                     </div>
 
-                    <Button
-                      onClick={handleContactSeller}
-                      className="w-full"
-                      variant="default"
-                    >
-                      Contacter le vendeur
-                    </Button>
+                    {user && user.id !== product.seller_id ? (
+                      <ContactSellerDialog
+                        productId={product.id}
+                        sellerId={product.seller_id}
+                        sellerName={product.seller?.display_name || "Vendeur"}
+                        productTitle={product.title}
+                        triggerClassName="w-full"
+                      />
+                    ) : user?.id === product.seller_id ? (
+                      <p className="text-sm text-muted-foreground text-center py-2">
+                        Votre produit
+                      </p>
+                    ) : (
+                      <Button
+                        onClick={() => setIsAuthModalOpen(true)}
+                        className="w-full"
+                        variant="default"
+                      >
+                        Se connecter pour contacter
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
