@@ -19,6 +19,7 @@ import PublierArticle from "./pages/PublierArticle";
 import ModifierArticle from "./pages/ModifierArticle";
 import ResetPassword from "./pages/ResetPassword";
 import ShopView from "./pages/ShopView";
+import Conversations from "./pages/Conversations";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
       <Route path="/modifier-article/:id" element={<ModifierArticle />} />
       <Route path="/category/:category" element={<CategoryProducts />} />
       <Route path="/boutique/:userId" element={<ShopView />} />
+      <Route path="/conversations" element={<Conversations />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />
