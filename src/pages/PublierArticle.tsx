@@ -148,6 +148,27 @@ const PublierArticle = () => {
     setLoading(true);
 
     try {
+      // Vérifier si un profil existe pour l'utilisateur, sinon le créer
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('user_id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!existingProfile) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            display_name: user.email || 'Utilisateur'
+          });
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+          throw new Error('Impossible de créer le profil utilisateur');
+        }
+      }
+
       // Upload des images
       const imageUrls = await uploadImages();
 
@@ -174,7 +195,10 @@ const PublierArticle = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
 
       toast({
         title: "Article publié !",
@@ -186,7 +210,7 @@ const PublierArticle = () => {
       console.error('Error publishing article:', error);
       toast({
         title: "Erreur",
-        description: "Une erreur s'est produite lors de la publication.",
+        description: error.message || "Une erreur s'est produite lors de la publication.",
         variant: "destructive",
       });
     } finally {
