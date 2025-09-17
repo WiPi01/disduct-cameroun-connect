@@ -272,7 +272,7 @@ const Profile = () => {
       setProfile(prev => ({ ...prev, avatarUrl: data.publicUrl }));
       
       // Sauvegarder automatiquement le profil avec le nouvel avatar
-      const displayName = `${profile.firstName} ${profile.lastName}`.trim() || profile.displayName || user.email || 'Utilisateur';
+      const displayName = profile.displayName || user.email || 'Utilisateur';
       
       const { data: existingProfile } = await supabase
         .from('profiles')

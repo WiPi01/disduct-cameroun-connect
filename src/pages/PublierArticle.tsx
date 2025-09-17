@@ -190,6 +190,7 @@ const PublierArticle = () => {
       const imageUrls = images.length > 0 ? await uploadImages() : [];
       
       console.log('Images uploaded:', imageUrls); // Debug log
+      console.log('Number of images:', imageUrls.length); // Debug log
 
       // Insertion du produit
       const { data, error } = await supabase
