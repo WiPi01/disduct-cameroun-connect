@@ -18,9 +18,14 @@ const HeroSection = () => {
   const handleSearch = () => {
     if (user || isDevMode) {
       // Utilisateur connecté ou en mode dev, permettre la recherche directement
-      console.log("Recherche:", searchQuery);
-      // Ici vous pouvez ajouter la logique de recherche
-      navigate("/category/electronique"); // Exemple de navigation
+      if (searchQuery.trim()) {
+        console.log("Recherche:", searchQuery);
+        // Rediriger vers la page de tous les produits avec le terme de recherche
+        navigate(`/produits?search=${encodeURIComponent(searchQuery.trim())}`);
+      } else {
+        // Si pas de terme de recherche, aller à tous les produits
+        navigate("/produits");
+      }
     } else {
       setIsAuthModalOpen(true);
     }

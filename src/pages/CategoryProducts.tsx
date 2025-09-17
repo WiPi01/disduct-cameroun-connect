@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -11,6 +11,7 @@ import AuthModal from "@/components/AuthModal";
 import { ImageViewModal } from "@/components/ImageViewModal";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import MobileNavBar from "@/components/MobileNavBar";
+import { getCategoryDisplayName, getCategoryDbName } from "@/lib/categories";
 
 interface Product {
   id: string;
@@ -31,6 +32,7 @@ interface Product {
 
 const CategoryProducts = () => {
   const { category } = useParams<{ category: string }>();
+  const [searchParams] = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
@@ -50,6 +52,14 @@ const CategoryProducts = () => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Initialiser le terme de recherche depuis l'URL
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search');
+    if (searchFromUrl) {
+      setSearchTerm(searchFromUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     loadProducts();
@@ -105,6 +115,8 @@ const CategoryProducts = () => {
     let matchesSearch = true;
     
     if (searchLower) {
+      console.log(`Recherche dans catégorie: "${searchTerm}" - Produit: "${product.title}" - Catégorie: "${product.category}"`);
+      
       const searchWords = searchLower.split(' ').filter(word => word.length > 0);
       matchesSearch = searchWords.some(word => 
         product.title.toLowerCase().includes(word) ||
@@ -113,27 +125,24 @@ const CategoryProducts = () => {
         product.category.toLowerCase().includes(word) ||
         product.location?.toLowerCase().includes(word)
       );
+      
+      console.log(`  -> Recherche correspond: ${matchesSearch}`);
     }
     
     // Filtrage par catégorie SEULEMENT si pas de recherche
     let matchesCategory = true;
     if (!searchTerm.trim() && category) {
-      matchesCategory = product.category === category;
+      // Utiliser la fonction utilitaire pour mapper le slug vers le nom en base
+      const realCategoryName = getCategoryDbName(category);
+      matchesCategory = product.category === realCategoryName;
+      console.log(`  -> Filtrage catégorie: slug="${category}", nom_en_base="${realCategoryName}", produit_catégorie="${product.category}", correspond: ${matchesCategory}`);
     }
     
-    return matchesSearch && matchesCategory;
+    const finalResult = matchesSearch && matchesCategory;
+    console.log(`  -> Résultat final: ${finalResult}`);
+    return finalResult;
   });
-  const categoryNames = {
-    electronique: "Électronique",
-    mode: "Mode & Beauté",
-    maison: "Maison & Jardin",
-    automobile: "Automobile",
-    immobilier: "Immobilier",
-  };
-
-  const categoryName = category
-    ? categoryNames[category as keyof typeof categoryNames]
-    : "Catégorie";
+  const categoryName = category ? getCategoryDisplayName(category) : "Catégorie";
 
   return (
     <div className="min-h-screen bg-background">

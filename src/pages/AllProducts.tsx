@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Search, MapPin, User, Heart, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,9 +34,18 @@ const AllProducts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // Initialiser le terme de recherche depuis l'URL
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search');
+    if (searchFromUrl) {
+      setSearchTerm(searchFromUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchProducts();
@@ -103,15 +112,20 @@ const AllProducts = () => {
     const searchLower = searchTerm.toLowerCase().trim();
     if (!searchLower) return true;
     
+    console.log(`Recherche: "${searchTerm}" - Produit: "${product.title}" - Catégorie: "${product.category}"`);
+    
     const searchWords = searchLower.split(' ').filter(word => word.length > 0);
     
-    return searchWords.some(word => 
+    const matches = searchWords.some(word => 
       product.title.toLowerCase().includes(word) ||
       product.category.toLowerCase().includes(word) ||
       (product.location && product.location.toLowerCase().includes(word)) ||
       (product.description && product.description.toLowerCase().includes(word)) ||
       (product.profiles?.display_name && product.profiles.display_name.toLowerCase().includes(word))
     );
+    
+    console.log(`  -> Correspond: ${matches}`);
+    return matches;
   }).sort((a, b) => {
     if (!searchTerm.trim()) return 0;
     
