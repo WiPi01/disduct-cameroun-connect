@@ -52,7 +52,7 @@ const CategoryProducts = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [category]);
+  }, [category, searchTerm]);
 
   const fetchProducts = async () => {
     try {
@@ -64,7 +64,9 @@ const CategoryProducts = () => {
         .select("*")
         .eq("status", "available");
 
-      if (category) {
+      // Si on a un terme de recherche, on cherche dans tous les produits
+      // Sinon, on filtre par catégorie
+      if (!searchTerm.trim() && category) {
         query = query.eq("category", category);
       }
 
