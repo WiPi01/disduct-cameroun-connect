@@ -42,7 +42,7 @@ const AllProducts = () => {
         .from('products')
         .select(`
           *,
-          profiles (
+          profiles!products_seller_id_fkey (
             display_name
           )
         `)
@@ -244,9 +244,12 @@ const AllProducts = () => {
                 <div className="relative">
                   {product.images && product.images.length > 0 ? (
                     <img
-                      src={product.images[0]}
+                      src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
                       alt={product.title}
                       className="w-full h-48 object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                      }}
                     />
                   ) : (
                     <div className="w-full h-48 bg-muted flex items-center justify-center">

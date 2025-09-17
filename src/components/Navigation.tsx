@@ -146,7 +146,13 @@ const Navigation = () => {
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
                     Mon Profil
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={signOut}>
+                  <DropdownMenuItem onClick={() => {
+                    if (!user) {
+                      alert("Vous n'êtes pas connecté.");
+                      return;
+                    }
+                    signOut();
+                  }}>
                     <LogOut className="h-4 w-4 mr-2" />
                     Déconnexion
                   </DropdownMenuItem>
