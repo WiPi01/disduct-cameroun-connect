@@ -90,21 +90,22 @@ const PublierArticle = () => {
       return;
     }
 
-    files.forEach(file => {
+    const validFiles = files.filter(file => {
       if (file.size > 5 * 1024 * 1024) {
         toast({
           title: "Fichier trop volumineux",
           description: `${file.name} dépasse 5 MB.`,
           variant: "destructive",
         });
-        return;
+        return false;
       }
+      return true;
     });
 
-    setImages(prev => [...prev, ...files]);
+    setImages(prev => [...prev, ...validFiles]);
     
-    // Créer les prévisualisations
-    files.forEach(file => {
+    // Créer les prévisualisations avec les vrais fichiers
+    validFiles.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
         setPreviews(prev => [...prev, e.target?.result as string]);
@@ -187,6 +188,8 @@ const PublierArticle = () => {
 
       // Upload des images (seulement si des images sont sélectionnées)
       const imageUrls = images.length > 0 ? await uploadImages() : [];
+      
+      console.log('Images uploaded:', imageUrls); // Debug log
 
       // Insertion du produit
       const { data, error } = await supabase

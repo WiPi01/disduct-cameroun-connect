@@ -152,11 +152,14 @@ export default function ShopView() {
           <CardContent className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               <div className="flex-shrink-0">
-                {profile.avatar_url ? (
+                {profile.avatar_url && !profile.avatar_url.includes('placeholder') ? (
                   <img
-                    src={profile.avatar_url}
+                    src={profile.avatar_url.startsWith('http') ? profile.avatar_url : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/avatars/${profile.avatar_url}`}
                     alt={profile.display_name}
                     className="w-20 h-20 rounded-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="%23f1f5f9" rx="40"/><circle cx="40" cy="30" r="10" fill="%236b7280"/><path d="M20 70 Q40 55 60 70 V80 H20 Z" fill="%236b7280"/></svg>';
+                    }}
                   />
                 ) : (
                   <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
@@ -200,18 +203,21 @@ export default function ShopView() {
             {products.map((product) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group">
                 <div className="relative aspect-square overflow-hidden">
-                   {product.images && product.images.length > 0 ? (
+                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') ? (
                      <img
-                       src={product.images[0]}
+                       src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
                        alt={product.title}
                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                       onError={(e) => {
+                         e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                       }}
                      />
                    ) : (
-                    <div className="w-full h-full bg-muted flex items-center justify-center">
-                      <span className="text-muted-foreground text-sm">Pas d'image</span>
-                    </div>
-                  )}
-                </div>
+                     <div className="w-full h-full bg-muted flex items-center justify-center">
+                       <span className="text-muted-foreground text-sm">Pas d'image</span>
+                     </div>
+                   )}
+                 </div>
                 
                 <CardContent className="p-3 space-y-2">
                   <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
