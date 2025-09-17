@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Upload, X, Image } from "lucide-react";
 import MobileNavBar from "@/components/MobileNavBar";
+import { ImageViewModal } from "@/components/ImageViewModal";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -442,10 +443,16 @@ const PublierArticle = () => {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                     {previews.map((preview, index) => (
                       <div key={index} className="relative">
-                        <img
-                          src={preview}
-                          alt={`Prévisualisation ${index + 1}`}
-                          className="w-full h-24 object-cover rounded-lg border"
+                        <ImageViewModal
+                          images={previews}
+                          initialIndex={index}
+                          trigger={
+                            <img
+                              src={preview}
+                              alt={`Prévisualisation ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-lg border cursor-pointer"
+                            />
+                          }
                         />
                         <Button
                           type="button"

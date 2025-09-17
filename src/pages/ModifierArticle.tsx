@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Upload, X, Image } from "lucide-react";
 import MobileNavBar from "@/components/MobileNavBar";
+import { ImageViewModal } from "@/components/ImageViewModal";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -452,10 +453,16 @@ const ModifierArticle = () => {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {existingImages.map((image, index) => (
                       <div key={index} className="relative">
-                        <img
-                          src={image}
-                          alt={`Image existante ${index + 1}`}
-                          className="w-full h-24 object-cover rounded-lg border"
+                        <ImageViewModal
+                          images={existingImages}
+                          initialIndex={index}
+                          trigger={
+                            <img
+                              src={image}
+                              alt={`Image existante ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-lg border cursor-pointer"
+                            />
+                          }
                         />
                         <Button
                           type="button"
@@ -508,10 +515,16 @@ const ModifierArticle = () => {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                     {previews.map((preview, index) => (
                       <div key={index} className="relative">
-                        <img
-                          src={preview}
-                          alt={`Nouvelle image ${index + 1}`}
-                          className="w-full h-24 object-cover rounded-lg border"
+                        <ImageViewModal
+                          images={previews}
+                          initialIndex={index}
+                          trigger={
+                            <img
+                              src={preview}
+                              alt={`Nouvelle image ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-lg border cursor-pointer"
+                            />
+                          }
                         />
                         <Button
                           type="button"
