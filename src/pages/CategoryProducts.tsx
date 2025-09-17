@@ -57,31 +57,42 @@ const CategoryProducts = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      
+      // Récupérer les produits d'abord
       let query = supabase
         .from("products")
-        .select(`
-          *,
-          seller:profiles!products_seller_id_fkey(display_name)
-        `)
+        .select("*")
         .eq("status", "available");
 
       if (category) {
         query = query.eq("category", category);
       }
 
-      const { data, error } = await query.order("created_at", { ascending: false });
+      const { data: products, error: productsError } = await query.order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Erreur lors du chargement des produits:", error);
+      if (productsError) {
+        console.error("Erreur lors du chargement des produits:", productsError);
         return;
       }
 
-      const productsWithSeller = (data || []).map(product => ({
+      if (!products || products.length === 0) {
+        setProducts([]);
+        return;
+      }
+
+      // Récupérer les profils des vendeurs séparément
+      const sellerIds = [...new Set(products.map(p => p.seller_id))];
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, display_name")
+        .in("user_id", sellerIds);
+
+      // Combiner les données
+      const productsWithSeller = products.map(product => ({
         ...product,
-        seller: Array.isArray(product.seller) && product.seller.length > 0 
-          ? product.seller[0] 
-          : null
+        seller: profiles?.find(profile => profile.user_id === product.seller_id) || null
       }));
+
       setProducts(productsWithSeller as Product[]);
     } catch (error) {
       console.error("Erreur lors du chargement des produits:", error);
