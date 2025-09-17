@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
+import { ImageViewModal } from "@/components/ImageViewModal";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface Product {
@@ -143,13 +144,18 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
         <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
           <div className="relative aspect-square overflow-hidden">
             {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
-              <img
-                src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
-                alt={product.title}
-                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
-                }}
+              <ImageViewModal
+                images={product.images}
+                trigger={
+                  <img
+                    src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
+                    alt={product.title}
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                    }}
+                  />
+                }
               />
             ) : (
               <div className="w-full h-full bg-muted flex items-center justify-center">
