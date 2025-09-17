@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
+import { ImageViewModal } from "@/components/ImageViewModal";
 import MobileNavBar from "@/components/MobileNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -298,26 +299,37 @@ const AllProducts = () => {
                 <div className="relative">
                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder.svg') ? (
                     product.images.length === 1 ? (
-                      <img
-                        src={product.images[0]}
-                        alt={product.title}
-                        className="w-full h-48 object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
-                        }}
+                      <ImageViewModal
+                        images={product.images}
+                        trigger={
+                          <img
+                            src={product.images[0]}
+                            alt={product.title}
+                            className="w-full h-48 object-cover cursor-pointer"
+                            onError={(e) => {
+                              e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                            }}
+                          />
+                        }
                       />
                     ) : (
                       <Carousel className="w-full">
                         <CarouselContent>
                           {product.images.map((image, index) => (
                             <CarouselItem key={index}>
-                              <img
-                                src={image}
-                                alt={`${product.title} - Image ${index + 1}`}
-                                className="w-full h-48 object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
-                                }}
+                              <ImageViewModal
+                                images={product.images!}
+                                initialIndex={index}
+                                trigger={
+                                  <img
+                                    src={image}
+                                    alt={`${product.title} - Image ${index + 1}`}
+                                    className="w-full h-48 object-cover cursor-pointer"
+                                    onError={(e) => {
+                                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                                    }}
+                                  />
+                                }
                               />
                             </CarouselItem>
                           ))}
