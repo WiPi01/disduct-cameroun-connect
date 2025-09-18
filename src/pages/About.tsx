@@ -136,72 +136,6 @@ const About = () => {
                   internationaux d'excellence.
                 </p>
               </div>
-
-              {/* Logistics Partners Section */}
-              <div className="mt-12">
-                <div className="text-center mb-12">
-                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                    Nos Partenaires Logistiques
-                  </h3>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Disduct s'associe avec les meilleurs services de livraison au Cameroun pour garantir 
-                    une expérience de livraison rapide, sécurisée et fiable à nos utilisateurs.
-                  </p>
-                </div>
-                
-                <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                  {/* Gozem */}
-                  <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:shadow-lg transition-shadow">
-                    <CardContent className="pt-0 text-center space-y-4">
-                      <div className="w-full h-48 rounded-lg overflow-hidden">
-                        <img
-                          src={gozemImage}
-                          alt="Gozem Delivery"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h4 className="text-xl font-bold text-purple-600">Gozem</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Contact: <span className="font-semibold whitespace-nowrap">675 58 03 14</span>
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  {/* Prime Deliver */}
-                  <Card className="p-6 bg-gradient-to-br from-orange-500/10 to-orange-500/5 border-orange-500/20 hover:shadow-lg transition-shadow">
-                    <CardContent className="pt-0 text-center space-y-4">
-                      <div className="w-full h-48 rounded-lg overflow-hidden">
-                        <img
-                          src={primeDeliverImage}
-                          alt="Prime Deliver"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h4 className="text-xl font-bold text-purple-600">Prime Deliver</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Contact: <span className="font-semibold whitespace-nowrap">686 17 25 18</span>
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  {/* Bip Bip */}
-                  <Card className="p-6 bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20 hover:shadow-lg transition-shadow">
-                    <CardContent className="pt-0 text-center space-y-4">
-                      <div className="w-full h-48 rounded-lg overflow-hidden">
-                        <img
-                          src={bipBipImage}
-                          alt="Bip Bip Delivery"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h4 className="text-xl font-bold text-purple-600">Bip Bip</h4>
-                      <p className="text-xs text-muted-foreground">
-                        Contact: <span className="font-semibold whitespace-nowrap">653 96 72 76 / 656 39 63 95</span>
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
             </div>
 
             <div>
@@ -211,6 +145,74 @@ const About = () => {
                 className="rounded-2xl shadow-elegant w-full"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Logistics Partners Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+              Nos Partenaires Logistiques
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Disduct s'associe avec les meilleurs services de livraison au Cameroun pour garantir 
+              une expérience de livraison rapide, sécurisée et fiable à nos utilisateurs.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {/* Gozem */}
+            <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:shadow-lg transition-shadow">
+              <CardContent className="pt-0 text-center space-y-4">
+                <div className="w-full h-48 rounded-lg overflow-hidden bg-white/50 flex items-center justify-center">
+                  <img
+                    src={gozemImage}
+                    alt="Gozem Delivery"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <h4 className="text-xl font-bold text-purple-600">Gozem</h4>
+                <p className="text-sm text-muted-foreground">
+                  Contact: <span className="font-semibold whitespace-nowrap">675 58 03 14</span>
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Prime Deliver */}
+            <Card className="p-6 bg-gradient-to-br from-orange-500/10 to-orange-500/5 border-orange-500/20 hover:shadow-lg transition-shadow">
+              <CardContent className="pt-0 text-center space-y-4">
+                <div className="w-full h-48 rounded-lg overflow-hidden bg-white/50 flex items-center justify-center">
+                  <img
+                    src={primeDeliverImage}
+                    alt="Prime Deliver"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <h4 className="text-xl font-bold text-purple-600">Prime Deliver</h4>
+                <p className="text-sm text-muted-foreground">
+                  Contact: <span className="font-semibold whitespace-nowrap">686 17 25 18</span>
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Bip Bip */}
+            <Card className="p-6 bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20 hover:shadow-lg transition-shadow">
+              <CardContent className="pt-0 text-center space-y-4">
+                <div className="w-full h-48 rounded-lg overflow-hidden bg-white/50 flex items-center justify-center">
+                  <img
+                    src={bipBipImage}
+                    alt="Bip Bip Delivery"
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <h4 className="text-xl font-bold text-purple-600">Bip Bip</h4>
+                <p className="text-xs text-muted-foreground">
+                  Contact: <span className="font-semibold whitespace-nowrap">653 96 72 76 / 656 39 63 95</span>
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
