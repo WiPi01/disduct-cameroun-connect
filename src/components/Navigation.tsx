@@ -13,6 +13,7 @@ import {
   Car,
   Briefcase,
   LogOut,
+  MessageCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {

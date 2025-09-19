@@ -133,12 +133,15 @@ export const useConversations = () => {
 
       if (error) {
         console.error('Error fetching conversations:', error);
+        toast.error('Erreur lors de la récupération des conversations');
         return;
       }
 
+      console.log('Conversations fetched:', data);
       setConversations(data as Conversation[] || []);
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Une erreur s\'est produite');
     } finally {
       setLoading(false);
     }
@@ -154,21 +157,24 @@ export const useConversations = () => {
 
       if (error) {
         console.error('Error fetching messages:', error);
+        toast.error('Erreur lors de la récupération des messages');
         return;
       }
 
+      console.log('Messages fetched for conversation:', conversationId, data);
       setMessages(data || []);
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Une erreur s\'est produite');
     }
   };
 
-  // Écouter les mises à jour en temps réel pour les messages
+  // Écouter les mises à jour en temps réel
   useEffect(() => {
     if (!user) return;
 
     const channel = supabase
-      .channel('messages-realtime')
+      .channel('conversations-realtime')
       .on('postgres_changes', 
         { 
           event: 'INSERT', 
@@ -177,12 +183,17 @@ export const useConversations = () => {
         }, 
         (payload) => {
           console.log('New message received:', payload);
-          // Actualiser les messages si c'est pour la conversation sélectionnée
-          if (payload.new && messages.length > 0 && 
-              messages[0]?.conversation_id === payload.new.conversation_id) {
-            setMessages(prev => [...prev, payload.new as Message]);
-          }
-          // Actualiser aussi la liste des conversations pour mettre à jour le timestamp
+          fetchConversations();
+        }
+      )
+      .on('postgres_changes', 
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'conversations' 
+        }, 
+        (payload) => {
+          console.log('New conversation created:', payload);
           fetchConversations();
         }
       )
@@ -191,7 +202,7 @@ export const useConversations = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, messages]);
+  }, [user]);
 
   return {
     conversations,

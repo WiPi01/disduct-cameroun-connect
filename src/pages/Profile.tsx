@@ -504,14 +504,21 @@ const Profile = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex justify-center">
-                  <Button 
-                    onClick={() => navigate('/conversations')}
-                    className="flex items-center gap-2"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    Voir toutes mes conversations
-                  </Button>
+                <div className="space-y-4">
+                  <div className="text-center py-4">
+                    <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-muted-foreground mb-4">
+                      Consultez et gérez toutes vos conversations avec les vendeurs et acheteurs
+                    </p>
+                    <Button 
+                      onClick={() => navigate('/conversations')}
+                      className="flex items-center gap-2"
+                      size="lg"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      Voir toutes mes conversations
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
