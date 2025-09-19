@@ -379,13 +379,13 @@ const Profile = () => {
         )}
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 h-auto">
-            <TabsTrigger value="overview" className="text-xs px-2 py-2">Aperçu</TabsTrigger>
-            <TabsTrigger value="favorites" className="text-xs px-2 py-2">Favoris</TabsTrigger>
-            <TabsTrigger value="sales" className="text-xs px-2 py-2">Ventes</TabsTrigger>
-            <TabsTrigger value="purchases" className="text-xs px-2 py-2">Achats</TabsTrigger>
-            <TabsTrigger value="conversations" className="text-xs px-1 py-2">Conversations</TabsTrigger>
-            <TabsTrigger value="settings" className="text-xs px-2 py-2">Paramètres</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6 h-auto gap-0 p-1">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm px-1 sm:px-2 py-1.5 whitespace-nowrap">Aperçu</TabsTrigger>
+            <TabsTrigger value="favorites" className="text-xs sm:text-sm px-1 sm:px-2 py-1.5 whitespace-nowrap">Favoris</TabsTrigger>
+            <TabsTrigger value="sales" className="text-xs sm:text-sm px-1 sm:px-2 py-1.5 whitespace-nowrap">Ventes</TabsTrigger>
+            <TabsTrigger value="purchases" className="text-xs sm:text-sm px-1 sm:px-2 py-1.5 whitespace-nowrap">Achats</TabsTrigger>
+            <TabsTrigger value="conversations" className="text-xs sm:text-sm px-0.5 sm:px-1 py-1.5 whitespace-nowrap">Messages</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm px-1 sm:px-2 py-1.5 whitespace-nowrap">Config</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
