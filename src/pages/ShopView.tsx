@@ -8,7 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ImageViewModal } from "@/components/ImageViewModal";
-import { Star, ArrowLeft, Store, Edit, Trash2 } from "lucide-react";
+import { Star, ArrowLeft, Store, Edit, Trash2, Phone, MapPin, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,6 +30,8 @@ interface Profile {
   rating: number;
   total_reviews: number;
   avatar_url?: string;
+  phone?: string;
+  address?: string;
 }
 
 export default function ShopView() {
@@ -51,7 +53,7 @@ export default function ShopView() {
         // Fetch profile
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('display_name, shop_name, rating, total_reviews, avatar_url')
+          .select('display_name, shop_name, rating, total_reviews, avatar_url, phone, address')
           .eq('user_id', userId)
           .single();
 
@@ -203,14 +205,14 @@ export default function ShopView() {
                   <img
                     src={profile.avatar_url.startsWith('http') ? profile.avatar_url : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/avatars/${profile.avatar_url}`}
                     alt={profile.display_name}
-                    className="w-20 h-20 rounded-full object-cover"
+                    className="w-24 h-24 rounded-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="%23f1f5f9" rx="40"/><circle cx="40" cy="30" r="10" fill="%236b7280"/><path d="M20 70 Q40 55 60 70 V80 H20 Z" fill="%236b7280"/></svg>';
+                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" fill="%23f1f5f9" rx="48"/><circle cx="48" cy="36" r="12" fill="%236b7280"/><path d="M24 84 Q48 66 72 84 V96 H24 Z" fill="%236b7280"/></svg>';
                     }}
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Store className="h-8 w-8 text-primary" />
+                  <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Store className="h-10 w-10 text-primary" />
                   </div>
                 )}
               </div>
@@ -220,8 +222,27 @@ export default function ShopView() {
                   {profile.shop_name || profile.display_name}
                 </h1>
                 {profile.shop_name && (
-                  <p className="text-muted-foreground mb-3">{profile.display_name}</p>
+                  <div className="flex items-center gap-2 mb-3">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-muted-foreground">{profile.display_name}</span>
+                  </div>
                 )}
+                
+                {/* Informations de contact */}
+                <div className="space-y-2 mb-4">
+                  {profile.phone && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">{profile.phone}</span>
+                    </div>
+                  )}
+                  {profile.address && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">{profile.address}</span>
+                    </div>
+                  )}
+                </div>
                 
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
