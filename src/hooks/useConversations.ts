@@ -163,6 +163,36 @@ export const useConversations = () => {
     }
   };
 
+  // Écouter les mises à jour en temps réel pour les messages
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('messages-realtime')
+      .on('postgres_changes', 
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'messages' 
+        }, 
+        (payload) => {
+          console.log('New message received:', payload);
+          // Actualiser les messages si c'est pour la conversation sélectionnée
+          if (payload.new && messages.length > 0 && 
+              messages[0]?.conversation_id === payload.new.conversation_id) {
+            setMessages(prev => [...prev, payload.new as Message]);
+          }
+          // Actualiser aussi la liste des conversations pour mettre à jour le timestamp
+          fetchConversations();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, messages]);
+
   return {
     conversations,
     messages,

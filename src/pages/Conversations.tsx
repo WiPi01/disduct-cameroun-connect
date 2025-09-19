@@ -82,6 +82,10 @@ const Conversations = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">Mes Conversations</h1>
+          <p className="text-muted-foreground">Gérez vos discussions avec les vendeurs et acheteurs</p>
+        </div>
         <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-200px)]">
           {/* Liste des conversations */}
           <Card className="lg:w-1/3">
