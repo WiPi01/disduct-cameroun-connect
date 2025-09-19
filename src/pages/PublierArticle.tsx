@@ -62,6 +62,7 @@ const PublierArticle = () => {
     "Emploi et Services",
     "Animaux",
     "Livres et Médias",
+    "Alimentation",
     "Autres"
   ];
 

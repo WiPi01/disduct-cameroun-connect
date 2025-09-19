@@ -379,13 +379,13 @@ const Profile = () => {
         )}
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="overview">Aperçu</TabsTrigger>
-            <TabsTrigger value="favorites">Favoris</TabsTrigger>
-            <TabsTrigger value="sales">Ventes</TabsTrigger>
-            <TabsTrigger value="purchases">Achats</TabsTrigger>
-            <TabsTrigger value="conversations">Conversations</TabsTrigger>
-            <TabsTrigger value="settings">Paramètres</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6 h-auto">
+            <TabsTrigger value="overview" className="text-xs px-2 py-2">Aperçu</TabsTrigger>
+            <TabsTrigger value="favorites" className="text-xs px-2 py-2">Favoris</TabsTrigger>
+            <TabsTrigger value="sales" className="text-xs px-2 py-2">Ventes</TabsTrigger>
+            <TabsTrigger value="purchases" className="text-xs px-2 py-2">Achats</TabsTrigger>
+            <TabsTrigger value="conversations" className="text-xs px-1 py-2">Conversations</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs px-2 py-2">Paramètres</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
