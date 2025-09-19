@@ -20,6 +20,7 @@ import ModifierArticle from "./pages/ModifierArticle";
 import ResetPassword from "./pages/ResetPassword";
 import ShopView from "./pages/ShopView";
 import Conversations from "./pages/Conversations";
+import CreerCompteVendeur from "./pages/CreerCompteVendeur";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
       <Route path="/category/:category" element={<CategoryProducts />} />
       <Route path="/boutique/:userId" element={<ShopView />} />
       <Route path="/conversations" element={<Conversations />} />
+      <Route path="/creer-compte-vendeur" element={<CreerCompteVendeur />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />

@@ -59,8 +59,8 @@ const Vendre = () => {
 
   const handleCreerCompteVendeur = () => {
     if (user) {
-      // Si l'utilisateur est déjà connecté, le rediriger vers la page de publication
-      navigate("/publier-article");
+      // Si l'utilisateur est déjà connecté, le rediriger vers la page de création de compte vendeur
+      navigate("/creer-compte-vendeur");
     } else {
       setIsAuthModalOpen(true);
     }
