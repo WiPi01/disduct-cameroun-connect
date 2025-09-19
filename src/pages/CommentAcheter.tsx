@@ -33,6 +33,14 @@ const CommentAcheter = () => {
     }
   };
 
+  const handleConfigurerProfil = () => {
+    if (user) {
+      navigate('/profil-acheteur');
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
   const steps = [
     {
       icon: Search,
@@ -69,9 +77,16 @@ const CommentAcheter = () => {
               disduct
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
             Découvrez comment trouver et bénéficier des meilleurs produits et services disponibles au Cameroun en toute sécurité sur notre plateforme.
           </p>
+          <Button
+            variant="outline"
+            className="px-6 py-2"
+            onClick={handleConfigurerProfil}
+          >
+            Configurer mon profil acheteur
+          </Button>
         </div>
 
         {/* Steps Section */}
