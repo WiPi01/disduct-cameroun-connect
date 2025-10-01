@@ -101,7 +101,7 @@ const ProfilAcheteur = () => {
     setIsLoading(true);
     try {
       const { error } = await supabase
-        .from('buyer_preferences' as any)
+        .from('buyer_preferences')
         .upsert({
           user_id: user.id,
           preferred_categories: data.preferredCategories,
@@ -109,6 +109,8 @@ const ProfilAcheteur = () => {
           acquisition_type: data.acquisitionType,
           payment_method: data.paymentMethod,
           updated_at: new Date().toISOString(),
+        }, {
+          onConflict: 'user_id'
         });
 
       if (error) throw error;
