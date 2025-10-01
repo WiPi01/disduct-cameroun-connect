@@ -90,11 +90,10 @@ const ProfilAcheteur = () => {
       if (error) throw error;
 
       toast({
-        title: "Profil acheteur configuré",
-        description: "Vos préférences ont été enregistrées avec succès.",
+        title: "Préférences enregistrées",
+        description: "Nous avons bien pris en compte vos préférences d'achats, veuillez retourner sur la page \"Comment acheter\", et pour commencer à consulter les produits ou services dont vous avez besoin, cliquez sur \"Commencer à acheter\" en bas de cette page.",
+        duration: 10000,
       });
-      
-      navigate('/profil');
     } catch (error) {
       console.error('Error saving buyer preferences:', error);
       toast({
