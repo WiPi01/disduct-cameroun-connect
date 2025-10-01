@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      buyer_preferences: {
+        Row: {
+          acquisition_type: string | null
+          created_at: string
+          id: string
+          monthly_budget: string | null
+          payment_method: string | null
+          preferred_categories: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          acquisition_type?: string | null
+          created_at?: string
+          id?: string
+          monthly_budget?: string | null
+          payment_method?: string | null
+          preferred_categories?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          acquisition_type?: string | null
+          created_at?: string
+          id?: string
+          monthly_budget?: string | null
+          payment_method?: string | null
+          preferred_categories?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_sharing_permissions: {
         Row: {
           created_at: string
