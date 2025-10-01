@@ -77,7 +77,7 @@ const ProfilAcheteur = () => {
     setIsLoading(true);
     try {
       const { error } = await supabase
-        .from('buyer_preferences')
+        .from('buyer_preferences' as any)
         .upsert({
           user_id: user.id,
           preferred_categories: data.preferredCategories,
