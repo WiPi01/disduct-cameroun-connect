@@ -9,6 +9,7 @@ import Services from "./pages/Services";
 import CommentVendre from "./pages/CommentVendre";
 import CommentAcheter from "./pages/CommentAcheter";
 import Profile from "./pages/Profile";
+import ProfilAcheteur from "./pages/ProfilAcheteur";
 import ConditionsUtilisation from "./pages/ConditionsUtilisation";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import SignalerProbleme from "./pages/SignalerProbleme";
@@ -37,6 +38,7 @@ const App = () => {
       <Route path="/comment-vendre" element={<CommentVendre />} />
       <Route path="/comment-acheter" element={<CommentAcheter />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profil-acheteur" element={<ProfilAcheteur />} />
       <Route
         path="/conditions-utilisation"
         element={<ConditionsUtilisation />}
