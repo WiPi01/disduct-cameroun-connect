@@ -720,6 +720,24 @@ const Profile = () => {
                 )}
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Préférences d'achat</CardTitle>
+                <CardDescription>
+                  Gérez vos préférences d'achat et budget
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  onClick={() => navigate('/profil-acheteur')}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Modifier mes préférences d'achat
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

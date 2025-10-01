@@ -18,12 +18,30 @@ import MobileNavBar from "@/components/MobileNavBar";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "@/components/AuthModal";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const CommentAcheter = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [hasPreferences, setHasPreferences] = useState(false);
+
+  useEffect(() => {
+    const checkPreferences = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('buyer_preferences')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        setHasPreferences(!!data);
+      }
+    };
+    
+    checkPreferences();
+  }, [user]);
 
   const handleCommencerAcheter = () => {
     if (user) {
@@ -85,7 +103,7 @@ const CommentAcheter = () => {
             className="px-6 py-2"
             onClick={handleConfigurerProfil}
           >
-            Configurer mon profil acheteur
+            {hasPreferences ? "Modifier mon profil acheteur" : "Configurer mon profil acheteur"}
           </Button>
         </div>
 

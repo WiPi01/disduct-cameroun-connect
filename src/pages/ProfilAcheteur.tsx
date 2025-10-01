@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -70,6 +70,30 @@ const ProfilAcheteur = () => {
       paymentMethod: "",
     },
   });
+
+  // Charger les préférences existantes
+  useEffect(() => {
+    const loadPreferences = async () => {
+      if (!user) return;
+      
+      const { data } = await supabase
+        .from('buyer_preferences')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      
+      if (data) {
+        form.reset({
+          preferredCategories: data.preferred_categories || [],
+          monthlyBudget: data.monthly_budget || "",
+          acquisitionType: data.acquisition_type || "",
+          paymentMethod: data.payment_method || "",
+        });
+      }
+    };
+    
+    loadPreferences();
+  }, [user, form]);
 
   const onSubmit = async (data: FormData) => {
     if (!user) return;
