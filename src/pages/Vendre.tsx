@@ -49,12 +49,8 @@ const Vendre = () => {
   }, []);
 
   const handleCommencerVendre = () => {
-    if (user) {
-      // Rediriger vers la page de publication d'article
-      navigate("/publier-article");
-    } else {
-      setIsAuthModalOpen(true);
-    }
+    // Rediriger vers la page qui explique le processus de vente
+    navigate("/comment-vendre");
   };
 
   const handleCreerCompteVendeur = () => {

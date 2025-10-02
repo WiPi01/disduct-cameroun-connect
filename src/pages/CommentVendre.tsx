@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Package,
   Camera,
@@ -5,6 +7,8 @@ import {
   DollarSign,
   TrendingUp,
   Shield,
+  X,
+  AlertCircle,
 } from "lucide-react";
 import {
   Card,
@@ -13,9 +17,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import MobileNavBar from "@/components/MobileNavBar";
+import { supabase } from "@/integrations/supabase/client";
 
 const CommentVendre = () => {
+  const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false);
+  const [hasSellerAccount, setHasSellerAccount] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    checkSellerAccount();
+  }, []);
+
+  const checkSellerAccount = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('shop_name, phone, address')
+          .eq('user_id', session.user.id)
+          .single();
+
+        const hasAccount = profile && (profile.shop_name || profile.phone || profile.address);
+        setHasSellerAccount(!!hasAccount);
+        
+        // Afficher l'alerte si l'utilisateur n'a pas de compte vendeur
+        if (!hasAccount) {
+          setShowAlert(true);
+        }
+      } else {
+        setShowAlert(true);
+      }
+    } catch (error) {
+      console.error('Error checking seller account:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const steps = [
     {
       icon: Package,
@@ -46,6 +89,34 @@ const CommentVendre = () => {
     <div className="min-h-screen bg-background">
       <MobileNavBar title="Comment Vendre" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
+        {/* Alert pour inciter à créer un compte vendeur */}
+        {showAlert && !loading && (
+          <Alert className="mb-8 border-primary bg-primary/5">
+            <AlertCircle className="h-5 w-5 text-primary" />
+            <div className="flex items-start justify-between flex-1">
+              <div className="flex-1 pr-4">
+                <AlertTitle className="text-lg font-semibold mb-2">
+                  Créez votre compte vendeur pour commencer
+                </AlertTitle>
+                <AlertDescription className="text-base">
+                  Avant de publier vos articles, vous devez créer votre compte vendeur et renseigner les informations concernant votre boutique Disduct ou votre activité commerciale. 
+                  <span className="block mt-2 font-medium">
+                    👉 Cliquez sur le bouton "Créer mon compte vendeur" en bas de cette page pour commencer.
+                  </span>
+                </AlertDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 w-6 p-0 hover:bg-primary/10 shrink-0"
+                onClick={() => setShowAlert(false)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </Alert>
+        )}
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-foreground mb-4">
@@ -109,6 +180,17 @@ const CommentVendre = () => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* CTA pour créer son compte vendeur */}
+        <div className="mt-16 text-center">
+          <Button
+            size="lg"
+            className="px-8 py-6 text-lg"
+            onClick={() => navigate("/creer-compte-vendeur")}
+          >
+            Créer mon compte vendeur
+          </Button>
         </div>
       </div>
     </div>

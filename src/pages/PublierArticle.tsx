@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Upload, X, Image } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Upload, X, Image, AlertCircle } from "lucide-react";
 import MobileNavBar from "@/components/MobileNavBar";
 import { ImageViewModal } from "@/components/ImageViewModal";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +32,8 @@ const PublierArticle = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [hasSellerAccount, setHasSellerAccount] = useState(false);
+  const [checkingAccount, setCheckingAccount] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -50,6 +53,34 @@ const PublierArticle = () => {
       return;
     }
     setUser(session.user);
+    await checkSellerAccount(session.user.id);
+  };
+
+  const checkSellerAccount = async (userId: string) => {
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('shop_name, phone, address')
+        .eq('user_id', userId)
+        .single();
+
+      const hasAccount = profile && (profile.shop_name || profile.phone || profile.address);
+      setHasSellerAccount(!!hasAccount);
+      
+      if (!hasAccount) {
+        toast({
+          title: "Compte vendeur requis",
+          description: "Vous devez créer votre compte vendeur avant de publier un article.",
+          variant: "destructive",
+          duration: Infinity,
+        });
+      }
+    } catch (error) {
+      console.error('Error checking seller account:', error);
+      setHasSellerAccount(false);
+    } finally {
+      setCheckingAccount(false);
+    }
   };
 
   const categories = [
@@ -240,7 +271,7 @@ const PublierArticle = () => {
     }
   };
 
-  if (!user) {
+  if (!user || checkingAccount) {
     return null;
   }
 
@@ -249,6 +280,31 @@ const PublierArticle = () => {
       <MobileNavBar title="Publier un article" />
       
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        {/* Alert si pas de compte vendeur */}
+        {!hasSellerAccount && (
+          <Alert className="mb-6 border-destructive bg-destructive/5">
+            <AlertCircle className="h-5 w-5 text-destructive" />
+            <div className="flex items-start justify-between flex-1">
+              <div className="flex-1 pr-4">
+                <AlertTitle className="text-lg font-semibold mb-2">
+                  Compte vendeur requis
+                </AlertTitle>
+                <AlertDescription className="text-base">
+                  Vous devez créer votre compte vendeur et renseigner les informations concernant votre boutique Disduct ou votre activité commerciale avant de publier des articles.
+                  <div className="mt-4">
+                    <Button
+                      variant="destructive"
+                      onClick={() => navigate("/creer-compte-vendeur")}
+                    >
+                      Créer mon compte vendeur
+                    </Button>
+                  </div>
+                </AlertDescription>
+              </div>
+            </div>
+          </Alert>
+        )}
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
@@ -476,10 +532,15 @@ const PublierArticle = () => {
                   type="submit" 
                   className="w-full" 
                   size="lg"
-                  disabled={loading}
+                  disabled={loading || !hasSellerAccount}
                 >
                   {loading ? "Publication en cours..." : "Publier mon article"}
                 </Button>
+                {!hasSellerAccount && (
+                  <p className="text-sm text-muted-foreground text-center mt-2">
+                    Vous devez créer votre compte vendeur pour publier un article
+                  </p>
+                )}
               </div>
             </form>
           </CardContent>
