@@ -197,66 +197,94 @@ export default function ShopView() {
         </div>
 
         {/* Shop Header */}
-        <Card className="mb-8">
-          <CardContent className="p-8">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="flex-shrink-0">
-                {profile.avatar_url && !profile.avatar_url.includes('placeholder') && !profile.avatar_url.includes('/placeholder') ? (
-                  <img
-                    src={profile.avatar_url.startsWith('http') ? profile.avatar_url : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/avatars/${profile.avatar_url}`}
-                    alt={profile.display_name}
-                    className="w-24 h-24 rounded-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" fill="%23f1f5f9" rx="48"/><circle cx="48" cy="36" r="12" fill="%236b7280"/><path d="M24 84 Q48 66 72 84 V96 H24 Z" fill="%236b7280"/></svg>';
-                    }}
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Store className="h-10 w-10 text-primary" />
+        <Card className="mb-8 overflow-hidden border-2 border-primary/20 shadow-elegant">
+          <div className="bg-gradient-hero p-1">
+            <div className="bg-card rounded-t-lg">
+              <CardContent className="p-8">
+                <div className="flex flex-col lg:flex-row items-start gap-6">
+                  <div className="flex-shrink-0">
+                    {profile.avatar_url && !profile.avatar_url.includes('placeholder') && !profile.avatar_url.includes('/placeholder') ? (
+                      <img
+                        src={profile.avatar_url.startsWith('http') ? profile.avatar_url : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/avatars/${profile.avatar_url}`}
+                        alt={profile.display_name}
+                        className="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20 shadow-lg"
+                        onError={(e) => {
+                          e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" fill="%23f1f5f9" rx="48"/><circle cx="48" cy="36" r="12" fill="%236b7280"/><path d="M24 84 Q48 66 72 84 V96 H24 Z" fill="%236b7280"/></svg>';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-28 h-28 rounded-full bg-gradient-primary flex items-center justify-center ring-4 ring-primary/20 shadow-lg">
+                        <Store className="h-12 w-12 text-white" />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              
-              <div className="flex-grow">
-                <h1 className="text-3xl font-bold text-foreground mb-2">
-                  {profile.shop_name || profile.display_name}
-                </h1>
-                {profile.shop_name && (
-                  <div className="flex items-center gap-2 mb-3">
-                    <User className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">{profile.display_name}</span>
-                  </div>
-                )}
-                
-                {/* Informations de contact */}
-                <div className="space-y-2 mb-4">
-                  {profile.phone && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">{profile.phone}</span>
+                  
+                  <div className="flex-grow min-w-0">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+                      <div className="flex-grow min-w-0">
+                        <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent mb-2">
+                          {profile.shop_name || profile.display_name}
+                        </h1>
+                        {profile.shop_name && (
+                          <div className="flex items-center gap-2 mb-3">
+                            <User className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-muted-foreground">{profile.display_name}</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Bouton Contacter le vendeur */}
+                      {!isOwnShop && user && userId && (
+                        <div className="flex-shrink-0">
+                          <ContactSellerDialog
+                            productId={products[0]?.id || ''}
+                            sellerId={userId}
+                            sellerName={profile.display_name}
+                            productTitle={`Boutique ${profile.shop_name || profile.display_name}`}
+                            triggerClassName="bg-gradient-hero hover:opacity-90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-2"
+                          />
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {profile.address && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">{profile.address}</span>
+                    
+                    {/* Informations de contact */}
+                    <div className="space-y-2 mb-4">
+                      {profile.phone && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10">
+                            <Phone className="h-4 w-4 text-accent" />
+                          </div>
+                          <span className="font-medium text-foreground">{profile.phone}</span>
+                        </div>
+                      )}
+                      {profile.address && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10">
+                            <MapPin className="h-4 w-4 text-accent" />
+                          </div>
+                          <span className="font-medium text-foreground">{profile.address}</span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                
-                <div className="flex items-center gap-4 text-sm">
-                  <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium">{profile.rating?.toFixed(1) || '0.0'}</span>
-                    <span className="text-muted-foreground">({profile.total_reviews || 0} avis)</span>
+                    
+                    <div className="flex flex-wrap items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1.5 bg-accent/10 px-4 py-2 rounded-full">
+                        <Star className="h-4 w-4 fill-accent text-accent" />
+                        <span className="font-bold text-foreground">{profile.rating?.toFixed(1) || '0.0'}</span>
+                        <span className="text-muted-foreground">({profile.total_reviews || 0} avis)</span>
+                      </div>
+                      <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+                        <Store className="h-4 w-4 text-primary" />
+                        <span className="font-medium text-foreground">
+                          {products.length} {products.length === 1 ? 'article' : 'articles'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-muted-foreground">
-                    {products.length} {products.length === 1 ? 'article' : 'articles'} en vente
-                  </div>
                 </div>
-              </div>
+              </CardContent>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Products Grid */}
