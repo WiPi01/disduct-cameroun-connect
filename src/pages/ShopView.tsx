@@ -8,6 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ImageViewModal } from "@/components/ImageViewModal";
+import { ShareButton } from "@/components/ShareButton";
 import { Star, ArrowLeft, Store, Edit, Trash2, Phone, MapPin, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -233,9 +234,16 @@ export default function ShopView() {
                         )}
                       </div>
                       
-                      {/* Bouton Contacter le vendeur */}
-                      {!isOwnShop && user && userId && (
-                        <div className="flex-shrink-0">
+                      {/* Boutons d'action */}
+                      <div className="flex-shrink-0 flex gap-2">
+                        <ShareButton
+                          url={`/shop/${userId}`}
+                          title={profile.shop_name || profile.display_name}
+                          description={`Découvrez la boutique ${profile.shop_name || profile.display_name} sur Disduct`}
+                          variant="outline"
+                          size="default"
+                        />
+                        {!isOwnShop && user && userId && (
                           <ContactSellerDialog
                             productId={products[0]?.id || ''}
                             sellerId={userId}
@@ -243,8 +251,8 @@ export default function ShopView() {
                             productTitle={`Boutique ${profile.shop_name || profile.display_name}`}
                             triggerClassName="bg-gradient-hero hover:opacity-90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-2"
                           />
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                     
                     {/* Informations de contact */}

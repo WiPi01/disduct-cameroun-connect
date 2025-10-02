@@ -6,6 +6,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ImageViewModal } from "@/components/ImageViewModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { ShareButton } from "@/components/ShareButton";
+import { Button } from "@/components/ui/button";
+import { Store } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id: string;
@@ -35,6 +39,7 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -188,16 +193,36 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
                 <p className="text-xs text-muted-foreground">Taille: {product.size_info}</p>
               )}
             </div>
-            {showContactButton && user && user.id !== product.seller_id && (
-              <div className="mt-3">
+            <div className="mt-3 space-y-2">
+              <div className="flex items-center gap-2">
+                <ShareButton 
+                  url={`/shop/${product.seller_id}`}
+                  title={product.title}
+                  description={`${product.price.toLocaleString()} FCFA`}
+                  variant="ghost"
+                  size="sm"
+                />
+                {showContactButton && user && user.id !== product.seller_id && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 flex-1"
+                    onClick={() => navigate(`/shop/${product.seller_id}`)}
+                  >
+                    <Store className="h-4 w-4" />
+                    Voir la boutique
+                  </Button>
+                )}
+              </div>
+              {showContactButton && user && user.id !== product.seller_id && (
                 <ContactSellerDialog
                   productId={product.id}
                   sellerId={product.seller_id}
                   sellerName={product.profiles?.display_name || 'Vendeur'}
                   productTitle={product.title}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </CardContent>
         </Card>
       ))}
