@@ -6,7 +6,7 @@ export const CATEGORY_MAPPINGS = {
     mode: "Mode et Accessoires",
     maison: "Maison & Jardin", 
     automobile: "Automobile",
-    agriculture: "Agriculture",
+    alimentation: "Alimentation",
     services: "Services"
   },
   
@@ -17,7 +17,7 @@ export const CATEGORY_MAPPINGS = {
     "Mode & Beauté": "mode", // Pour la compatibilité
     "Maison & Jardin": "maison",
     "Automobile": "automobile", 
-    "Agriculture": "agriculture",
+    "Alimentation": "alimentation",
     "Services": "services"
   },
 
@@ -27,7 +27,7 @@ export const CATEGORY_MAPPINGS = {
     mode: "Mode et Accessoires",
     maison: "Maison & Jardin",
     automobile: "Automobile",
-    agriculture: "Agriculture", 
+    alimentation: "Alimentation", 
     services: "Services"
   }
 };

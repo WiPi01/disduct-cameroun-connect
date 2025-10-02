@@ -26,10 +26,10 @@ const categories = [
   },
   {
     icon: Wheat,
-    title: "Agriculture",
-    description: "Produits frais, équipements agricoles",
+    title: "Alimentation",
+    description: "Produits frais, denrées alimentaires",
     count: "980+ produits",
-    slug: "agriculture",
+    slug: "alimentation",
   },
   {
     icon: Car,

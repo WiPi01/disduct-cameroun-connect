@@ -150,7 +150,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-primary" />
                 <span className="text-muted-foreground">
-                  contact@disduct.com
+                  contact@disduct.fr
                 </span>
               </div>
               <div className="flex items-center space-x-3">
