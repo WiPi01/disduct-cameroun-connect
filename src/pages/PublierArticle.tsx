@@ -60,17 +60,18 @@ const PublierArticle = () => {
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('shop_name, phone, address')
+        .select('display_name, shop_name, phone, address')
         .eq('user_id', userId)
         .single();
 
-      const hasAccount = profile && (profile.shop_name || profile.phone || profile.address);
+      // Vérification stricte : tous les champs obligatoires doivent être remplis
+      const hasAccount = profile && profile.display_name && profile.shop_name && profile.phone;
       setHasSellerAccount(!!hasAccount);
       
       if (!hasAccount) {
         toast({
           title: "Compte vendeur requis",
-          description: "Vous devez créer votre compte vendeur avant de publier un article.",
+          description: "Vous devez créer votre compte vendeur complet (nom, boutique, téléphone) avant de publier un article.",
           variant: "destructive",
           duration: Infinity,
         });

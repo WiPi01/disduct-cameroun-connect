@@ -116,11 +116,11 @@ const CreerCompteVendeur = () => {
 
       toast({
         title: "Succès !",
-        description: "Votre compte vendeur a été créé avec succès.",
+        description: "Votre compte vendeur a été créé avec succès. Vous pouvez maintenant publier vos articles.",
       });
 
-      // Rediriger vers la page de publication d'article
-      navigate("/publier-article");
+      // Rediriger vers la boutique de l'utilisateur
+      navigate(`/boutique/${user.id}`);
     } catch (error) {
       console.error('Error creating seller account:', error);
       toast({

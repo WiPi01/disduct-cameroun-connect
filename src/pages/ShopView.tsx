@@ -56,7 +56,7 @@ export default function ShopView() {
           .from('profiles')
           .select('display_name, shop_name, rating, total_reviews, avatar_url, phone, address')
           .eq('user_id', userId)
-          .single();
+          .maybeSingle();
 
         if (profileError) {
           console.error('Error fetching profile:', profileError);
@@ -243,34 +243,56 @@ export default function ShopView() {
                           variant="outline"
                           size="default"
                         />
-                        {!isOwnShop && user && userId && (
-                          <ContactSellerDialog
-                            productId={products[0]?.id || ''}
-                            sellerId={userId}
-                            sellerName={profile.display_name}
-                            productTitle={`Boutique ${profile.shop_name || profile.display_name}`}
-                            triggerClassName="bg-gradient-hero hover:opacity-90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-2"
-                          />
+                        {isOwnShop ? (
+                          <Button
+                            variant="default"
+                            size="default"
+                            onClick={() => navigate('/creer-compte-vendeur')}
+                            className="bg-gradient-hero hover:opacity-90 text-white border-0"
+                          >
+                            <Edit className="h-4 w-4 mr-2" />
+                            Modifier les informations
+                          </Button>
+                        ) : (
+                          user && userId && (
+                            <ContactSellerDialog
+                              productId={products[0]?.id || ''}
+                              sellerId={userId}
+                              sellerName={profile.display_name}
+                              productTitle={`Boutique ${profile.shop_name || profile.display_name}`}
+                              triggerClassName="bg-gradient-hero hover:opacity-90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-2"
+                            />
+                          )
                         )}
                       </div>
                     </div>
                     
                     {/* Informations de contact */}
                     <div className="space-y-2 mb-4">
-                      {profile.phone && (
+                      {profile.phone ? (
                         <div className="flex items-center gap-2 text-sm">
                           <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10">
                             <Phone className="h-4 w-4 text-accent" />
                           </div>
                           <span className="font-medium text-foreground">{profile.phone}</span>
                         </div>
+                      ) : isOwnShop && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Phone className="h-4 w-4" />
+                          <span>Numéro de téléphone non renseigné</span>
+                        </div>
                       )}
-                      {profile.address && (
+                      {profile.address ? (
                         <div className="flex items-center gap-2 text-sm">
                           <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10">
                             <MapPin className="h-4 w-4 text-accent" />
                           </div>
                           <span className="font-medium text-foreground">{profile.address}</span>
+                        </div>
+                      ) : isOwnShop && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4" />
+                          <span>Adresse non renseignée</span>
                         </div>
                       )}
                     </div>

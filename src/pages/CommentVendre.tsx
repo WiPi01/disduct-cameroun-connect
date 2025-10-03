@@ -39,14 +39,15 @@ const CommentVendre = () => {
       if (session) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('shop_name, phone, address')
+          .select('display_name, shop_name, phone, address')
           .eq('user_id', session.user.id)
           .single();
 
-        const hasAccount = profile && (profile.shop_name || profile.phone || profile.address);
+        // Vérification stricte : tous les champs obligatoires doivent être remplis
+        const hasAccount = profile && profile.display_name && profile.shop_name && profile.phone;
         setHasSellerAccount(!!hasAccount);
         
-        // Afficher l'alerte si l'utilisateur n'a pas de compte vendeur
+        // Afficher l'alerte si l'utilisateur n'a pas de compte vendeur complet
         if (!hasAccount) {
           setShowAlert(true);
         }
