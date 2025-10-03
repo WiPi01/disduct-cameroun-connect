@@ -154,34 +154,33 @@ const PublierArticle = () => {
   };
 
   const uploadImages = async (): Promise<string[]> => {
-    const uploadedUrls: string[] = [];
-    
-    for (const image of images) {
+    // Upload toutes les images en parallèle pour accélérer le processus
+    const uploadPromises = images.map(async (image) => {
       const fileExt = image.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       
-      try {
-        const { error: uploadError } = await supabase.storage
-          .from('product-images')
-          .upload(fileName, image);
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, image);
 
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-          throw uploadError;
-        }
-
-        const { data } = supabase.storage
-          .from('product-images')
-          .getPublicUrl(fileName);
-
-        uploadedUrls.push(data.publicUrl);
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        throw new Error(`Erreur lors du téléchargement de l'image: ${image.name}`);
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
       }
-    }
+
+      const { data } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(fileName);
+
+      return data.publicUrl;
+    });
     
-    return uploadedUrls;
+    try {
+      return await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      throw new Error('Erreur lors du téléchargement des images');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -199,32 +198,8 @@ const PublierArticle = () => {
     setLoading(true);
 
     try {
-      // Vérifier si un profil existe pour l'utilisateur, sinon le créer
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('user_id')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (!existingProfile) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            user_id: user.id,
-            display_name: user.email || 'Utilisateur'
-          });
-
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-          throw new Error('Impossible de créer le profil utilisateur');
-        }
-      }
-
-      // Upload des images (seulement si des images sont sélectionnées)
+      // Upload des images en parallèle (seulement si des images sont sélectionnées)
       const imageUrls = images.length > 0 ? await uploadImages() : [];
-      
-      console.log('Images uploaded:', imageUrls); // Debug log
-      console.log('Number of images:', imageUrls.length); // Debug log
 
       // Insertion du produit
       const { data, error } = await supabase

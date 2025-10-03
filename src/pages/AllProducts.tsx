@@ -8,10 +8,12 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ImageViewModal } from "@/components/ImageViewModal";
+import { ShareButton } from "@/components/ShareButton";
 import MobileNavBar from "@/components/MobileNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Store } from "lucide-react";
 
 interface Product {
   id: string;
@@ -429,23 +431,45 @@ const AllProducts = () => {
                     <User className="h-4 w-4 mr-1" />
                     <span>{product.profiles?.display_name || 'Utilisateur'}</span>
                   </div>
-                  {user && user.id !== product.seller_id ? (
-                    <ContactSellerDialog
-                      productId={product.id}
-                      sellerId={product.seller_id}
-                      sellerName={product.profiles?.display_name || 'Vendeur'}
-                      productTitle={product.title}
-                      triggerClassName="w-full"
-                    />
-                  ) : user && user.id === product.seller_id ? (
-                    <Button className="w-full" size="sm" variant="outline" disabled>
-                      Votre article
-                    </Button>
-                  ) : (
-                    <Button className="w-full" size="sm" variant="default" onClick={() => navigate('/')}>
-                      Se connecter pour contacter
-                    </Button>
-                  )}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <ShareButton 
+                        url={`/shop/${product.seller_id}`}
+                        title={product.title}
+                        description={`${product.price.toLocaleString()} FCFA`}
+                        variant="ghost"
+                        size="sm"
+                      />
+                      {user && user.id !== product.seller_id && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-2 flex-1"
+                          onClick={() => navigate(`/shop/${product.seller_id}`)}
+                        >
+                          <Store className="h-4 w-4" />
+                          Voir la boutique
+                        </Button>
+                      )}
+                    </div>
+                    {user && user.id !== product.seller_id ? (
+                      <ContactSellerDialog
+                        productId={product.id}
+                        sellerId={product.seller_id}
+                        sellerName={product.profiles?.display_name || 'Vendeur'}
+                        productTitle={product.title}
+                        triggerClassName="w-full"
+                      />
+                    ) : user && user.id === product.seller_id ? (
+                      <Button className="w-full" size="sm" variant="outline" disabled>
+                        Votre article
+                      </Button>
+                    ) : (
+                      <Button className="w-full" size="sm" variant="default" onClick={() => navigate('/')}>
+                        Se connecter pour contacter
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
