@@ -207,7 +207,7 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
                     variant="outline"
                     size="sm"
                     className="gap-2 flex-1"
-                    onClick={() => navigate(`/shop/${product.seller_id}`)}
+                    onClick={() => navigate(`/boutique/${product.seller_id}`)}
                   >
                     <Store className="h-4 w-4" />
                     Voir la boutique

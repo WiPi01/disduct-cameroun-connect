@@ -26,6 +26,7 @@ interface Product {
   status: string;
   seller_id: string;
   created_at: string;
+  brand?: string | null;
   profiles?: {
     display_name: string | null;
   } | null;
@@ -114,13 +115,14 @@ const AllProducts = () => {
     const searchLower = searchTerm.toLowerCase().trim();
     if (!searchLower) return true;
     
-    console.log(`Recherche: "${searchTerm}" - Produit: "${product.title}" - Catégorie: "${product.category}"`);
+    console.log(`Recherche: "${searchTerm}" - Produit: "${product.title}" - Catégorie: "${product.category}" - Marque: "${product.brand}"`);
     
     const searchWords = searchLower.split(' ').filter(word => word.length > 0);
     
     const matches = searchWords.some(word => 
       product.title.toLowerCase().includes(word) ||
       product.category.toLowerCase().includes(word) ||
+      (product.brand && product.brand.toLowerCase().includes(word)) ||
       (product.location && product.location.toLowerCase().includes(word)) ||
       (product.description && product.description.toLowerCase().includes(word)) ||
       (product.profiles?.display_name && product.profiles.display_name.toLowerCase().includes(word))
@@ -140,11 +142,16 @@ const AllProducts = () => {
       const titleLower = product.title.toLowerCase();
       const categoryLower = product.category.toLowerCase();
       const descriptionLower = product.description?.toLowerCase() || '';
+      const brandLower = product.brand?.toLowerCase() || '';
       
       searchWords.forEach(word => {
         // Score élevé pour correspondance exacte dans le titre
         if (titleLower.includes(word)) {
           score += titleLower === word ? 100 : titleLower.startsWith(word) ? 50 : 20;
+        }
+        // Score élevé pour marque
+        if (brandLower.includes(word)) {
+          score += brandLower === word ? 80 : 25;
         }
         // Score moyen pour catégorie
         if (categoryLower.includes(word)) {
@@ -434,7 +441,7 @@ const AllProducts = () => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <ShareButton 
-                        url={`/shop/${product.seller_id}`}
+                        url={`/boutique/${product.seller_id}`}
                         title={product.title}
                         description={`${product.price.toLocaleString()} FCFA`}
                         variant="ghost"
@@ -445,7 +452,7 @@ const AllProducts = () => {
                           variant="outline"
                           size="sm"
                           className="gap-2 flex-1"
-                          onClick={() => navigate(`/shop/${product.seller_id}`)}
+                          onClick={() => navigate(`/boutique/${product.seller_id}`)}
                         >
                           <Store className="h-4 w-4" />
                           Voir la boutique

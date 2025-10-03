@@ -237,7 +237,7 @@ export default function ShopView() {
                       {/* Boutons d'action */}
                       <div className="flex-shrink-0 flex gap-2">
                         <ShareButton
-                          url={`/shop/${userId}`}
+                          url={`/boutique/${userId}`}
                           title={profile.shop_name || profile.display_name}
                           description={`Découvrez la boutique ${profile.shop_name || profile.display_name} sur Disduct`}
                           variant="outline"
