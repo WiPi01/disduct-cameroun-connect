@@ -37,6 +37,7 @@ const AllProducts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { user } = useAuth();
@@ -210,6 +211,16 @@ const AllProducts = () => {
     navigate(`/modifier-article/${productId}`);
   };
 
+  const handleShowSuggestions = () => {
+    setShowSuggestions(true);
+    setSearchTerm("");
+  };
+
+  // Produits suggérés basés sur la popularité et la proximité
+  const suggestedProducts = products
+    .filter(p => p.status === 'available')
+    .slice(0, 8); // Afficher les 8 produits les plus récents
+
   return (
     <div className="min-h-screen bg-background">
       <MobileNavBar title="Tous les produits" />
@@ -242,6 +253,91 @@ const AllProducts = () => {
             <p className="text-lg text-muted-foreground">
               Chargement des produits...
             </p>
+          </div>
+        ) : showSuggestions ? (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Découvrez nos vendeurs
+              </h2>
+              <p className="text-muted-foreground mb-4">
+                Voici une sélection d'articles qui pourraient vous intéresser
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowSuggestions(false)}
+                className="mb-6"
+              >
+                Retour à la recherche
+              </Button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {suggestedProducts.map((product) => (
+                <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  <div className="relative">
+                    {product.images && product.images.length > 0 && !product.images[0].includes('placeholder.svg') ? (
+                      <ImageViewModal
+                        images={product.images}
+                        trigger={
+                          <img
+                            src={product.images[0]}
+                            alt={product.title}
+                            className="w-full h-48 object-cover cursor-pointer"
+                            onError={(e) => {
+                              e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
+                            }}
+                          />
+                        }
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-muted flex items-center justify-center">
+                        <span className="text-muted-foreground text-sm">Pas d'image</span>
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-lg mb-2 line-clamp-1">
+                      {product.title}
+                    </h3>
+                    <p className="text-lg font-bold text-primary mb-2">
+                      {formatPrice(product.price)}
+                    </p>
+                    <div className="flex items-center text-muted-foreground text-sm mb-2">
+                      <MapPin className="h-4 w-4 mr-1" />
+                      <span>{product.location || 'Non spécifié'}</span>
+                    </div>
+                    <div className="flex items-center text-muted-foreground text-sm mb-4">
+                      <User className="h-4 w-4 mr-1" />
+                      <span>{product.profiles?.display_name || 'Utilisateur'}</span>
+                    </div>
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full gap-2"
+                        onClick={() => navigate(`/boutique/${product.seller_id}`)}
+                      >
+                        <Store className="h-4 w-4" />
+                        Voir la boutique
+                      </Button>
+                      {user && user.id !== product.seller_id ? (
+                        <ContactSellerDialog
+                          productId={product.id}
+                          sellerId={product.seller_id}
+                          sellerName={product.profiles?.display_name || 'Vendeur'}
+                          productTitle={product.title}
+                          triggerClassName="w-full"
+                        />
+                      ) : (
+                        <Button className="w-full" size="sm" variant="default" onClick={() => navigate('/')}>
+                          Se connecter pour contacter
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-12">
@@ -292,7 +388,7 @@ const AllProducts = () => {
                     Vous cherchez un produit spécifique ? Contactez directement les vendeurs de votre région 
                     qui pourraient avoir ce que vous recherchez.
                   </p>
-                  <Button variant="default" size="sm">
+                  <Button variant="default" size="sm" onClick={handleShowSuggestions}>
                     Voir les vendeurs près de chez vous
                   </Button>
                 </div>
