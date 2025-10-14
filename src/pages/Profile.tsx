@@ -366,15 +366,9 @@ const Profile = () => {
                 Ma boutique : {profile.shopName}
               </CardTitle>
               <CardDescription>
-                Cliquez pour voir votre boutique complète
+                Cliquez pour voir votre boutique et tous vos articles
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <ProductGrid userId={user?.id || ""} showAvailableOnly={true} maxItems={4} />
-              <div className="text-center mt-4">
-                <p className="text-sm text-muted-foreground">Cliquez pour voir tous vos articles</p>
-              </div>
-            </CardContent>
           </Card>
         )}
 
@@ -471,7 +465,9 @@ const Profile = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ProductGrid userId={user?.id || ""} showSoldOnly={true} />
+                <div className="text-center py-8 text-muted-foreground">
+                  Consultez votre boutique pour voir vos articles
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
