@@ -142,11 +142,6 @@ const CategoryProducts = () => {
     if (category) {
       const dbCategoryName = getCategoryDbName(category);
       
-      console.log("DEBUG - Catégorie slug:", category);
-      console.log("DEBUG - Nom DB de catégorie:", dbCategoryName);
-      console.log("DEBUG - Catégorie du produit:", product.category);
-      console.log("DEBUG - Correspond?", product.category.toLowerCase() === dbCategoryName.toLowerCase());
-      
       // Correspondance exacte (insensible à la casse)
       return product.category.toLowerCase() === dbCategoryName.toLowerCase();
     }
