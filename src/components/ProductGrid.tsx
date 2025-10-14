@@ -146,7 +146,11 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {products.map((product) => (
-        <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+        <Card 
+          key={product.id} 
+          className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group"
+          onClick={() => navigate(`/produit/${product.id}`)}
+        >
           <div className="relative aspect-square overflow-hidden">
             {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
               <ImageViewModal
@@ -196,19 +200,24 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
             </div>
             <div className="mt-3 space-y-2">
               <div className="flex items-center gap-2">
-                <ShareButton 
-                  url={`/shop/${product.seller_id}`}
-                  title={product.title}
-                  description={`${product.price.toLocaleString()} FCFA`}
-                  variant="ghost"
-                  size="sm"
-                />
+                <div onClick={(e) => e.stopPropagation()}>
+                  <ShareButton 
+                    url={`/produit/${product.id}`}
+                    title={product.title}
+                    description={`${product.price.toLocaleString()} FCFA`}
+                    variant="ghost"
+                    size="sm"
+                  />
+                </div>
                 {showContactButton && user && user.id !== product.seller_id && (
                   <Button
                     variant="outline"
                     size="sm"
                     className="gap-2 flex-1"
-                    onClick={() => navigate(`/boutique/${product.seller_id}`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/boutique/${product.seller_id}`);
+                    }}
                   >
                     <Store className="h-4 w-4" />
                     Voir la boutique
@@ -216,12 +225,14 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
                 )}
               </div>
               {showContactButton && user && user.id !== product.seller_id && (
-                <ContactSellerDialog
-                  productId={product.id}
-                  sellerId={product.seller_id}
-                  sellerName={product.profiles?.display_name || 'Vendeur'}
-                  productTitle={product.title}
-                />
+                <div onClick={(e) => e.stopPropagation()}>
+                  <ContactSellerDialog
+                    productId={product.id}
+                    sellerId={product.seller_id}
+                    sellerName={product.profiles?.display_name || 'Vendeur'}
+                    productTitle={product.title}
+                  />
+                </div>
               )}
             </div>
           </CardContent>

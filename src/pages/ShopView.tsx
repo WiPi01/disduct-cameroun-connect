@@ -349,7 +349,11 @@ export default function ShopView() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {products.map((product) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group">
+              <Card 
+                key={product.id} 
+                className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                onClick={() => navigate(`/produit/${product.id}`)}
+              >
                 <div className="relative aspect-square overflow-hidden">
                   {product.images && product.images.length > 0 && !product.images[0].includes('placeholder') && !product.images[0].includes('/placeholder') ? (
                     product.images.length === 1 ? (
