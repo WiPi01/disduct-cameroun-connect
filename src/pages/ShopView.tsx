@@ -51,21 +51,43 @@ export default function ShopView() {
       if (!userId) return;
 
       try {
-        // Fetch profile
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('display_name, shop_name, rating, total_reviews, avatar_url, phone, address')
+        // Fetch public profile data
+        const { data: publicProfileData, error: publicProfileError } = await supabase
+          .from('public_profiles')
+          .select('display_name, shop_name, rating, total_reviews, avatar_url')
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (profileError) {
-          console.error('Error fetching profile:', profileError);
-          return;
+        if (publicProfileError) {
+          console.error('Error fetching public profile:', publicProfileError);
         }
 
-        setProfile(profileData);
+        // Fetch contact details using secure function if viewing own shop or with permission
+        let contactDetails: { phone?: string; address?: string } = { phone: undefined, address: undefined };
+        if (publicProfileData) {
+          const { data: secureProfileData } = await supabase
+            .rpc('get_secure_profile', { profile_user_id: userId });
+          
+          if (secureProfileData && typeof secureProfileData === 'object') {
+            const profileData = secureProfileData as { phone?: string; address?: string };
+            contactDetails = {
+              phone: profileData.phone,
+              address: profileData.address
+            };
+          }
+        }
 
-        // Fetch available products
+        // Combine public and contact data
+        if (publicProfileData) {
+          setProfile({
+            ...publicProfileData,
+            ...contactDetails
+          });
+        } else {
+          setProfile(null);
+        }
+
+        // Fetch all available products (no limit)
         const { data: productsData, error: productsError } = await supabase
           .from('products')
           .select('*')
