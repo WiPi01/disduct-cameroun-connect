@@ -154,29 +154,37 @@ const PublierArticle = () => {
   };
 
   const uploadImages = async (): Promise<string[]> => {
-    // Upload toutes les images en parallèle pour accélérer le processus
-    const uploadPromises = images.map(async (image) => {
+    // Upload optimisé avec limite de concurrence
+    const uploadWithRetry = async (image: File, retries = 2): Promise<string> => {
       const fileExt = image.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       
-      const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(fileName, image);
+      for (let i = 0; i <= retries; i++) {
+        try {
+          const { error: uploadError } = await supabase.storage
+            .from('product-images')
+            .upload(fileName, image, {
+              cacheControl: '3600',
+              upsert: false
+            });
 
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        throw uploadError;
+          if (uploadError) throw uploadError;
+
+          const { data } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(fileName);
+
+          return data.publicUrl;
+        } catch (error) {
+          if (i === retries) throw error;
+          await new Promise(resolve => setTimeout(resolve, 500 * (i + 1)));
+        }
       }
-
-      const { data } = supabase.storage
-        .from('product-images')
-        .getPublicUrl(fileName);
-
-      return data.publicUrl;
-    });
+      throw new Error('Upload failed');
+    };
     
     try {
-      return await Promise.all(uploadPromises);
+      return await Promise.all(images.map(img => uploadWithRetry(img)));
     } catch (error) {
       console.error('Error uploading images:', error);
       throw new Error('Erreur lors du téléchargement des images');

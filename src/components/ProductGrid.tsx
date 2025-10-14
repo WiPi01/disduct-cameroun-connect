@@ -69,20 +69,20 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
           return;
         }
 
-        // Fetch seller profiles separately if needed
+        // Fetch profiles séparément si nécessaire
         if (data && data.length > 0 && showContactButton) {
-          const sellerIds = [...new Set(data.map(p => p.seller_id))];
           const { data: profilesData } = await supabase
-            .from('profiles')
+            .from('public_profiles')
             .select('user_id, display_name')
-            .in('user_id', sellerIds);
+            .eq('user_id', userId)
+            .maybeSingle();
 
-          const productsWithProfiles = data.map(product => ({
+          const productsWithProfile = data.map(product => ({
             ...product,
-            profiles: profilesData?.find(p => p.user_id === product.seller_id) || null
+            profiles: profilesData ? { display_name: profilesData.display_name } : null
           }));
           
-          setProducts(productsWithProfiles as Product[]);
+          setProducts(productsWithProfile as Product[]);
         } else {
           setProducts((data || []) as Product[]);
         }
@@ -155,6 +155,7 @@ export const ProductGrid = ({ userId, showAvailableOnly, showSoldOnly, maxItems,
                   <img
                     src={product.images[0].startsWith('http') ? product.images[0] : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`}
                     alt={product.title}
+                    loading="lazy"
                     className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 cursor-pointer"
                     onError={(e) => {
                       e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';

@@ -57,12 +57,18 @@ const AllProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      // D'abord récupérer les produits
-      const { data: productsData, error: productsError } = await supabase
-        .from('products')
-        .select('*')
-        .eq('status', 'available')
-        .order('created_at', { ascending: false });
+      // Optimisation: récupérer produits et profils en parallèle
+      const [{ data: productsData, error: productsError }, { data: profilesData }] = await Promise.all([
+        supabase
+          .from('products')
+          .select('*')
+          .eq('status', 'available')
+          .order('created_at', { ascending: false })
+          .limit(100),
+        supabase
+          .from('public_profiles')
+          .select('user_id, display_name')
+      ]);
 
       if (productsError) {
         console.error('Error fetching products:', productsError);
@@ -74,21 +80,11 @@ const AllProducts = () => {
         return;
       }
 
-      // Récupérer les profils publics (sans données sensibles) des vendeurs
-      const sellerIds = productsData?.map(p => p.seller_id) || [];
-      const { data: profilesData } = await supabase
-        .from('public_profiles')
-        .select('user_id, display_name')
-        .in('user_id', sellerIds);
-
-      // Combiner les données
-      const productsWithProfiles = productsData?.map(product => {
-        const profile = profilesData?.find(p => p.user_id === product.seller_id);
-        return {
-          ...product,
-          profiles: profile ? { display_name: profile.display_name } : null
-        };
-      }) || [];
+      // Combiner les données efficacement
+      const productsWithProfiles = productsData?.map(product => ({
+        ...product,
+        profiles: profilesData?.find(p => p.user_id === product.seller_id) || null
+      })) || [];
 
       setProducts(productsWithProfiles);
     } catch (error) {
@@ -309,9 +305,10 @@ const AllProducts = () => {
                       <ImageViewModal
                         images={product.images}
                         trigger={
-                          <img
+                      <img
                             src={product.images[0]}
                             alt={product.title}
+                            loading="lazy"
                             className="w-full h-48 object-cover cursor-pointer"
                             onError={(e) => {
                               e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f1f5f9"/><text x="100" y="100" text-anchor="middle" dy="0.3em" font-family="Arial" font-size="14" fill="%236b7280">Pas d\'image</text></svg>';
