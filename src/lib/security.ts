@@ -108,7 +108,7 @@ class RateLimiter {
 
 export const rateLimiter = new RateLimiter();
 
-// Security logging
+// Security logging (only logs to console in development mode)
 export const logSecurityEvent = (event: string, details: Record<string, any> = {}) => {
   const logEntry = {
     timestamp: new Date().toISOString(),
@@ -118,10 +118,13 @@ export const logSecurityEvent = (event: string, details: Record<string, any> = {
     url: typeof window !== 'undefined' ? window.location.href : 'unknown'
   };
   
-  console.log('[SECURITY]', logEntry);
+  // Only log to console in development mode to prevent information leakage
+  if (import.meta.env.DEV) {
+    console.log('[SECURITY]', logEntry);
+  }
   
-  // In production, you might want to send this to an external logging service
-  // await fetch('/api/security-logs', { method: 'POST', body: JSON.stringify(logEntry) });
+  // In production, events should only be sent to server-side logging
+  // The database-level logging is handled automatically by SECURITY DEFINER functions
 };
 
 // Email validation with security considerations

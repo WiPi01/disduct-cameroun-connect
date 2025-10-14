@@ -55,6 +55,7 @@ export type Database = {
           id: string
           owner_id: string
           requester_id: string
+          status: string
         }
         Insert: {
           created_at?: string
@@ -63,6 +64,7 @@ export type Database = {
           id?: string
           owner_id: string
           requester_id: string
+          status?: string
         }
         Update: {
           created_at?: string
@@ -71,6 +73,7 @@ export type Database = {
           id?: string
           owner_id?: string
           requester_id?: string
+          status?: string
         }
         Relationships: []
       }
@@ -315,6 +318,27 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_tracking: {
+        Row: {
+          action_type: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           comment: string | null
@@ -485,6 +509,19 @@ export type Database = {
       can_view_contact_details: {
         Args: { profile_user_id: string }
         Returns: boolean
+      }
+      check_rate_limit: {
+        Args: {
+          p_action_type: string
+          p_max_requests: number
+          p_time_window_minutes: number
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      cleanup_old_rate_limits: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       get_secure_profile: {
         Args: { profile_user_id: string }
