@@ -4,31 +4,27 @@ export const CATEGORY_MAPPINGS = {
   slugToDb: {
     electronique: "Électronique",
     mode: "Mode et Accessoires",
-    maison: "Maison & Jardin", 
-    automobile: "Automobile",
-    alimentation: "Alimentation",
-    services: "Services"
+    vehicules: "Véhicules",
+    livres: "Livres et Médias",
+    autres: "Autres"
   },
   
   // Nom en base de données -> Slug URL
   dbToSlug: {
     "Électronique": "electronique",
     "Mode et Accessoires": "mode",
-    "Mode & Beauté": "mode", // Pour la compatibilité
-    "Maison & Jardin": "maison",
-    "Automobile": "automobile", 
-    "Alimentation": "alimentation",
-    "Services": "services"
+    "Véhicules": "vehicules",
+    "Livres et Médias": "livres",
+    "Autres": "autres"
   },
 
   // Noms d'affichage pour l'interface
   displayNames: {
     electronique: "Électronique",
     mode: "Mode et Accessoires",
-    maison: "Maison & Jardin",
-    automobile: "Automobile",
-    alimentation: "Alimentation", 
-    services: "Services"
+    vehicules: "Véhicules",
+    livres: "Livres et Médias",
+    autres: "Autres"
   }
 };
 

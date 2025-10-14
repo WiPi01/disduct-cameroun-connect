@@ -141,24 +141,9 @@ const CategoryProducts = () => {
     // Si pas de recherche, filtrer par catégorie
     if (category) {
       const dbCategoryName = getCategoryDbName(category);
-      const productCategoryLower = product.category.toLowerCase();
-      const targetCategoryLower = dbCategoryName.toLowerCase();
       
-      // Correspondance directe
-      if (productCategoryLower === targetCategoryLower) return true;
-      
-      // Correspondance partielle (pour variations)
-      if (productCategoryLower.includes(targetCategoryLower)) return true;
-      if (targetCategoryLower.includes(productCategoryLower)) return true;
-      
-      // Correspondance avec le slug
-      if (productCategoryLower.includes(category.toLowerCase())) return true;
-      
-      // Normaliser les accents et réessayer
-      const normalizedProduct = productCategoryLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const normalizedTarget = targetCategoryLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      
-      if (normalizedProduct.includes(normalizedTarget) || normalizedTarget.includes(normalizedProduct)) return true;
+      // Correspondance exacte (insensible à la casse)
+      return product.category.toLowerCase() === dbCategoryName.toLowerCase();
     }
     
     return true;
