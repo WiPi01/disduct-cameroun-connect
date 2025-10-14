@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export const useMilestones = (userId: string | undefined) => {
   const { toast } = useToast();
+  const hasCheckedRef = useRef(false);
 
   const checkAndCongratulateFirstProduct = async () => {
     if (!userId) return;
@@ -116,10 +117,15 @@ export const useMilestones = (userId: string | undefined) => {
   };
 
   useEffect(() => {
-    if (userId) {
+    // Only check milestones when user logs in, not when logging out
+    if (userId && !hasCheckedRef.current) {
+      hasCheckedRef.current = true;
       checkAndCongratulateFirstProduct();
       checkAndCongratulateFirstSale();
       checkAndCongratulateFirstPurchase();
+    } else if (!userId) {
+      // Reset when user logs out
+      hasCheckedRef.current = false;
     }
   }, [userId]);
 
