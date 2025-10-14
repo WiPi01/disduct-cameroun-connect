@@ -435,45 +435,6 @@ export type Database = {
       }
     }
     Views: {
-      marketplace_profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          display_name: string | null
-          first_product_bought_congratulated: boolean | null
-          first_product_posted_congratulated: boolean | null
-          first_product_sold_congratulated: boolean | null
-          id: string | null
-          rating: number | null
-          total_reviews: number | null
-          user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          display_name?: string | null
-          first_product_bought_congratulated?: boolean | null
-          first_product_posted_congratulated?: boolean | null
-          first_product_sold_congratulated?: boolean | null
-          id?: string | null
-          rating?: number | null
-          total_reviews?: number | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          display_name?: string | null
-          first_product_bought_congratulated?: boolean | null
-          first_product_posted_congratulated?: boolean | null
-          first_product_sold_congratulated?: boolean | null
-          id?: string | null
-          rating?: number | null
-          total_reviews?: number | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       public_profiles: {
         Row: {
           avatar_url: string | null
