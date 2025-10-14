@@ -4,7 +4,6 @@ export const CATEGORY_MAPPINGS = {
   slugToDb: {
     electronique: "Électronique",
     mode: "Mode et Accessoires",
-    vehicules: "Véhicules",
     livres: "Livres et Médias",
     autres: "Autres"
   },
@@ -13,7 +12,6 @@ export const CATEGORY_MAPPINGS = {
   dbToSlug: {
     "Électronique": "electronique",
     "Mode et Accessoires": "mode",
-    "Véhicules": "vehicules",
     "Livres et Médias": "livres",
     "Autres": "autres"
   },
@@ -22,7 +20,6 @@ export const CATEGORY_MAPPINGS = {
   displayNames: {
     electronique: "Électronique",
     mode: "Mode et Accessoires",
-    vehicules: "Véhicules",
     livres: "Livres et Médias",
     autres: "Autres"
   }

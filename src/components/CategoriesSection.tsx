@@ -18,13 +18,6 @@ const categories = [
     slug: "mode",
   },
   {
-    icon: Car,
-    title: "Véhicules",
-    description: "Voitures, motos, pièces détachées",
-    count: "Produits disponibles",
-    slug: "vehicules",
-  },
-  {
     icon: Briefcase,
     title: "Livres et Médias",
     description: "Livres, magazines, CD, DVD",
