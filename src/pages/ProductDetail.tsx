@@ -7,8 +7,20 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ShareButton } from "@/components/ShareButton";
-import { ArrowLeft, Store, Package, Ruler, Palette, Weight, Maximize, Tag } from "lucide-react";
+import { ArrowLeft, Store, Package, Ruler, Palette, Weight, Maximize, Tag, Trash2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Product {
   id: string;
@@ -42,9 +54,11 @@ export default function ProductDetail() {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [sellerProfile, setSellerProfile] = useState<SellerProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -86,6 +100,36 @@ export default function ProductDetail() {
 
     fetchProductData();
   }, [productId]);
+
+  const handleDeleteProduct = async () => {
+    if (!product || !user || user.id !== product.seller_id) return;
+
+    setDeleting(true);
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', product.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Article supprimé",
+        description: "Votre article a été supprimé avec succès",
+      });
+
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer l'article",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const getConditionText = (condition: string) => {
     const conditionMap: { [key: string]: string } = {
@@ -343,15 +387,46 @@ export default function ProductDetail() {
             )}
 
             {/* Actions */}
-            {!isOwner && user && product.status === 'available' && (
-              <ContactSellerDialog
-                productId={product.id}
-                sellerId={product.seller_id}
-                sellerName={sellerProfile?.display_name || 'Vendeur'}
-                productTitle={product.title}
-                triggerClassName="w-full bg-gradient-hero hover:opacity-90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
-              />
-            )}
+            <div className="space-y-3">
+              {!isOwner && user && product.status === 'available' && (
+                <ContactSellerDialog
+                  productId={product.id}
+                  sellerId={product.seller_id}
+                  sellerName={sellerProfile?.display_name || 'Vendeur'}
+                  productTitle={product.title}
+                  triggerClassName="w-full bg-gradient-hero hover:opacity-90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                />
+              )}
+              
+              {isOwner && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      className="w-full"
+                      disabled={deleting}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      {deleting ? "Suppression..." : "Supprimer l'article"}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Cette action est irréversible. Votre article sera définitivement supprimé de la plateforme.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDeleteProduct}>
+                        Supprimer
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </div>
           </div>
         </div>
       </div>

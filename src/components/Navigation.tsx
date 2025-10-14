@@ -26,6 +26,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useDevMode } from "@/hooks/use-dev-mode";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "./AuthModal";
+import { useUnreadMessages } from "@/hooks/useUnreadMessages";
+import { Badge } from "@/components/ui/badge";
 
 const categories = [
   { icon: Smartphone, title: "Électronique", slug: "electronique" },
@@ -42,6 +44,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const isDevMode = useDevMode();
   const { user, signOut } = useAuth();
+  const unreadCount = useUnreadMessages();
 
   const handleProfileClick = () => {
     if (user || isDevMode) {
@@ -136,6 +139,24 @@ const Navigation = () => {
             >
               <ShoppingBag className="h-4 w-4" />
             </Button>
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/conversations")}
+                className="relative"
+              >
+                <MessageCircle className="h-4 w-4" />
+                {unreadCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  >
+                    {unreadCount}
+                  </Badge>
+                )}
+              </Button>
+            )}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -151,6 +172,15 @@ const Navigation = () => {
                   <DropdownMenuItem onClick={() => navigate(`/boutique/${user?.id}`)}>
                     <Store className="h-4 w-4 mr-2" />
                     Ma Boutique
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/conversations")}>
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Mes Conversations
+                    {unreadCount > 0 && (
+                      <Badge variant="destructive" className="ml-2">
+                        {unreadCount}
+                      </Badge>
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={async () => {
                     if (!user) {
@@ -260,6 +290,24 @@ const Navigation = () => {
                       <ShoppingBag className="h-4 w-4 mr-2" />
                       Comment Acheter
                     </Button>
+                     {user && (
+                       <Button
+                         variant="outline"
+                         className="justify-start relative"
+                         onClick={() => {
+                           navigate("/conversations");
+                           setIsMobileMenuOpen(false);
+                         }}
+                       >
+                         <MessageCircle className="h-4 w-4 mr-2" />
+                         Mes Conversations
+                         {unreadCount > 0 && (
+                           <Badge variant="destructive" className="ml-2">
+                             {unreadCount}
+                           </Badge>
+                         )}
+                       </Button>
+                     )}
                      <Button
                        variant="default"
                        className="justify-start"
