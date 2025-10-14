@@ -11,6 +11,7 @@ import AuthModal from "@/components/AuthModal";
 import { ImageViewModal } from "@/components/ImageViewModal";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import MobileNavBar from "@/components/MobileNavBar";
+import { SEO } from "@/components/SEO";
 import { getCategoryDisplayName, getCategoryDbName } from "@/lib/categories";
 
 interface Product {
@@ -151,9 +152,18 @@ const CategoryProducts = () => {
   const categoryName = category ? getCategoryDisplayName(category) : "Catégorie";
 
   return (
-    <div className="min-h-screen bg-background">
-      <MobileNavBar title={categoryName} />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
+      <SEO 
+        title={`${categoryName} - Produits disponibles au Cameroun`}
+        description={`Découvrez ${filteredProducts.length} produits dans la catégorie ${categoryName} sur disduct. Achetez et vendez facilement au Cameroun avec notre marketplace locale.`}
+        keywords={`${categoryName} Cameroun, acheter ${categoryName}, vendre ${categoryName}, marketplace ${categoryName}`}
+        url={`/category/${category}`}
+        type="website"
+      />
+      <div className="min-h-screen bg-background">
+        <MobileNavBar title={categoryName} />
+        <main>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-4">
             {categoryName}
@@ -275,13 +285,15 @@ const CategoryProducts = () => {
             ))}
           </div>
         )}
+          </div>
+        </main>
       </div>
 
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
       />
-    </div>
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ImageViewModal } from "@/components/ImageViewModal";
 import { ShareButton } from "@/components/ShareButton";
+import { SEO } from "@/components/SEO";
 import MobileNavBar from "@/components/MobileNavBar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -247,10 +248,19 @@ const AllProducts = () => {
     .slice(0, 8); // Afficher les 8 produits les plus récents
 
   return (
-    <div className="min-h-screen bg-background">
-      <MobileNavBar title="Tous les produits" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <>
+      <SEO 
+        title="Tous les produits - Marketplace camerounaise"
+        description={`Parcourez ${filteredProducts.length} produits disponibles sur disduct. Électronique, mode, maison, véhicules et plus. Achetez et vendez facilement au Cameroun.`}
+        keywords="tous les produits Cameroun, marketplace Cameroun, acheter en ligne Cameroun, petites annonces"
+        url="/produits"
+        type="website"
+      />
+      <div className="min-h-screen bg-background">
+        <MobileNavBar title="Tous les produits" />
+        
+        <main>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-4">
@@ -604,8 +614,10 @@ const AllProducts = () => {
             ))}
           </div>
         )}
+          </div>
+        </main>
       </div>
-    </div>
+    </>
   );
 };
 

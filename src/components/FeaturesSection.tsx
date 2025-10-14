@@ -30,11 +30,11 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="py-20">
+    <section className="py-20" aria-labelledby="features-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold mb-4">
             Pourquoi choisir
             <span className="bg-gradient-hero bg-clip-text text-transparent">
               {" "}
@@ -51,9 +51,9 @@ const FeaturesSection = () => {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="text-center group">
+            <article key={index} className="text-center group">
               <div className="w-20 h-20 mx-auto mb-6 bg-gradient-primary rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-elegant">
-                <feature.icon className="h-10 w-10 text-primary-foreground" />
+                <feature.icon className="h-10 w-10 text-primary-foreground" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-foreground">
                 {feature.title}
@@ -61,15 +61,15 @@ const FeaturesSection = () => {
               <p className="text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </article>
           ))}
         </div>
 
         {/* Stats Section */}
-        <div className="mt-20 bg-gradient-hero rounded-3xl p-8 sm:p-12 text-center shadow-elegant">
+        <aside className="mt-20 bg-gradient-hero rounded-3xl p-8 sm:p-12 text-center shadow-elegant" aria-label="Statistiques de la plateforme">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div>
-              <div className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2">
+              <div className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2" itemProp="numberOfUsers">
                 50,000+
               </div>
               <div className="text-primary-foreground/80">
@@ -77,7 +77,7 @@ const FeaturesSection = () => {
               </div>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2">
+              <div className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2" itemProp="numberOfProducts">
                 30,000+
               </div>
               <div className="text-primary-foreground/80">
@@ -93,7 +93,7 @@ const FeaturesSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
   );

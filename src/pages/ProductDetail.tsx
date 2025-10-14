@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import { ShareButton } from "@/components/ShareButton";
+import { SEO } from "@/components/SEO";
 import { ArrowLeft, Store, Package, Ruler, Palette, Weight, Maximize, Tag, Trash2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -190,9 +191,32 @@ export default function ProductDetail() {
 
   const isOwner = user?.id === product.seller_id;
 
+  // Préparer l'image principale pour le SEO
+  const productImage = product.images && product.images.length > 0 && !product.images[0].includes('placeholder')
+    ? (product.images[0].startsWith('http') 
+        ? product.images[0] 
+        : `https://rtvsinrxboyamtrglciz.supabase.co/storage/v1/object/public/product-images/${product.images[0]}`)
+    : 'https://storage.googleapis.com/gpt-engineer-file-uploads/TM45LeeZmThy7iiznlliB4K4rjW2/social-images/social-1758055635885-logo disduct.png';
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <>
+      <SEO 
+        title={`${product.title} - ${product.price.toLocaleString()} FCFA`}
+        description={product.description || `Achetez ${product.title} pour ${product.price.toLocaleString()} FCFA au Cameroun. ${getConditionText(product.condition)}. Contactez le vendeur sur disduct.`}
+        keywords={`acheter ${product.title}, ${product.category}, ${product.brand || ''}, ${product.location || 'Cameroun'}, marketplace Cameroun`}
+        image={productImage}
+        url={`/produit/${product.id}`}
+        type="product"
+        productData={{
+          price: product.price,
+          currency: 'XAF',
+          availability: product.status === 'available' ? 'in_stock' : 'out_of_stock',
+          condition: product.condition === 'neuf' ? 'new' : 'used',
+          brand: product.brand || undefined,
+        }}
+      />
+      <div className="min-h-screen bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Button
@@ -430,6 +454,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

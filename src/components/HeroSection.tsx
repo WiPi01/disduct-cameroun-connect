@@ -47,7 +47,7 @@ const HeroSection = () => {
     }
   };
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden" aria-label="Section principale">
       {/* Background with subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
@@ -55,7 +55,7 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-1 gap-8 items-center">
           {/* Content */}
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6" itemProp="headline">
               <span className="bg-gradient-hero bg-clip-text text-transparent">
                 The best products
               </span>
@@ -72,9 +72,9 @@ const HeroSection = () => {
             </p>
 
             {/* Search Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 max-w-md mx-auto" role="search">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <Input
                   placeholder="Que recherchez-vous ?"
                   className="pl-10 h-12 border-2 focus:border-primary"
@@ -83,6 +83,7 @@ const HeroSection = () => {
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                   readOnly={!user && !isDevMode}
                   onClick={() => !user && !isDevMode && setIsAuthModalOpen(true)}
+                  aria-label="Rechercher des produits"
                 />
               </div>
               <Button
@@ -90,9 +91,10 @@ const HeroSection = () => {
                 size="lg"
                 className="h-12 px-8"
                 onClick={handleSearch}
+                aria-label="Lancer la recherche"
               >
                 Rechercher
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
 
