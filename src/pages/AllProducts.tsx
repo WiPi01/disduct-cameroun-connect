@@ -63,8 +63,7 @@ const AllProducts = () => {
           .from('products')
           .select('*')
           .eq('status', 'available')
-          .order('created_at', { ascending: false })
-          .limit(100),
+          .order('created_at', { ascending: false }),
         supabase
           .from('public_profiles')
           .select('user_id, display_name')
