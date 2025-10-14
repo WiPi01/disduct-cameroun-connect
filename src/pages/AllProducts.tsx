@@ -74,10 +74,10 @@ const AllProducts = () => {
         return;
       }
 
-      // Ensuite récupérer les profils des vendeurs
+      // Récupérer les profils publics (sans données sensibles) des vendeurs
       const sellerIds = productsData?.map(p => p.seller_id) || [];
       const { data: profilesData } = await supabase
-        .from('profiles')
+        .from('public_profiles')
         .select('user_id, display_name')
         .in('user_id', sellerIds);
 

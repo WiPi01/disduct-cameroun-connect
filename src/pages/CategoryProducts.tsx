@@ -87,10 +87,10 @@ const CategoryProducts = () => {
         return;
       }
 
-      // Récupérer les profils des vendeurs séparément
+      // Récupérer les profils publics (sans données sensibles) des vendeurs
       const sellerIds = [...new Set(products.map(p => p.seller_id))];
       const { data: profiles } = await supabase
-        .from("profiles")
+        .from("public_profiles")
         .select("user_id, display_name")
         .in("user_id", sellerIds);
 
