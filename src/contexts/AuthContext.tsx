@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useMilestones } from "@/hooks/useMilestones";
+import { toast } from "@/hooks/use-toast";
 
 interface AuthContextType {
   user: User | null;
@@ -67,8 +68,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signOut = async () => {
-    console.log("Signing out...");
-    await supabase.auth.signOut();
+    try {
+      console.log("Signing out...");
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Error signing out:", error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de se déconnecter. Veuillez réessayer.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      toast({
+        title: "Déconnexion réussie",
+        description: "Vous êtes déconnecté",
+      });
+    } catch (error) {
+      console.error("Unexpected error during sign out:", error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur inattendue s'est produite.",
+        variant: "destructive",
+      });
+    }
   };
 
   const value = {

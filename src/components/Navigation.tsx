@@ -152,12 +152,11 @@ const Navigation = () => {
                     <Store className="h-4 w-4 mr-2" />
                     Ma Boutique
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => {
+                  <DropdownMenuItem onClick={async () => {
                     if (!user) {
-                      alert("Vous n'êtes pas connecté.");
                       return;
                     }
-                    signOut();
+                    await signOut();
                   }}>
                     <LogOut className="h-4 w-4 mr-2" />
                     Déconnexion
