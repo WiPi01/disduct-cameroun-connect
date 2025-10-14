@@ -108,39 +108,60 @@ const CategoryProducts = () => {
     }
   };
 
-  // Filtrage par recherche ET par catégorie
+  // Filtrage par catégorie ET recherche amélioré
   const filteredProducts = products.filter(product => {
-    // Filtrage par recherche
     const searchLower = searchTerm.toLowerCase().trim();
-    let matchesSearch = true;
     
+    // Si recherche active, utiliser la recherche intelligente
     if (searchLower) {
-      console.log(`Recherche dans catégorie: "${searchTerm}" - Produit: "${product.title}" - Catégorie: "${product.category}"`);
+      const titleLower = product.title.toLowerCase();
+      const categoryLower = product.category.toLowerCase();
+      const brandLower = (product.brand || '').toLowerCase();
+      const descriptionLower = (product.description || '').toLowerCase();
+      const locationLower = (product.location || '').toLowerCase();
+      const sellerNameLower = (product.seller?.display_name || '').toLowerCase();
       
-      const searchWords = searchLower.split(' ').filter(word => word.length > 0);
-      matchesSearch = searchWords.some(word => 
-        product.title.toLowerCase().includes(word) ||
-        product.description?.toLowerCase().includes(word) ||
-        product.brand?.toLowerCase().includes(word) ||
-        product.category.toLowerCase().includes(word) ||
-        product.location?.toLowerCase().includes(word)
-      );
+      const allText = `${titleLower} ${categoryLower} ${brandLower} ${descriptionLower} ${locationLower} ${sellerNameLower}`;
+      const searchWords = searchLower.split(/\s+/).filter(word => word.length > 1);
       
-      console.log(`  -> Recherche correspond: ${matchesSearch}`);
+      // Tous les mots doivent correspondre
+      return searchWords.every(word => {
+        const normalizedWord = word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const normalizedAllText = allText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        
+        return normalizedAllText.includes(normalizedWord) || 
+               normalizedAllText.includes(word) ||
+               titleLower.includes(word) ||
+               categoryLower.includes(word) ||
+               brandLower.includes(word) ||
+               descriptionLower.includes(word);
+      });
     }
     
-    // Filtrage par catégorie SEULEMENT si pas de recherche
-    let matchesCategory = true;
-    if (!searchTerm.trim() && category) {
-      // Utiliser la fonction utilitaire pour mapper le slug vers le nom en base
-      const realCategoryName = getCategoryDbName(category);
-      matchesCategory = product.category === realCategoryName;
-      console.log(`  -> Filtrage catégorie: slug="${category}", nom_en_base="${realCategoryName}", produit_catégorie="${product.category}", correspond: ${matchesCategory}`);
+    // Si pas de recherche, filtrer par catégorie
+    if (category) {
+      const dbCategoryName = getCategoryDbName(category);
+      const productCategoryLower = product.category.toLowerCase();
+      const targetCategoryLower = dbCategoryName.toLowerCase();
+      
+      // Correspondance directe
+      if (productCategoryLower === targetCategoryLower) return true;
+      
+      // Correspondance partielle (pour variations)
+      if (productCategoryLower.includes(targetCategoryLower)) return true;
+      if (targetCategoryLower.includes(productCategoryLower)) return true;
+      
+      // Correspondance avec le slug
+      if (productCategoryLower.includes(category.toLowerCase())) return true;
+      
+      // Normaliser les accents et réessayer
+      const normalizedProduct = productCategoryLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const normalizedTarget = targetCategoryLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      if (normalizedProduct.includes(normalizedTarget) || normalizedTarget.includes(normalizedProduct)) return true;
     }
     
-    const finalResult = matchesSearch && matchesCategory;
-    console.log(`  -> Résultat final: ${finalResult}`);
-    return finalResult;
+    return true;
   });
   const categoryName = category ? getCategoryDisplayName(category) : "Catégorie";
 

@@ -111,57 +111,87 @@ const AllProducts = () => {
     );
   };
 
-  // Recherche améliorée avec scoring pour pertinence
+  // Recherche intelligente avec scoring pour pertinence
   const filteredProducts = products.filter(product => {
     const searchLower = searchTerm.toLowerCase().trim();
     if (!searchLower) return true;
     
-    console.log(`Recherche: "${searchTerm}" - Produit: "${product.title}" - Catégorie: "${product.category}" - Marque: "${product.brand}"`);
+    const titleLower = product.title.toLowerCase();
+    const categoryLower = product.category.toLowerCase();
+    const brandLower = (product.brand || '').toLowerCase();
+    const descriptionLower = (product.description || '').toLowerCase();
+    const locationLower = (product.location || '').toLowerCase();
+    const sellerNameLower = (product.profiles?.display_name || '').toLowerCase();
     
-    const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+    // Combiner tout le texte pour recherche globale
+    const allText = `${titleLower} ${categoryLower} ${brandLower} ${descriptionLower} ${locationLower} ${sellerNameLower}`;
     
-    const matches = searchWords.some(word => 
-      product.title.toLowerCase().includes(word) ||
-      product.category.toLowerCase().includes(word) ||
-      (product.brand && product.brand.toLowerCase().includes(word)) ||
-      (product.location && product.location.toLowerCase().includes(word)) ||
-      (product.description && product.description.toLowerCase().includes(word)) ||
-      (product.profiles?.display_name && product.profiles.display_name.toLowerCase().includes(word))
-    );
+    // Séparer les mots de recherche pour une recherche plus flexible
+    const searchWords = searchLower.split(/\s+/).filter(word => word.length > 1);
     
-    console.log(`  -> Correspond: ${matches}`);
-    return matches;
+    // Chercher chaque mot individuellement (au lieu de tous ensemble)
+    const hasMatch = searchWords.every(word => {
+      // Normaliser les accents et variantes
+      const normalizedWord = word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const normalizedAllText = allText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      return normalizedAllText.includes(normalizedWord) || 
+             normalizedAllText.includes(word) ||
+             titleLower.includes(word) ||
+             categoryLower.includes(word) ||
+             brandLower.includes(word) ||
+             descriptionLower.includes(word);
+    });
+    
+    return hasMatch;
   }).sort((a, b) => {
     if (!searchTerm.trim()) return 0;
     
     const searchLower = searchTerm.toLowerCase();
-    const searchWords = searchLower.split(' ').filter(word => word.length > 0);
+    const searchWords = searchLower.split(/\s+/).filter(word => word.length > 1);
     
-    // Calcul du score de pertinence
+    // Calcul du score de pertinence amélioré
     const getRelevanceScore = (product: Product) => {
       let score = 0;
       const titleLower = product.title.toLowerCase();
       const categoryLower = product.category.toLowerCase();
-      const descriptionLower = product.description?.toLowerCase() || '';
-      const brandLower = product.brand?.toLowerCase() || '';
+      const descriptionLower = (product.description || '').toLowerCase();
+      const brandLower = (product.brand || '').toLowerCase();
+      const locationLower = (product.location || '').toLowerCase();
+      
+      const titleWords = titleLower.split(/\s+/);
+      const brandWords = brandLower.split(/\s+/);
       
       searchWords.forEach(word => {
-        // Score élevé pour correspondance exacte dans le titre
-        if (titleLower.includes(word)) {
-          score += titleLower === word ? 100 : titleLower.startsWith(word) ? 50 : 20;
-        }
-        // Score élevé pour marque
-        if (brandLower.includes(word)) {
-          score += brandLower === word ? 80 : 25;
-        }
-        // Score moyen pour catégorie
-        if (categoryLower.includes(word)) {
-          score += 15;
-        }
-        // Score faible pour description
-        if (descriptionLower.includes(word)) {
-          score += 10;
-        }
+        // Correspondance exacte du terme complet
+        if (titleLower === searchLower) score += 200;
+        if (brandLower === searchLower) score += 180;
+        
+        // Correspondance exacte d'un mot
+        if (titleWords.includes(word)) score += 100;
+        if (brandWords.includes(word)) score += 90;
+        
+        // Commence par le mot recherché
+        if (titleLower.startsWith(word)) score += 70;
+        if (brandLower.startsWith(word)) score += 65;
+        
+        // Contient le mot
+        if (titleLower.includes(word)) score += 40;
+        if (brandLower.includes(word)) score += 50;
+        if (categoryLower.includes(word)) score += 30;
+        if (descriptionLower.includes(word)) score += 20;
+        if (locationLower.includes(word)) score += 15;
+        
+        // Correspondance partielle (sous-chaîne)
+        titleWords.forEach(titleWord => {
+          if (titleWord.includes(word) && titleWord !== word) score += 10;
+          if (word.includes(titleWord) && word !== titleWord) score += 8;
+        });
+        
+        brandWords.forEach(brandWord => {
+          if (brandWord.includes(word) && brandWord !== word) score += 12;
+          if (word.includes(brandWord) && word !== brandWord) score += 10;
+        });
       });
       
       return score;
