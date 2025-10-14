@@ -468,18 +468,6 @@ export default function ShopView() {
                       <p className="text-xs text-muted-foreground">Taille: {product.size_info}</p>
                     )}
                   </div>
-                  
-                  {/* Contact seller button for non-owners */}
-                  {!isOwnShop && user && (
-                    <div className="mt-3">
-                      <ContactSellerDialog
-                        productId={product.id}
-                        sellerId={userId!}
-                        sellerName={profile.display_name}
-                        productTitle={product.title}
-                      />
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             ))}
