@@ -9,9 +9,9 @@ const Index = () => {
   return (
     <>
       <SEO 
-        title="disduct - Marketplace camerounaise pour acheter et vendre"
-        description="Achetez et vendez facilement au Cameroun avec disduct. Des milliers de produits disponibles : électronique, mode, maison, véhicules et plus. Connexion directe entre acheteurs et vendeurs camerounais."
-        keywords="acheter Cameroun, vendre Cameroun, marketplace Cameroun, petites annonces Cameroun, produits discount, électronique pas cher, mode Cameroun"
+        title="disduct - Marketplace Camerounaise N°1 | Acheter et Vendre en Ligne"
+        description="Première marketplace camerounaise pour acheter et vendre facilement. Ordinateurs, smartphones, vêtements, livres, services. Connexion directe acheteurs-vendeurs. Livraison Douala, Yaoundé, Bafoussam, Garoua."
+        keywords="marketplace Cameroun, acheter ordinateur Cameroun, vendre smartphone Douala, acheter en ligne Yaoundé, petites annonces Cameroun, e-commerce Cameroun, acheter pas cher Cameroun, vendre produits Douala, marketplace camerounaise, disduct, acheter vendre Yaoundé, plateforme camerounaise"
         url="/"
         type="website"
       />

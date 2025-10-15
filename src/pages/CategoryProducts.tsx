@@ -13,6 +13,7 @@ import { ContactSellerDialog } from "@/components/ContactSellerDialog";
 import MobileNavBar from "@/components/MobileNavBar";
 import { SEO } from "@/components/SEO";
 import { getCategoryDisplayName, getCategoryDbName } from "@/lib/categories";
+import { getCategoryKeywords } from "@/lib/seo-keywords";
 
 interface Product {
   id: string;
@@ -150,13 +151,14 @@ const CategoryProducts = () => {
     return true;
   });
   const categoryName = category ? getCategoryDisplayName(category) : "Catégorie";
+  const categoryKeywords = getCategoryKeywords(category || 'general');
 
   return (
     <>
       <SEO 
-        title={`${categoryName} - Produits disponibles au Cameroun`}
-        description={`Découvrez ${filteredProducts.length} produits dans la catégorie ${categoryName} sur disduct. Achetez et vendez facilement au Cameroun avec notre marketplace locale.`}
-        keywords={`${categoryName} Cameroun, acheter ${categoryName}, vendre ${categoryName}, marketplace ${categoryName}`}
+        title={categoryKeywords.title}
+        description={categoryKeywords.description}
+        keywords={categoryKeywords.keywords}
         url={`/category/${category}`}
         type="website"
       />

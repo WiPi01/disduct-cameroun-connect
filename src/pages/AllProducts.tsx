@@ -250,9 +250,9 @@ const AllProducts = () => {
   return (
     <>
       <SEO 
-        title="Tous les produits - Marketplace camerounaise"
-        description={`Parcourez ${filteredProducts.length} produits disponibles sur disduct. Électronique, mode, maison, véhicules et plus. Achetez et vendez facilement au Cameroun.`}
-        keywords="tous les produits Cameroun, marketplace Cameroun, acheter en ligne Cameroun, petites annonces"
+        title="Tous les Produits au Cameroun | Acheter en Ligne sur disduct"
+        description="Découvrez tous les produits disponibles sur disduct. Ordinateurs, smartphones, vêtements, livres et plus. Achetez et vendez facilement au Cameroun. Livraison Douala, Yaoundé."
+        keywords="tous produits Cameroun, acheter en ligne Cameroun, marketplace produits, vendre Douala, acheter Yaoundé, disduct Cameroun, e-commerce camerounais"
         url="/produits"
         type="website"
       />

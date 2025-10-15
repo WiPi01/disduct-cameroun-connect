@@ -17,9 +17,9 @@ interface SEOProps {
 }
 
 export const SEO = ({
-  title = 'disduct - Plateforme d\'achat et vente au Cameroun',
-  description = 'La première plateforme qui connecte acheteurs et vendeurs et facilite l\'achat et la vente de produits et services entre Camerounais.',
-  keywords = 'acheter, vendre, Cameroun, marketplace, petites annonces, produits, services, électronique, mode, maison',
+  title = 'disduct - Marketplace Camerounaise | Acheter et Vendre en Ligne au Cameroun',
+  description = 'Première marketplace camerounaise pour acheter et vendre facilement. Électronique, mode, livres, services. Connexion directe acheteurs-vendeurs. Livraison Douala, Yaoundé, toutes villes du Cameroun.',
+  keywords = 'marketplace Cameroun, acheter en ligne Cameroun, vendre Douala, petites annonces Yaoundé, e-commerce Cameroun, acheter pas cher Cameroun, plateforme vente camerounaise, disduct, marketplace africaine',
   image = 'https://storage.googleapis.com/gpt-engineer-file-uploads/TM45LeeZmThy7iiznlliB4K4rjW2/social-images/social-1758055635885-logo disduct.png',
   url = 'https://disduct.com',
   type = 'website',
