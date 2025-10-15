@@ -4,120 +4,120 @@
   
   <!-- Page d'accueil -->
   <url>
-    <loc>https://disduct.com/</loc>
+    <loc>https://disduct.fr/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Pages principales -->
   <url>
-    <loc>https://disduct.com/vendre</loc>
+    <loc>https://disduct.fr/vendre</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/produits</loc>
+    <loc>https://disduct.fr/produits</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/about</loc>
+    <loc>https://disduct.fr/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/services</loc>
+    <loc>https://disduct.fr/services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Guides utilisateurs -->
   <url>
-    <loc>https://disduct.com/comment-vendre</loc>
+    <loc>https://disduct.fr/comment-vendre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/comment-acheter</loc>
+    <loc>https://disduct.fr/comment-acheter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Pages légales -->
   <url>
-    <loc>https://disduct.com/conditions-utilisation</loc>
+    <loc>https://disduct.fr/conditions-utilisation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/politique-confidentialite</loc>
+    <loc>https://disduct.fr/politique-confidentialite</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <!-- Support -->
   <url>
-    <loc>https://disduct.com/faq</loc>
+    <loc>https://disduct.fr/faq</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/signaler-probleme</loc>
+    <loc>https://disduct.fr/signaler-probleme</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- Catégories principales -->
   <url>
-    <loc>https://disduct.com/category/electronique</loc>
+    <loc>https://disduct.fr/category/electronique</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/mode</loc>
+    <loc>https://disduct.fr/category/mode</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/maison</loc>
+    <loc>https://disduct.fr/category/maison</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/vehicules</loc>
+    <loc>https://disduct.fr/category/vehicules</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/immobilier</loc>
+    <loc>https://disduct.fr/category/immobilier</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/sports</loc>
+    <loc>https://disduct.fr/category/sports</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/services</loc>
+    <loc>https://disduct.fr/category/services</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://disduct.com/category/loisirs</loc>
+    <loc>https://disduct.fr/category/loisirs</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>

@@ -21,12 +21,12 @@ export const SEO = ({
   description = 'Première marketplace camerounaise pour acheter et vendre facilement. Électronique, mode, livres, services. Connexion directe acheteurs-vendeurs. Livraison Douala, Yaoundé, toutes villes du Cameroun.',
   keywords = 'marketplace Cameroun, acheter en ligne Cameroun, vendre Douala, petites annonces Yaoundé, e-commerce Cameroun, acheter pas cher Cameroun, plateforme vente camerounaise, disduct, marketplace africaine',
   image = 'https://storage.googleapis.com/gpt-engineer-file-uploads/TM45LeeZmThy7iiznlliB4K4rjW2/social-images/social-1758055635885-logo disduct.png',
-  url = 'https://disduct.com',
+  url = 'https://disduct.fr',
   type = 'website',
   productData,
 }: SEOProps) => {
   const fullTitle = title.includes('disduct') ? title : `${title} | disduct`;
-  const canonicalUrl = url.startsWith('http') ? url : `https://disduct.com${url}`;
+  const canonicalUrl = url.startsWith('http') ? url : `https://disduct.fr${url}`;
 
   // Schéma JSON-LD pour l'organisation
   const organizationSchema = {
@@ -34,7 +34,7 @@ export const SEO = ({
     '@type': 'Organization',
     name: 'disduct',
     description: 'Plateforme camerounaise d\'achat et vente en ligne',
-    url: 'https://disduct.com',
+    url: 'https://disduct.fr',
     logo: image,
     sameAs: [
       'https://www.facebook.com/disduct',

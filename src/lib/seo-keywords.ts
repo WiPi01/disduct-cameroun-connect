@@ -22,6 +22,8 @@ export const SEO_KEYWORDS = {
     title: "Mode et Vêtements au Cameroun",
     description: "Achetez vêtements, chaussures, sacs, accessoires mode au Cameroun. Collections hommes, femmes, enfants. Livraison Douala, Yaoundé. Mode africaine moderne.",
     keywords: [
+      "acheter vêtements au Cameroun",
+      "vendre vêtements et chaussures à Douala",
       "acheter vêtements Cameroun",
       "mode femme Douala",
       "vêtements homme Yaoundé",
